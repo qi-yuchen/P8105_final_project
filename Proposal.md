@@ -34,16 +34,18 @@ United States.
 ## Data Source
 
 This research introduces several datasets in order for a comprehensive
-analysis: \* Index related to happiness is from the release of the
-Gallup World Poll.
-<https://www.gallup.com/analytics/214565/universities-colleges-using-gallup-analytics.aspx>
+analysis:  
+\* Index related to happiness is from the release of the Gallup World
+Poll.  
+<https://www.gallup.com/analytics/214565/universities-colleges-using-gallup-analytics.aspx>  
 \* GDP per capita in purchasing power parity (PPP) at constant 2011
 international dollar prices are from the World Development Indicators
-(WDI).
-<https://datacatalog.worldbank.org/dataset/world-development-indicators>
+(WDI).  
+<https://datacatalog.worldbank.org/dataset/world-development-indicators>  
 \* Healthy life expectancies at birth are based on the data extracted
 from the World Health Organization’s (WHO) Global Health Observatory
-data repository <https://www.who.int/gho/database/en/>
+data repository  
+<https://www.who.int/gho/database/en/>
 
 ## Planned analyses / visualizations / coding challenges
 
