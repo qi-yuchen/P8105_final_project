@@ -37,7 +37,7 @@ https://www.icpsr.umich.edu/icpsrweb/NAHDAP/series/35
 
 ## Planned analyses / visualizations / coding challenges
 * How happiness is changed through the years and the distribution of levels of happiness in different areas changed.
-* * Usual national rankings of life evaluations, supplemented by global data on how life evaluations, positive affect and negative affect have evolved
+* Usual national rankings of life evaluations, supplemented by global data on how life evaluations, positive affect and negative affect have evolved
 * How the rise of TV, Internet and smartphone technology affect our happiness?
 Intend to analyze the association between screen time spent on electronic devices and happiness.
 * Happiness and prosocial behavior: intend to analyze the association between generosity and happiness and compare the association in different regions shown with a map.
