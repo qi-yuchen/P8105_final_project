@@ -63,23 +63,14 @@ data repository
 ## Planned timeline
 
   - Nov.1-Nov.7:
-    
       - Data and Proposal
-
   - Nov.7-Nov.11:
-    
       - Data and repo homepage
-
-  - Nov.11-16: +Data Cleansing and Grouping
-
+  - Nov.11-16:
+      - Data Cleansing and Grouping
   - Nov.18-23:
-    
       - 1st Draft and Group Meet
-
   - Nov.25-30:
-    
       - 2nd Draft and Group Meet
-
   - Dec.1-5:
-    
       - Final Details and Report

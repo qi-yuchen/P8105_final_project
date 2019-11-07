@@ -46,7 +46,7 @@ Intend to analyze the association between screen time spent on electronic device
     + Data and repo homepage
   
 * Nov.11-16:
-    +Data Cleansing and Grouping
+    + Data Cleansing and Grouping
   
 * Nov.18-23:
     + 1st Draft and Group Meet
