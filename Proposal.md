@@ -34,18 +34,21 @@ United States.
 ## Data Source
 
 This research introduces several datasets in order for a comprehensive
-analysis:  
-\* Index related to happiness is from the release of the Gallup World
-Poll.  
-<https://www.gallup.com/analytics/214565/universities-colleges-using-gallup-analytics.aspx>  
-\* GDP per capita in purchasing power parity (PPP) at constant 2011
-international dollar prices are from the World Development Indicators
-(WDI).  
-<https://datacatalog.worldbank.org/dataset/world-development-indicators>  
-\* Healthy life expectancies at birth are based on the data extracted
-from the World Health Organization’s (WHO) Global Health Observatory
-data repository  
-<https://www.who.int/gho/database/en/>
+analysis:
+
+  - Index related to happiness is from the release of the Gallup World
+    Poll.  
+    <https://www.gallup.com/analytics/214565/universities-colleges-using-gallup-analytics.aspx>
+
+  - GDP per capita in purchasing power parity (PPP) at constant 2011
+    international dollar prices are from the World Development
+    Indicators (WDI).  
+    <https://datacatalog.worldbank.org/dataset/world-development-indicators>
+
+  - Healthy life expectancies at birth are based on the data extracted
+    from the World Health Organization’s (WHO) Global Health Observatory
+    data repository  
+    <https://www.who.int/gho/database/en/>
 
 ## Planned analyses / visualizations / coding challenges
 
@@ -74,3 +77,12 @@ data repository
       - 2nd Draft and Group Meet
   - Dec.1-5:
       - Final Details and Report
+
+| Deadline  | Description            | Date         | Assignment                  |
+| --------- | ---------------------- | ------------ | --------------------------- |
+| Nov. 7    | Proposal               | Nov.1-Nov.7  | Data and Proposal           |
+| Nov.11-15 | Project Review Meeting | Nov.7-Nov.11 | Data and repo homepage      |
+| Dec.5     | Report                 | Nov.11-16    | Data Cleansing and Grouping |
+|           |                        | Nov.18-23    | 1st Draft and Group Meet    |
+|           |                        | Nov.25-30    | 2nd Draft and Group Meet    |
+|           |                        | Dec.1-5      | Final Details and Report    |
