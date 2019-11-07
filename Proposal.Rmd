@@ -42,6 +42,8 @@ https://www.icpsr.umich.edu/icpsrweb/NAHDAP/series/35
 Intend to analyze the association between screen time spent on electronic devices and happiness.
 * Happiness and prosocial behavior: intend to analyze the association between generosity and happiness and compare the association in different regions shown with a map.
 * How happiness is related to the living environment, dining, income, education, health status and any possible factors its certain area. 
+* The relationship between happiness and voting behavior, how will the level of happiness influence people’s voting behavior and how to predict people’s voting behavior based on our study of relationship between happiness and voting behavior.
+
 
 ## Planned timeline
 
