@@ -45,7 +45,9 @@ international dollar prices are from the World Development Indicators
 \* Healthy life expectancies at birth are based on the data extracted
 from the World Health Organization’s (WHO) Global Health Observatory
 data repository  
-<https://www.who.int/gho/database/en/>
+<https://www.who.int/gho/database/en/>  
+\* Monitoring the Future (MTF) Public-Use Cross-Sectional Datasets  
+<https://www.icpsr.umich.edu/icpsrweb/NAHDAP/series/35>
 
 ## Planned analyses / visualizations / coding challenges
 
