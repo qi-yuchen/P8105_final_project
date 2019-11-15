@@ -45,6 +45,12 @@ Intend to analyze the association between screen time spent on electronic device
 * The relationship between happiness and voting behavior, how will the level of happiness influence people’s voting behavior and how to predict people’s voting behavior based on our study of relationship between happiness and voting behavior.
 
 
+###########
+1. geohgraphic/time vs happiness
+2. happiness change across 10 years
+3. Happiness distribution within different age groups
+4. Implication of happiness(GDP and generosity)), (regression)
+
 ## Planned timeline
 
 |Deadline	 | Description          | Date        | Assignment                 
