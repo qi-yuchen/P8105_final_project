@@ -37,7 +37,15 @@ df = read_xls("data/Chapter2OnlineData.xls") %>%
 df = df %>% 
   mutate(continent = countrycode(sourcevar = country_name,
                                  origin = "country.name",
-                                 destination = "continent"))
+                                 destination = "continent")) %>% 
+  select(continent, country_name, everything())
 ## Some values were not matched unambiguously: Kosovo
+```
+
+### Geographica
+
+```{r}
+df_geo = df %>% 
+  select(continent, country_name, healthy_life_expectancy_at_birth)
 ```
 
