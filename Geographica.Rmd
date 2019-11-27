@@ -1,5 +1,5 @@
 ---
-title: "Happiness"
+title: "Geographica"
 author: "Qi Yuchen (yq2279)"
 date: "2019/11/27"
 output: html_document
