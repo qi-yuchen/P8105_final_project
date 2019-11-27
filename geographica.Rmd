@@ -1,0 +1,43 @@
+---
+title: "Geographica"
+author: "Qi Yuchen"
+date: "2019/11/27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(viridis)
+library(patchwork)
+library(readxl)
+library(countrycode)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 12, 
+  fig.asp = .618,
+  out.width = "90%"
+)
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
+
+### Data cleaning
+
+```{r}
+## add continents
+df = read_xls("data/Chapter2OnlineData.xls") %>% 
+  janitor::clean_names()
+df = df %>% 
+  mutate(continent = countrycode(sourcevar = country_name,
+                                 origin = "country.name",
+                                 destination = "continent"))
+## Some values were not matched unambiguously: Kosovo
+```
+
