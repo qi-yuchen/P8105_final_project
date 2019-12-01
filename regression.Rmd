@@ -68,5 +68,11 @@ summary(lm4)
 
 ## Diagnostic
 
+
+
+
 ## Cross Validation
 
+## Results 
+
+## Discussion
