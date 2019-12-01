@@ -1,0 +1,74 @@
+---
+title: "regression"
+author: "Xiaoyang Li & Jingyu Fu"
+date: "2019/12/1"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(viridis)
+library(patchwork)
+library(readxl)
+library(countrycode)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 12, 
+  fig.asp = .618,
+  out.width = "90%"
+)
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
+
+## Data cleaning 
+Add coutrycode
+```{r}
+df = read_xls("data/Chapter2OnlineData.xls") %>% 
+  janitor::clean_names()
+
+df = df %>% 
+  mutate(continent = countrycode(sourcevar = country_name,
+                                 origin = "country.name",
+                                 destination = "continent")) %>% 
+  select(continent, country_name, everything()) %>% 
+  drop_na(continent) %>% 
+  rename(gdp = log_gdp_per_capita)
+view(df)
+```
+
+## Distribution & transpormation
+
+
+## Building model
+```{r}
+lm1 = lm(life_ladder ~ gdp, data = df)
+lm2 = lm(life_ladder ~ generosity, data = df)
+lm3 = lm(life_ladder ~ gdp + generosity, data = df)
+lm4 = lm(life_ladder ~ gdp*generosity, data = df)
+```
+
+```{r}
+summary(lm1)
+summary(lm2)
+summary(lm3)
+summary(lm4)
+```
+
+## Diagnostic
+
+
+
+
+## Cross Validation
+
+## Results 
+
+## Discussion
