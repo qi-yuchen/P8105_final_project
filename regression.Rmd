@@ -119,11 +119,21 @@ cv_df %>%
 ```
 
 
-## Results 
+## Results and Discussion
+
+We built four different linear regression models. Model 1 is . Model 2 is. Model 3 is . Model 4 is . 
+
+Simulation for those models indicate 
+
+Summary for those models indicate that 
+
+Diagnostic for those models indicate that
+
+Corss validations for those models indicate that 
 
 
 
-## Discussion
+
 
 
 
