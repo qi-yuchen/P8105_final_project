@@ -6,7 +6,7 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE}
-library(tidyverse)
+
 library(viridis)
 library(patchwork)
 library(readxl)
@@ -14,6 +14,7 @@ library(countrycode)
 library(HH)
 library(modelr)
 library(mgcv)
+library(tidyverse)
 
 knitr::opts_chunk$set(
 	echo = TRUE,
@@ -65,6 +66,10 @@ summary(lm1)
 summary(lm2)
 summary(lm3)
 summary(lm4)
+
+summary(sm1)
+summary(sm2)
+summary(sm3)
 ```
 
 ## Diagnostic
@@ -74,12 +79,9 @@ plot(lm1)
 plot(lm2)
 plot(lm3)
 plot(lm4)
-
-# Checking for multicollinearity: VIF
-vif(lm1)
-vif(lm2)
-vif(lm3)
-vif(lm4)
+plot(sm1)
+plot(sm2)
+plot(sm3)
 ```
 
 ## Cross Validation
@@ -97,15 +99,20 @@ cv_df =
 
 cv_df = 
   cv_df %>% 
-  mutate(lm1  = map(train, ~lm(life_ladder ~ gdp, data = .x)),
-         lm2  = map(train, ~lm(life_ladder ~ generosity, data = .x)),
-         lm3  = map(train, ~lm(life_ladder ~ gdp + generosity, data = .x))           
+  mutate(lm1 = map(train, ~lm(life_ladder ~ gdp, data = .x)),
+         lm2 = map(train, ~lm(life_ladder ~ generosity, data = .x)),
+         lm3 = map(train, ~lm(life_ladder ~ gdp + generosity, data = .x)),
+         sm1 = map(train, ~mgcv::gam(life_ladder ~ s(gdp), data = .x)),
+         sm2 = map(train, ~mgcv::gam(life_ladder ~ s(generosity), data = .x)),
+         sm3 = map(train, ~mgcv::gam(life_ladder ~ s(gdp) + s(generosity), data = .x))
          ) %>% 
-  mutate(rmse_1 = map2_dbl(lm1, test, ~rmse(model = .x, data = .y)),
-         rmse_2 = map2_dbl(lm2, test, ~rmse(model = .x, data = .y)),
-         rmse_3 = map2_dbl(lm3, test, ~rmse(model = .x, data = .y)),
-         )
-         
+  mutate(rmse_l1 = map2_dbl(lm1, test, ~rmse(model = .x, data = .y)),
+         rmse_l2 = map2_dbl(lm2, test, ~rmse(model = .x, data = .y)),
+         rmse_l3 = map2_dbl(lm3, test, ~rmse(model = .x, data = .y)),
+         rmse_s1 = map2_dbl(sm1, test, ~rmse(model = .x, data = .y)),
+         rmse_s2 = map2_dbl(sm2, test, ~rmse(model = .x, data = .y)),
+         rmse_s3 = map2_dbl(sm3, test, ~rmse(model = .x, data = .y))
+         )    
          
 cv_df %>% 
   select(starts_with("rmse")) %>% 
