@@ -45,6 +45,34 @@ view(df)
 ```
 
 ## Distribution & transpormation
+```{r}
+df %>% 
+  select(life_ladder,gdp,generosity) %>% 
+  ggplot(aes( x = gdp)) + geom_histogram()
+
+df %>% 
+  select(life_ladder,gdp,generosity) %>% 
+  ggplot(aes(x = generosity)) + geom_histrogram()
+
+df = df %>% 
+  mutate(
+    life_ladder = log(life_ladder)
+  )
+
+df= df %>% 
+  mutate(
+    life_ladder = sqrt(life_ladder)
+  )
+
+df %>% 
+  select(life_ladder,gdp,generosity) %>% 
+  ggplot(aes( x = gdp)) + geom_histogram()
+
+df %>% 
+  select(life_ladder,generosity) %>% 
+  ggplot(aes(x = generosity)) + geom_histogram()
+
+```
 
 
 ## Building model
@@ -63,9 +91,9 @@ summary(lm4)
 ```
 
 ## Diagnostic
+```{r}
 
-
-
+```
 
 ## Cross Validation
 
