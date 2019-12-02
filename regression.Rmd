@@ -121,7 +121,7 @@ cv_df %>%
 
 ## Results and Discussion
 
-We built four different linear regression models. Model 1 is . Model 2 is. Model 3 is . Model 4 is . 
+To explore what are the key variables that influence life ladder, we built four different linear regression models. Model 1 describes assocaition between gdp and life ladder. Model 2 describes association between generosity and life ladder. Model 3 describes an association in which both gdp and generosity together contribute to life ladder. Model 4 indifactes that the interaction of gdp and generosity contributes to life ladder . 
 
 Simulation for those models indicate 
 
@@ -129,7 +129,7 @@ Summary for those models indicate that
 
 Diagnostic for those models indicate that
 
-Corss validations for those models indicate that 
+Corss validations for those models indicate that model1 and 3 work much better than model 2. Therefore there might be a stronger linear association between gdp and life ladder, and linear assocaition for life ladder versus gdp and generosity. 
 
 
 
