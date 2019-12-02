@@ -11,6 +11,9 @@ library(viridis)
 library(patchwork)
 library(readxl)
 library(countrycode)
+library(HH)
+library(modelr)
+library(mgcv)
 
 knitr::opts_chunk$set(
 	echo = TRUE,
@@ -44,36 +47,6 @@ df = df %>%
 view(df)
 ```
 
-## Distribution & transpormation
-```{r}
-df %>% 
-  select(life_ladder,gdp,generosity) %>% 
-  ggplot(aes( x = gdp)) + geom_histogram()
-
-df %>% 
-  select(life_ladder,gdp,generosity) %>% 
-  ggplot(aes(x = generosity)) + geom_histrogram()
-
-df = df %>% 
-  mutate(
-    life_ladder = log(life_ladder)
-  )
-
-df= df %>% 
-  mutate(
-    life_ladder = sqrt(life_ladder)
-  )
-
-df %>% 
-  select(life_ladder,gdp,generosity) %>% 
-  ggplot(aes( x = gdp)) + geom_histogram()
-
-df %>% 
-  select(life_ladder,generosity) %>% 
-  ggplot(aes(x = generosity)) + geom_histogram()
-
-```
-
 
 ## Building model
 ```{r}
@@ -96,12 +69,59 @@ summary(lm4)
 
 ## Diagnostic
 ```{r}
+# check residual assupmtion
+plot(lm1)
+plot(lm2)
+plot(lm3)
+plot(lm4)
 
+# Checking for multicollinearity: VIF
+vif(lm1)
+vif(lm2)
+vif(lm3)
+vif(lm4)
 ```
 
 ## Cross Validation
 
+```{r}
+cv_df = df %>% 
+  select(life_ladder, gdp, generosity)
+
+
+cv_df =
+  crossv_mc(cv_df, 100) %>% 
+  mutate(
+    train = map(train, as_tibble),
+    test = map(test, as_tibble))
+
+cv_df = 
+  cv_df %>% 
+  mutate(lm1  = map(train, ~lm(life_ladder ~ gdp, data = .x)),
+         lm2  = map(train, ~lm(life_ladder ~ generosity, data = .x)),
+         lm3  = map(train, ~lm(life_ladder ~ gdp + generosity, data = .x))           
+         ) %>% 
+  mutate(rmse_1 = map2_dbl(lm1, test, ~rmse(model = .x, data = .y)),
+         rmse_2 = map2_dbl(lm2, test, ~rmse(model = .x, data = .y)),
+         rmse_3 = map2_dbl(lm3, test, ~rmse(model = .x, data = .y)),
+         )
+         
+         
+cv_df %>% 
+  select(starts_with("rmse")) %>% 
+  pivot_longer(
+    everything(),
+    names_to = "model", 
+    values_to = "rmse",
+    names_prefix = "rmse_") %>% 
+  mutate(model = fct_inorder(model)) %>% 
+  ggplot(aes(x = model, y = rmse)) + geom_violin()
+```
+
+
 ## Results 
+
+
 
 ## Discussion
 
