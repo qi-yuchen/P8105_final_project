@@ -81,6 +81,10 @@ lm1 = lm(life_ladder ~ gdp, data = df)
 lm2 = lm(life_ladder ~ generosity, data = df)
 lm3 = lm(life_ladder ~ gdp + generosity, data = df)
 lm4 = lm(life_ladder ~ gdp*generosity, data = df)
+
+sm1 = mgcv::gam(life_ladder ~ s(gdp), data = df)
+sm2 = mgcv::gam(life_ladder ~ s(generosity), data = df)
+sm3 = mgcv::gam(life_ladder ~ s(gdp) + s(generosity), data = df)
 ```
 
 ```{r}
