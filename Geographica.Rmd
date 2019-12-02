@@ -1,8 +1,9 @@
 ---
-title: "Geographica"
-author: "Qi Yuchen (yq2279)"
-date: "2019/11/27"
-output: html_document
+title: "Geographic Distribution of Happiness"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
 ---
 
 ```{r setup, include=FALSE}
@@ -12,24 +13,10 @@ library(plotly)
 library(readxl)
 library(countrycode)
 library(flexdashboard)
+library(ggmap)
 
-knitr::opts_chunk$set(
-	echo = TRUE,
-	warning = FALSE,
-	fig.width = 12, 
-  fig.asp = .618,
-  out.width = "90%"
-)
-options(
-  ggplot2.continuous.colour = "viridis",
-  ggplot2.continuous.fill = "viridis"
-)
-scale_colour_discrete = scale_colour_viridis_d
-scale_fill_discrete = scale_fill_viridis_d
-theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
-## Data cleaning
 
 ```{r}
 ## add continents
@@ -40,41 +27,80 @@ df = df %>%
                                  origin = "country.name",
                                  destination = "continent")) %>% 
   select(continent, country_name, everything())
-## Some values were not matched unambiguously: Kosovo
-```
+# Some values were not matched unambiguously: Kosovo
 
-## Geographica
-
-```{r}
 df_geo = df %>% 
   select(continent, country = country_name, year, life_ladder) %>% 
   group_by(continent, country) %>% 
   summarise(mean_life_ladder = mean(life_ladder)) %>% 
-  filter(country != "Kosovo") %>% 
   ungroup()
+df_geo$continent[165] = "Europe"
 
+latlon = read_csv("country_centroids_az8.csv") %>% 
+  select(name_long, Longitude, Latitude) %>% 
+  rename(country = name_long)
 
-
-
+df_geo_cor = left_join(df_geo, latlon) %>% 
+  janitor::clean_names() %>% 
+  na.omit()
+  
 ```
 
-### Distribution of happiness in each continent
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### World
 
 ```{r}
-# Africa
-df_geo %>% 
+temp2 = df_geo %>% 
   filter(continent == "Africa") %>% 
   mutate(country = reorder(country, mean_life_ladder)) %>% 
   plot_ly(x = ~country, y = ~mean_life_ladder, color = ~country, type = "bar") %>% 
   layout(
     title = "Distribution of happiness in Africa",
     xaxis = list(title = "country name", tickangle = -45),
-    yaxis = list(title = "expectation of life ladder")
+    yaxis = list(title = "expectation of life ladder", range = c(0,8))
     )
+
+temp1 = df_geo_cor %>%
+  mutate(text_label = str_c("country:", country, '\nladder: ', mean_life_ladder)) %>% 
+  plot_ly(
+    y = ~latitude, x = ~longitude, type = "scatter", mode = "markers",
+    color = ~mean_life_ladder, text = ~text_label, alpha = 0.5)
+
+
+
+
+df_geo = df_geo %>% 
+  mutate(code = countrycode(sourcevar = country,
+                                 origin = "country.name",
+                                 destination = "genc3c")) 
+# light grey boundaries
+l <- list(color = toRGB("grey"), width = 0.5)
+
+# specify map projection/options
+g <- list(
+  showframe = FALSE,
+  showcoastlines = FALSE,
+  projection = list(type = 'Mercator')
+)
+
+plot_geo(df_geo) %>%
+  add_trace(
+    z = ~mean_life_ladder, color = ~mean_life_ladder, colors = 'Blues',
+    text = ~country, locations = ~code, marker = list(line = l)
+  ) %>%
+  colorbar(title = 'Expectation of life ladder') %>%
+  layout(
+    title = 'Global Distribution of Happiness',
+    geo = g
+  )
+
 ```
 
+### Americas
+
 ```{r}
-# Americas
 df_geo %>% 
   filter(continent == "Americas") %>% 
   mutate(country = reorder(country, mean_life_ladder)) %>% 
@@ -82,33 +108,51 @@ df_geo %>%
   layout(
     title = "Distribution of happiness in Americas",
     xaxis = list(title = "country name", tickangle = -45),
-    yaxis = list(title = "expectation of life ladder")
+    yaxis = list(title = "expectation of life ladder", range = c(0,8))
     )
 ```
 
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Asia & Oceania
+
 ```{r}
-# Asia & Oceania
+
 df_geo %>% 
   filter(continent == "Asia" | continent == "Oceania") %>% 
   mutate(country = reorder(country, mean_life_ladder)) %>% 
   plot_ly(x = ~country, y = ~mean_life_ladder, color = ~country, type = "bar") %>% 
   layout(
-    title = "Distribution of happiness in Asia",
-    xaxis = list(title = "country name", tickangle = -45),
-    yaxis = list(title = "expectation of life ladder")
+    xaxis = list(title = "", tickangle = -45),
+    yaxis = list(title = "", range = c(0,8))
     )
 ```
 
+### Europe
+
 ```{r}
-# Europe
+
 df_geo %>% 
   filter(continent == "Europe") %>% 
   mutate(country = reorder(country, mean_life_ladder)) %>% 
   plot_ly(x = ~country, y = ~mean_life_ladder, color = ~country, type = "bar") %>% 
   layout(
-    title = "Distribution of happiness in Europe",
-    xaxis = list(title = "country name", tickangle = -45),
-    yaxis = list(title = "expectation of life ladder")
+    xaxis = list(title = "", tickangle = -45),
+    yaxis = list(title = "", range = c(0,8))
+    )
+```
+
+### Africa
+
+```{r}
+df_geo %>% 
+  filter(continent == "Africa") %>% 
+  mutate(country = reorder(country, mean_life_ladder)) %>% 
+  plot_ly(x = ~country, y = ~mean_life_ladder, color = ~country, type = "bar") %>% 
+  layout(
+    xaxis = list(title = "", tickangle = -45),
+    yaxis = list(title = "", range = c(0,8))
     )
 ```
 
