@@ -15,6 +15,6 @@ Here is the distribution [map](Geo_world.html).
 
 ### Continent view
 
-In each continent, there is obvious diversity.
+In each continent, there is obvious diversity with regard to happiness.
 
 Here are the distribution [bar graphs](Geo_continent.html).
