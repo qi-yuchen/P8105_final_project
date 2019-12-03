@@ -6,7 +6,6 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE}
-
 library(viridis)
 library(patchwork)
 library(readxl)
@@ -54,11 +53,12 @@ view(df)
 lm1 = lm(life_ladder ~ gdp, data = df)
 lm2 = lm(life_ladder ~ generosity, data = df)
 lm3 = lm(life_ladder ~ gdp + generosity, data = df)
-lm4 = lm(life_ladder ~ gdp*generosity, data = df)
+lm4 = lm(life_ladder ~ gdp * generosity, data = df)
 
 sm1 = mgcv::gam(life_ladder ~ s(gdp), data = df)
 sm2 = mgcv::gam(life_ladder ~ s(generosity), data = df)
 sm3 = mgcv::gam(life_ladder ~ s(gdp) + s(generosity), data = df)
+
 ```
 
 ```{r}
@@ -66,6 +66,7 @@ summary(lm1)
 summary(lm2)
 summary(lm3)
 summary(lm4)
+anova(lm3,lm4)
 
 summary(sm1)
 summary(sm2)
@@ -79,6 +80,7 @@ plot(lm1)
 plot(lm2)
 plot(lm3)
 plot(lm4)
+
 plot(sm1)
 plot(sm2)
 plot(sm3)
@@ -102,6 +104,7 @@ cv_df =
   mutate(lm1 = map(train, ~lm(life_ladder ~ gdp, data = .x)),
          lm2 = map(train, ~lm(life_ladder ~ generosity, data = .x)),
          lm3 = map(train, ~lm(life_ladder ~ gdp + generosity, data = .x)),
+         lm4 = map(train, ~lm(life_ladder ~ gdp * generosity, data = .x)),
          sm1 = map(train, ~mgcv::gam(life_ladder ~ s(gdp), data = .x)),
          sm2 = map(train, ~mgcv::gam(life_ladder ~ s(generosity), data = .x)),
          sm3 = map(train, ~mgcv::gam(life_ladder ~ s(gdp) + s(generosity), data = .x))
@@ -109,6 +112,7 @@ cv_df =
   mutate(rmse_l1 = map2_dbl(lm1, test, ~rmse(model = .x, data = .y)),
          rmse_l2 = map2_dbl(lm2, test, ~rmse(model = .x, data = .y)),
          rmse_l3 = map2_dbl(lm3, test, ~rmse(model = .x, data = .y)),
+         rmse_l4 = map2_dbl(lm4, test, ~rmse(model = .x, data = .y)),
          rmse_s1 = map2_dbl(sm1, test, ~rmse(model = .x, data = .y)),
          rmse_s2 = map2_dbl(sm2, test, ~rmse(model = .x, data = .y)),
          rmse_s3 = map2_dbl(sm3, test, ~rmse(model = .x, data = .y))
@@ -126,6 +130,36 @@ cv_df %>%
 ```
 
 
+## table with adjusted R^2, RMSE, AIC
+```{r}
+rbind(
+  broom::glance(lm1),
+  broom::glance(lm2),
+  broom::glance(lm3),
+  broom::glance(lm4)
+  ) %>% 
+  knitr::kable()
+  
+
+rbind(
+  broom::glance(sm1),
+  broom::glance(sm2),
+  broom::glance(sm3)
+  ) %>% 
+  knitr::kable()
+
+# 
+# criterion = 
+#   tibble(
+#     result_lm1 = map(lm1, ~ broom::glance),
+#     result_lm2 = map(lm1, ~ broom::glance),
+#     result_lm3 = map(lm1, ~ broom::glance),
+#     result_lm4 = map(lm1, ~ broom::glance)
+#   ) 
+
+```
+
+
 ## Results and Discussion
 
 To explore what are the key variables that influence life ladder, we built four different linear regression models. Model 1 describes assocaition between gdp and life ladder. Model 2 describes association between generosity and life ladder. Model 3 describes an association in which both gdp and generosity together contribute to life ladder. Model 4 indifactes that the interaction of gdp and generosity contributes to life ladder . 
@@ -138,8 +172,63 @@ Diagnostic for those models indicate that
 
 Corss validations for those models indicate that model1 and 3 work much better than model 2. Therefore there might be a stronger linear association between gdp and life ladder, and linear assocaition for life ladder versus gdp and generosity. 
 
+--------------------------------------------------------------------------------------
 
 
+### Background (why we choose these variables)
+
+Most of us hold the traditional view that the more money you have, the happier you will be. (嘛玩意儿啊）
+
+Also, humans are an extremely prosocial species. Compared to most primates, humans provide more assistance to family, friends, and strangers, even when costly. Some evidence indicate that there is well-being benefits from donating money.
+
+Both related to money, what's the association between these two variable and happiness?
+
+### Introduction about variables
+
+`happiness` represent the happiness score or subjective well-being which was measured by the Gallup World Poll(GWP) covering years from 2005 to 2018,
+
+`gdp` represent the log transformation of statistics of GDP per capita in purchasing power parity(PPP) at constant 2011 international dollar prices are from the November 14,2018 update of the World Development Indicators (WDI).
+
+`generosity` is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.
+
+### Regression
+
+In the process of regression, we choose 4 linear regression model and 3 smooth model to study the association between happiness, gdp and generosity. Their regression equation are shown below.
+
+lm1:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp}$$
+
+lm2:$$Y_{happiness} = \beta_0 + \beta_1X_{generosity}$$
+
+lm3:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity}$$
+
+lm4:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity} + \beta_3X_{gdp} * X_{generosity}$$
+
+sm1:$$Y_{happiness} = \beta_0 + \beta_1s(X_{gdp})$$
+
+sm2:$$Y_{happiness} = \beta_0 + \beta_1s(X_{generosity})$$
+
+sm3:$$Y_{happiness} = \beta_0 + \beta_1s(X_{gdp}) + \beta_2s(X_{generosity})$$
+
+
+### Results (plot of RMSE, table of adjusted R^2, AIC, BIC)
+
+
+### Analysis(why choose this model) 
+According to the table:
+lm4 have the lowest adjusted r-square, AIC, BIC among all linear regression;
+sm3 have the lowest adjusted r-square, AIC, BIC among all smooth regression;
+Only sm3 perform better than lm4 among smooth regression.
+
+Accoring to the plot, lm3, lm4, sm1, sm3 have smaller RMSE and sm3 hold the smallest one. 
+
+However, sm3 have the danger of overfitting.
+
+Therefore, I would like to choose the lm4, i.e.
+$$Y_{happiness} = -1.09 + 0.71X_{gdp} + (-5.33) X_{generosity} + 0.70X_{gdp} * X_{generosity}$$
+
+### Further(meaning)  
+
+The procedure of our regression indicate that both gdp and generosity are associated with happiness. Generosity perform as gdp's confounder and effect modifier in the same time.
 
 
 
