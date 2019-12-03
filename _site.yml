@@ -5,7 +5,7 @@ navbar:
   right:
     - text: "Description of data"
       href: 
-    - text: "Geographic"
+    - text: "Geographica"
       href: Geographica.html
     - text: "Age Group"
       href: 
