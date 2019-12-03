@@ -1,0 +1,16 @@
+name: "style"
+output_dir: "."
+navbar:
+  title: "Home"
+  right:
+    - text: "Description of data"
+      href:
+    - text: "Dashboard"
+      href:
+    - icon:
+      href:
+    - icon: 
+      href:
+output:
+  html_document:
+    theme: cerulean
