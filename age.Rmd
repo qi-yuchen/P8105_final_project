@@ -52,3 +52,8 @@ age_df %>%
   scale_x_discrete(name = "Year") +
   scale_y_continuous(name = "Life Ladder")
 ```
+
+
+
+```{r age_group_analysis}
+```

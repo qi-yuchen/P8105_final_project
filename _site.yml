@@ -5,12 +5,13 @@ navbar:
   right:
     - text: "Description of data"
       href:
-    - text: "Dashboard"
+    - text: "Geographic"
       href:
-    - icon:
+    - text: "Age Group"
       href:
-    - icon: 
+    - text: "Time Analysis"
       href:
+    - text: "Regression"
 output:
   html_document:
     theme: cerulean
