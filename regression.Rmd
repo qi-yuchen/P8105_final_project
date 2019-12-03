@@ -163,19 +163,26 @@ rbind(
 
 ## How we choose our interested models
 
-To explore what are the key variables that influence life ladder, we built four different linear regression models. Model 1 describes assocaition between gdp and life ladder. Model 2 describes association between generosity and life ladder. Model 3 describes an association in which both gdp and generosity together contribute to life ladder. Model 4 indifactes that the interaction of gdp and generosity contributes to life ladder . 
+To explore what are the key variables that influence life ladder, we built four different linear regression models. Model 1 describes assocaition between gdp and life ladder. Model 2 describes association between generosity and life ladder. Model 3 describes an association in which both gdp and generosity together contribute to life ladder. Model 4 indifactes that the interaction of gdp and generosity contributes to life ladder. 
 
-## What did we conclude from our model summary 
+## How we chose model 4 as the best model
 
+First let's take a look at the significance of slope coeficcients. In all the models,gdp, generosity and their interaction term are highly significant. Thus we conclude that they are all importang potential variables for outcome life ladder. 
 
-Summary for those models indicate that 
+The goodness of fit for those models is also an essential criteria when choosing the best model.  In linear regression model, model 3 and 4 have the highest goodness of fit. In smooth model, model 3 has the highest goodness of fit. 
+
+From above we decided to choose from model 3 and 4. Therefore we used ANOVA to compare those two models. The ANOVA result has a p value lower than 0.05, and according to hypothesis, we decided model 4 is the better model.
 
 ## A closer look at the residuals of our models
 
-Diagnostic for those models indicate that
+(put plots here)
+
+Diagnostic for those models indicate that fro all the models, their residuls are approximately normally distributed and have constance variance. 
 
 
 ## Can we predict the life ladder from those variables?
+
+One the the main purpose of this study is to d=find a model that fan help us predict life ladder from key variables. Since we built four models, we shoudl also find out which model is best in predicting the outcome. 
 
 Corss validations for those models indicate that model1 and 3 work much better than model 2. Therefore there might be a stronger linear association between gdp and life ladder, and linear assocaition for life ladder versus gdp and generosity. 
 
