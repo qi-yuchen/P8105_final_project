@@ -1,0 +1,59 @@
+---
+title: "age"
+author: "Shuya Liu"
+date: "December 1, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readxl)
+```
+
+Data Import
+---
+
+```{r data}
+## read datasets
+happy_data <- read_excel("./data/Chapter2OnlineData.xls") %>%
+  janitor::clean_names()
+age_data <- read_excel("./data/GallupAnalytics_Export_20191203_075046.xlsx",
+                       range = "B8:G5209") %>%
+  janitor::clean_names() %>%
+  rename(country_name = geography,
+         year = time,
+         age = demographic_value,
+         n = n_size,
+         ladder = value) %>%
+  mutate(year = as.numeric(year))
+
+## join datasets
+age_df <- age_data %>%
+  pivot_wider(names_from = age,
+              values_from = c(ladder, n)) %>%
+  left_join(happy_data, ., by = c("country_name", "year")) %>%
+  select(country_name:life_ladder, "ladder_15-29":"n_DK/Refused") %>%
+  pivot_longer("ladder_15-29":"n_DK/Refused", 
+               names_to = c("variable", "age"),
+               names_pattern = "(.*)_(.*)") %>%
+  pivot_wider(names_from = variable,
+              values_from = value)
+
+```
+
+```{r example_plot}
+age_df %>%
+  mutate(year = as.character(year)) %>%
+  filter(country_name == "Afghanistan") %>%
+  ggplot(aes(x = year, y = ladder, group = age, color = age)) +
+  geom_point(alpha = 0.5) +
+  geom_line(alpha = 0.5) +
+  scale_x_discrete(name = "Year") +
+  scale_y_continuous(name = "Life Ladder")
+```
+
+
+
+```{r age_group_analysis}
+```

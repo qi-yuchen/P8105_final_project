@@ -1,0 +1,17 @@
+name: "style"
+output_dir: "."
+navbar:
+  title: "Home"
+  right:
+    - text: "Description of data"
+      href:
+    - text: "Geographic"
+      href:
+    - text: "Age Group"
+      href:
+    - text: "Time Analysis"
+      href:
+    - text: "Regression"
+output:
+  html_document:
+    theme: cerulean

@@ -1,0 +1,250 @@
+---
+title: "Time"
+author: "Di Wu dw2903"
+date: "2019/11/30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(patchwork)
+library(countrycode)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 12, 
+  fig.asp = .618,
+  out.width = "90%"
+)
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
+
+
+```{r,include=FALSE}
+df = readxl::read_xls("data/Chapter2OnlineData.xls") %>% 
+  janitor::clean_names()%>%
+  mutate(continent = countrycode(sourcevar = country_name,
+                                 origin = "country.name",
+                                 destination = "continent")) %>% 
+  dplyr::select(continent, country_name, everything()) %>% 
+  drop_na(continent) %>% 
+  rename(gdp = log_gdp_per_capita)
+
+```
+
+In this analysis, we firstly study the hapiness scale with full data from 2010 to 2018 in the whole world
+```{r,include=FALSE}
+plot_cont_happiness=
+  df %>%
+  filter(year %in% c(2010:2018)) %>%
+  dplyr::select(continent,country_name,year,life_ladder) %>%
+  pivot_wider(
+    names_from = year,
+    values_from = life_ladder
+  )%>% 
+  janitor::clean_names()%>%
+  drop_na()%>%
+  pivot_longer(
+    cols = starts_with("X"),
+    names_to = "year",
+    names_prefix = "x",
+    values_to = "life_ladder"
+  )%>%
+  group_by(continent,year)%>%
+  summarize(life_ladder=mean(life_ladder))%>%
+  ggplot(aes(x=year,y=life_ladder,color=continent))+geom_point()+geom_line(aes(group=continent))+labs(y="life ladder")
+
+plot_cont_gdp=
+  df %>%
+  filter(year %in% c(2010:2018)) %>%
+  dplyr::select(continent,country_name,year,gdp) %>%
+  pivot_wider(
+    names_from = year,
+    values_from = gdp
+  )%>% 
+  janitor::clean_names()%>%
+  drop_na()%>%
+  pivot_longer(
+    cols = starts_with("X"),
+    names_to = "year",
+    names_prefix = "x",
+    values_to = "gdp"
+  )%>%
+  group_by(continent,year)%>%
+  summarize(gdp=mean(gdp))%>%
+  ggplot(aes(x=year,y=gdp,color=continent))+geom_point()+geom_line(aes(group=continent))  
+
+plot_cont_gen=
+  df %>%
+  filter(year %in% c(2010:2018)) %>%
+  dplyr::select(continent,country_name,year,generosity) %>%
+  pivot_wider(
+    names_from = year,
+    values_from = generosity
+  )%>% 
+  janitor::clean_names()%>%
+  drop_na()%>%
+  pivot_longer(
+    cols = starts_with("X"),
+    names_to = "year",
+    names_prefix = "x",
+    values_to = "generosity"
+  )%>%
+  group_by(continent,year)%>%
+  summarize(generosity=mean(generosity))%>%
+  ggplot(aes(x=year,y=generosity,color=continent))+geom_point()+geom_line(aes(group=continent))  
+```
+
+```{r}
+plot_cont_happiness+(plot_cont_gdp/plot_cont_gen )
+  
+```
+
+
+It is obvious that the in the 9-year period of intersted study, the Oceania has the highest level of happiness that above 7 during the study period, while Africa has the lowest level of happiness ranged from 4 to 4.5 in the study period.Europe and America have similar life ladder within 6 and 6.5, where America was slightly higher in 2010 than Europe while Europe exceeded since 2015. Asia had life ladder slightly less than 5.5 and generally kept in a stable level in the study period. Compared with the gdp scale and the generosity in each continent, we can easily noticed that a similar pattern exist that Oceania tended to have the highest average gdp and generosity while Africa tended to have lowest level.
+
+
+A further analze in in the 9-year period was applied to Americas, Europe, Asia and Africa except for Oceania which only contained two countries and the average level of continent was nicely representive of the countries, we select several countries in the continents that were relelativly stable in happiness levels, where for America, Europe and Asia use 0.03 as boundary while 0.1 for Afria due to its high variance of happiness level from 2010 to 2018. 
+
+```{r, include=FALSE}
+plot_Am=
+  df %>%
+  filter(
+    continent == "Americas",
+    year %in% c(2010:2018)) %>%
+  dplyr::select(country_name,year,life_ladder) %>%
+  pivot_wider(
+    names_from = year,
+    values_from = life_ladder
+  )%>% 
+  janitor::clean_names()%>%
+  drop_na()%>%
+  pivot_longer(
+    cols = starts_with("X"),
+    names_to = "year",
+    names_prefix = "x",
+    values_to = "life_ladder"
+  )%>%
+  group_by(country_name)%>%
+  mutate(
+    sd=var(life_ladder)
+  ) %>%
+  filter(sd <0.03) %>%
+  ggplot(aes(x=year, y=life_ladder,color=country_name))+
+  geom_point()+
+  geom_line(aes(group=country_name))
+
+plot_Eu=
+  df %>%
+  filter(
+    continent == "Europe",
+    year %in% c(2010:2018)) %>%
+  dplyr::select(country_name,year,life_ladder) %>%
+  pivot_wider(
+    names_from = year,
+    values_from = life_ladder
+  )%>% 
+  janitor::clean_names()%>%
+  drop_na()%>%
+  pivot_longer(
+    cols = starts_with("X"),
+    names_to = "year",
+    names_prefix = "x",
+    values_to = "life_ladder"
+  )%>%
+  group_by(country_name)%>%
+  mutate(
+    sd=var(life_ladder)
+  ) %>%
+  filter(sd <0.03) %>%
+  ggplot(aes(x=year, y=life_ladder,color=country_name))+
+  geom_point()+
+  geom_line(aes(group=country_name))
+
+plot_As=
+  df %>%
+  filter(
+    continent == "Asia",
+    year %in% c(2010:2018)) %>%
+  dplyr::select(country_name,year,life_ladder) %>%
+  pivot_wider(
+    names_from = year,
+    values_from = life_ladder
+  )%>% 
+  janitor::clean_names()%>%
+  drop_na()%>%
+  pivot_longer(
+    cols = starts_with("X"),
+    names_to = "year",
+    names_prefix = "x",
+    values_to = "life_ladder"
+  )%>%
+  group_by(country_name)%>%
+  mutate(
+    sd=var(life_ladder)
+  ) %>%
+  filter(sd <0.03) %>%
+  ggplot(aes(x=year, y=life_ladder,color=country_name))+
+  geom_point()+
+  geom_line(aes(group=country_name))
+    
+
+
+plot_Af=
+  df %>%
+  filter(
+    continent == "Africa",
+    year %in% c(2010:2018)) %>%
+  dplyr::select(country_name,year,life_ladder) %>%
+  pivot_wider(
+    names_from = year,
+    values_from = life_ladder
+  )%>% 
+  janitor::clean_names()%>%
+  drop_na()%>%
+  pivot_longer(
+    cols = starts_with("X"),
+    names_to = "year",
+    names_prefix = "x",
+    values_to = "life_ladder"
+  )%>%
+  group_by(country_name)%>%
+  mutate(
+    sd=var(life_ladder)
+  ) %>%
+  filter(sd <0.1) %>%
+  ggplot(aes(x=year, y=life_ladder,color=country_name))+
+  geom_point()+
+  geom_line(aes(group=country_name))
+  
+```
+
+```{r}
+plot_Af+(plot_Am/plot_Eu/plot_As)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
