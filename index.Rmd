@@ -1,3 +1,10 @@
+---
+title: "Happiness"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
 
 
 # The Secret of Happiness
