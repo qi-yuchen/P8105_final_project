@@ -4,11 +4,11 @@ navbar:
   title: "Home"
   right:
     - text: "Description of data"
-      href:
-    - text: "Geographic"
-      href:
+      href: 
+    - text: "Geographica"
+      href: Geographica.html
     - text: "Age Group"
-      href:
+      href: 
     - text: "Time Analysis"
       href:
     - text: "Regression"

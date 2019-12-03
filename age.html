@@ -10,9 +10,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Shuya Liu" />
 
+<meta name="date" content="2019-12-01" />
 
-<title>Happiness</title>
+<title>age</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,9 +22,6 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -251,63 +250,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
 
 </head>
 
@@ -315,16 +257,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -360,20 +292,56 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Happiness</h1>
+<h1 class="title toc-ignore">age</h1>
+<h4 class="author">Shuya Liu</h4>
+<h4 class="date">December 1, 2019</h4>
 
 </div>
 
 
-<div id="the-secret-of-happiness" class="section level1">
-<h1>The Secret of Happiness</h1>
-<p><img src="image/pikachu.png" /></p>
+<div id="data-import" class="section level2">
+<h2>Data Import</h2>
+<pre class="r"><code>## read datasets
+happy_data &lt;- read_excel(&quot;./data/Chapter2OnlineData.xls&quot;) %&gt;%
+  janitor::clean_names()</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): strings not representable in native encoding
+## will be translated to UTF-8</code></pre>
+<pre class="r"><code>age_data &lt;- read_excel(&quot;./data/GallupAnalytics_Export_20191203_075046.xlsx&quot;,
+                       range = &quot;B8:G5209&quot;) %&gt;%
+  janitor::clean_names() %&gt;%
+  rename(country_name = geography,
+         year = time,
+         age = demographic_value,
+         n = n_size,
+         ladder = value) %&gt;%
+  mutate(year = as.numeric(year))
+
+## join datasets
+age_df &lt;- age_data %&gt;%
+  pivot_wider(names_from = age,
+              values_from = c(ladder, n)) %&gt;%
+  left_join(happy_data, ., by = c(&quot;country_name&quot;, &quot;year&quot;)) %&gt;%
+  select(country_name:life_ladder, &quot;ladder_15-29&quot;:&quot;n_DK/Refused&quot;) %&gt;%
+  pivot_longer(&quot;ladder_15-29&quot;:&quot;n_DK/Refused&quot;, 
+               names_to = c(&quot;variable&quot;, &quot;age&quot;),
+               names_pattern = &quot;(.*)_(.*)&quot;) %&gt;%
+  pivot_wider(names_from = variable,
+              values_from = value)</code></pre>
+<pre class="r"><code>age_df %&gt;%
+  mutate(year = as.character(year)) %&gt;%
+  filter(country_name == &quot;Afghanistan&quot;) %&gt;%
+  ggplot(aes(x = year, y = ladder, group = age, color = age)) +
+  geom_point(alpha = 0.5) +
+  geom_line(alpha = 0.5) +
+  scale_x_discrete(name = &quot;Year&quot;) +
+  scale_y_continuous(name = &quot;Life Ladder&quot;)</code></pre>
+<pre><code>## Warning: Removed 12 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 11 rows containing missing values (geom_path).</code></pre>
+<p><img src="age_files/figure-html/example_plot-1.png" width="672" /></p>
 </div>
 
 
 
-</div>
-</div>
 
 </div>
 
@@ -406,32 +374,6 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

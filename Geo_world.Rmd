@@ -1,0 +1,97 @@
+---
+title: "Geographic Distribution of Happiness Worldwide"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(viridis)
+library(plotly)
+library(readxl)
+library(countrycode)
+library(flexdashboard)
+library(ggmap)
+
+```
+
+
+```{r}
+## add continents
+df = read_xls("data/Chapter2OnlineData.xls") %>% 
+  janitor::clean_names()
+df = df %>% 
+  mutate(continent = countrycode(sourcevar = country_name,
+                                 origin = "country.name",
+                                 destination = "continent")) %>% 
+  select(continent, country_name, everything())
+# Some values were not matched unambiguously: Kosovo
+
+df_geo = df %>% 
+  select(continent, country = country_name, year, life_ladder) %>% 
+  group_by(continent, country) %>% 
+  summarise(mean_life_ladder = mean(life_ladder)) %>% 
+  ungroup()
+df_geo$continent[165] = "Europe"
+
+latlon = read_csv("country_centroids_az8.csv") %>% 
+  select(name_long, Longitude, Latitude) %>% 
+  rename(country = name_long)
+
+df_geo_cor = left_join(df_geo, latlon) %>% 
+  janitor::clean_names() %>% 
+  na.omit()
+  
+```
+
+
+
+```{r}
+temp2 = df_geo %>% 
+  filter(continent == "Africa") %>% 
+  mutate(country = reorder(country, mean_life_ladder)) %>% 
+  plot_ly(x = ~country, y = ~mean_life_ladder, color = ~country, type = "bar") %>% 
+  layout(
+    title = "Distribution of happiness in Africa",
+    xaxis = list(title = "country name", tickangle = -45),
+    yaxis = list(title = "expectation of life ladder", range = c(0,8))
+    )
+
+temp1 = df_geo_cor %>%
+  mutate(text_label = str_c("country:", country, '\nladder: ', mean_life_ladder)) %>% 
+  plot_ly(
+    y = ~latitude, x = ~longitude, type = "scatter", mode = "markers",
+    color = ~mean_life_ladder, text = ~text_label, alpha = 0.5)
+
+
+
+
+df_geo = df_geo %>% 
+  mutate(code = countrycode(sourcevar = country,
+                                 origin = "country.name",
+                                 destination = "genc3c")) 
+# light grey boundaries
+l <- list(color = toRGB("grey"), width = 0.5)
+
+# specify map projection/options
+g <- list(
+  showframe = FALSE,
+  showcoastlines = FALSE,
+  projection = list(type = 'Mercator')
+)
+
+plot_geo(df_geo) %>%
+  add_trace(
+    z = ~mean_life_ladder, color = ~mean_life_ladder, colors = 'Blues',
+    text = ~country, locations = ~code, marker = list(line = l)
+  ) %>%
+  colorbar(title = 'Expectation of life ladder') %>%
+  layout(
+    title = 'Global Distribution of Happiness',
+    geo = g
+  )
+
+```
+
