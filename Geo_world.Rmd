@@ -36,7 +36,7 @@ df_geo = df %>%
   ungroup()
 df_geo$continent[165] = "Europe"
 
-latlon = read_csv("country_centroids_az8.csv") %>% 
+latlon = read_csv("data/country_centroids_az8.csv") %>% 
   select(name_long, Longitude, Latitude) %>% 
   rename(country = name_long)
 
