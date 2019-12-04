@@ -1,5 +1,5 @@
 ---
-title: "Happiness"
+title: "The Secret of Happiness"
 output: 
   html_document:
     toc: true
@@ -7,7 +7,7 @@ output:
 ---
 
 
-# The Secret of Happiness
+# Pikachu
 
 ![](image/pikachu.png)
 
