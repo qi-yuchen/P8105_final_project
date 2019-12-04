@@ -4,14 +4,16 @@ navbar:
   title: "Home"
   right:
     - text: "Description of data"
-      href: 
+      href:
     - text: "Geographica"
       href: Geographica.html
     - text: "Age Group"
-      href: 
+      href: https://lsyjessica.shinyapps.io/dashboard/
     - text: "Time Analysis"
       href:
     - text: "Regression"
+    - icon: fa-github fa-lg
+      href: https://github.com/qi-yuchen/P8105_final_project
 output:
   html_document:
-    theme: cerulean
+    theme: journal

@@ -63,7 +63,8 @@ df = happy_data %>%
   select(country_name, year, life_ladder, gdp, generosity) %>% 
   full_join(df_age) %>% 
   select(ladder, gdp, age, generosity) %>% 
-  drop_na(ladder)
+  drop_na(ladder) %>% 
+  filter(age != "DK/Refused")
 
 ```
 
@@ -102,7 +103,7 @@ rbind(
   broom::glance(lm10)
   ) %>% 
   cbind(model_name) %>% 
-  select(model_name, everything())
+  select(model_name, everything()) %>% 
   knitr::kable()
 ```
 
@@ -220,7 +221,7 @@ Corss validations for those models indicate that model1 and 3 work much better t
 -------------------------------------------------------------------------------------
 ## Background (why we choose these variables)
 
-Most of us hold the traditional view that the more money you have, the happier you will be. (嘛玩意儿啊）
+Most of us hold the traditional view that the more money you have, the happier you will be.
 
 Also, humans are an extremely prosocial species. Compared to most primates, humans provide more assistance to family, friends, and strangers, even when costly. Some evidence indicate that there is well-being benefits from donating money.
 
@@ -262,9 +263,9 @@ According to the plot above, RMSE of lm7 is the lowest, which show that lm7 work
 
 We made some assumptions regarding residuals like normality distribution and constant variance of residuals. According to the diagnostic above, residuals vs fitted and scale-location indicate the constant variance of residuals is satisfied. QQ plot demonstrate residuals follow normal distribution. And the residuals vs leveragge prove there are no obvious influencial observation in out dataset. 
 
-## Further(meaning)  
+## What's the meaning of our regression model 
 
-The procedure of our regression indicate that both gdp and generosity are associated with happiness. Generosity perform as gdp's confounder and effect modifier in the same time.
+The procedure of our regression indicate that age, gdp and generosity are associated with happiness. All of them can be treated as reasonable predictor. Both `gdp` and `generosity` is positive associated with happiness. Higher GDP do mean more likely to be happy as our intuitive feeling. But we also realize that people could benefit more by donating or other prosocial behavior, which might be helpful to encourage people to do more charity. In addition, when you grow up, it is harder and harder to live with happiness. Growth seems to be a procedure we lose happiness gradually. It gradually draws our attention to keep well-being during such inevitable process. 
 
 
 
