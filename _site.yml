@@ -11,6 +11,8 @@ navbar:
       href: https://lsyjessica.shinyapps.io/dashboard/
     - text: "Time Analysis"
       href: https://lsyjessica.shinyapps.io/time_shiny/
+    - text: "Comparison"
+      href: time.html
     - text: "Regression"
       href: regression.html
     - icon: fa-github fa-lg
