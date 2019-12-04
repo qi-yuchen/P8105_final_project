@@ -1,8 +1,10 @@
 ---
-title: "regression"
+title: "Regression"
 author: "Xiaoyang Li & Jingyu Fu"
-date: "2019/12/1"
-output: github_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
 ---
 
 ```{r setup, include=FALSE}
@@ -30,7 +32,6 @@ scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
-
 
 
 ## Finding the passcode of Happiness
@@ -91,7 +92,7 @@ Both related to money, what's the association between these two variable and hap
 
 
 
-## Which model is the closest to the 'true passcode'? (note:how to choose the model)
+## Which model is the closest to the 'true passcode'? 
 
 ### We built 10 potentilas models
 
@@ -185,7 +186,7 @@ Summary results of lm7 are shown below:
 summary(lm7)
 ```
 
-## Hooray! Now we have obtained the passcode of Happiness! (note:summary of final model)
+## Hooray! Now we have obtained the passcode of Happiness! 
 
 Before we continue, there's couple of more things we want to check with our passcode. 
 
@@ -253,11 +254,5 @@ plot(lm7)
 ### What's the meaning of our regression model 
 
 The procedure of our regression indicate that age, gdp and generosity are associated with happiness. All of them can be treated as reasonable predictor. Both `gdp` and `generosity` is positive associated with happiness. Higher GDP do mean more likely to be happy as our intuitive feeling. But we also realize that people could benefit more by donating or other prosocial behavior, which might be helpful to encourage people to do more charity. In addition, when you grow up, it is harder and harder to live with happiness. Growth seems to be a procedure we lose happiness gradually. It gradually draws our attention to keep well-being during such inevitable process.
-
-
-
-## Wait! There's more we can expect with this passcode... (note:further)
-
-to be continued...
 
 

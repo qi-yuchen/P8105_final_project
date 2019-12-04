@@ -13,7 +13,7 @@
 <meta name="author" content="Xiaoyang Li &amp; Jingyu Fu" />
 
 
-<title>regression</title>
+<title>Regression</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -21,6 +21,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -251,6 +254,63 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -258,6 +318,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -303,9 +373,8 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">regression</h1>
+<h1 class="title toc-ignore">Regression</h1>
 <h4 class="author">Xiaoyang Li &amp; Jingyu Fu</h4>
-<h4 class="date">2019/12/1</h4>
 
 </div>
 
@@ -324,8 +393,8 @@ $(document).ready(function () {
 <p><code>gdp</code> represent the log transformation of statistics of GDP per capita in purchasing power parity(PPP) at constant 2011 international dollar prices are from the November 14,2018 update of the World Development Indicators (WDI).</p>
 <p><code>generosity</code> is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.</p>
 </div>
-<div id="which-model-is-the-closest-to-the-true-passcode-notehow-to-choose-the-model" class="section level2">
-<h2>Which model is the closest to the ‘true passcode’? (note:how to choose the model)</h2>
+<div id="which-model-is-the-closest-to-the-true-passcode" class="section level2">
+<h2>Which model is the closest to the ‘true passcode’?</h2>
 <div id="we-built-10-potentilas-models" class="section level3">
 <h3>We built 10 potentilas models</h3>
 <p>Model 1 to 3 use each of the three variables as the only variable.</p>
@@ -537,8 +606,8 @@ $(document).ready(function () {
 ## F-statistic:  2147 on 4 and 4581 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
-<div id="hooray-now-we-have-obtained-the-passcode-of-happiness-notesummary-of-final-model" class="section level2">
-<h2>Hooray! Now we have obtained the passcode of Happiness! (note:summary of final model)</h2>
+<div id="hooray-now-we-have-obtained-the-passcode-of-happiness" class="section level2">
+<h2>Hooray! Now we have obtained the passcode of Happiness!</h2>
 <p>Before we continue, there’s couple of more things we want to check with our passcode.</p>
 <div id="does-it-work-well" class="section level3">
 <h3>Does it work well?</h3>
@@ -556,13 +625,11 @@ $(document).ready(function () {
 <p>The procedure of our regression indicate that age, gdp and generosity are associated with happiness. All of them can be treated as reasonable predictor. Both <code>gdp</code> and <code>generosity</code> is positive associated with happiness. Higher GDP do mean more likely to be happy as our intuitive feeling. But we also realize that people could benefit more by donating or other prosocial behavior, which might be helpful to encourage people to do more charity. In addition, when you grow up, it is harder and harder to live with happiness. Growth seems to be a procedure we lose happiness gradually. It gradually draws our attention to keep well-being during such inevitable process.</p>
 </div>
 </div>
-<div id="wait-theres-more-we-can-expect-with-this-passcode-notefurther" class="section level2">
-<h2>Wait! There’s more we can expect with this passcode… (note:further)</h2>
-<p>to be continued…</p>
+
+
+
 </div>
-
-
-
+</div>
 
 </div>
 
@@ -595,6 +662,32 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
