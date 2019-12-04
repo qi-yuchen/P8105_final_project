@@ -8,6 +8,7 @@ runtime: shiny
 ---
 
 ```{r setup, include=FALSE}
+library(rsconnect)
 library(tidyverse)
 library(readxl)
 library(ggplot2)

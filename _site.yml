@@ -4,11 +4,11 @@ navbar:
   title: "Home"
   right:
     - text: "Description of data"
-      href: 
+      href:
     - text: "Geographica"
       href: Geographica.html
     - text: "Age Group"
-      href: 
+      href: https://lsyjessica.shinyapps.io/dashboard/
     - text: "Time Analysis"
       href:
     - text: "Regression"
