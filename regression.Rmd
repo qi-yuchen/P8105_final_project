@@ -10,7 +10,6 @@ library(viridis)
 library(patchwork)
 library(readxl)
 library(countrycode)
-library(HH)
 library(modelr)
 library(mgcv)
 library(tidyverse)
@@ -32,7 +31,7 @@ theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
 ## Data cleaning 
-Add coutrycode
+Add countrycode
 ```{r}
 df = read_xls("data/Chapter2OnlineData.xls") %>% 
   janitor::clean_names()
