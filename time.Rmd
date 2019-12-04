@@ -1,7 +1,6 @@
 ---
 title: "Time"
-author: "Di Wu dw2903"
-date: "2019/11/30"
+author: "Di Wu"
 output: github_document
 ---
 
