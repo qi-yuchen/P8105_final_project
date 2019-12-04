@@ -15,7 +15,7 @@ library(mgcv)
 library(tidyverse)
 
 knitr::opts_chunk$set(
-	echo = TRUE,
+	echo = FALSE,
 	warning = FALSE,
 	fig.width = 12, 
   fig.asp = .618,
@@ -33,90 +33,113 @@ theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ## Data cleaning 
 Add countrycode
 ```{r}
-df = read_xls("data/Chapter2OnlineData.xls") %>% 
+happy_data = read_excel("./data/Chapter2OnlineData.xls") %>%
   janitor::clean_names()
 
-df = df %>% 
-  mutate(continent = countrycode(sourcevar = country_name,
-                                 origin = "country.name",
-                                 destination = "continent")) %>% 
-  select(continent, country_name, everything()) %>% 
-  drop_na(continent) %>% 
-  rename(gdp = log_gdp_per_capita)
-view(df)
+age_data = read_excel("./data/GallupAnalytics_Export_20191203_075046.xlsx",
+                       range = "B8:G5209") %>%
+  janitor::clean_names() %>%
+  rename(country_name = geography,
+         year = time,
+         age = demographic_value,
+         n = n_size,
+         ladder = value) %>%
+  mutate(year = as.numeric(year))
+
+df_age = age_data %>%
+  pivot_wider(names_from = age,
+              values_from = c(ladder, n)) %>%
+  left_join(happy_data, ., by = c("country_name", "year")) %>%
+  select(country_name:life_ladder, "ladder_15-29":"n_DK/Refused") %>%
+  pivot_longer("ladder_15-29":"n_DK/Refused", 
+               names_to = c("variable", "age"),
+               names_pattern = "(.*)_(.*)") %>%
+  pivot_wider(names_from = variable,
+              values_from = value)
+
+
+df = happy_data %>% 
+  rename(gdp = log_gdp_per_capita) %>% 
+  select(country_name, year, life_ladder, gdp, generosity) %>% 
+  full_join(df_age) %>% 
+  select(ladder, gdp, age, generosity) %>% 
+  drop_na(ladder)
+
 ```
 
 
 ## Building model
 ```{r}
-lm1 = lm(life_ladder ~ gdp, data = df)
-lm2 = lm(life_ladder ~ generosity, data = df)
-lm3 = lm(life_ladder ~ gdp + generosity, data = df)
-lm4 = lm(life_ladder ~ gdp * generosity, data = df)
+lm1 = lm(ladder ~ gdp, data = df)
+lm2 = lm(ladder ~ generosity, data = df)
+lm3 = lm(ladder ~ age, data = df)
 
-sm1 = mgcv::gam(life_ladder ~ s(gdp), data = df)
-sm2 = mgcv::gam(life_ladder ~ s(generosity), data = df)
-sm3 = mgcv::gam(life_ladder ~ s(gdp) + s(generosity), data = df)
+lm4 = lm(ladder ~ gdp + generosity, data = df)
+lm5 = lm(ladder ~ gdp + age, data = df)
+lm6 = lm(ladder ~ age + generosity, data = df)
+
+lm7 = lm(ladder ~ gdp + generosity + age, data = df)
+
+lm8 = lm(ladder ~ gdp * generosity, data = df)
+lm9 = lm(ladder ~ gdp * age, data = df)
+lm10 = lm(ladder ~ age * generosity, data = df)
 
 ```
 
 ```{r}
-summary(lm1)
-summary(lm2)
-summary(lm3)
-summary(lm4)
-anova(lm3,lm4)
+model_name = c("lm1", "lm2","lm3","lm4", "lm5","lm6","lm7", "lm8","lm9","lm10")
 
-summary(sm1)
-summary(sm2)
-summary(sm3)
-```
-
-## Diagnostic
-```{r}
-# check residual assupmtion
-plot(lm1)
-plot(lm2)
-plot(lm3)
-plot(lm4)
-
-plot(sm1)
-plot(sm2)
-plot(sm3)
+rbind(
+  broom::glance(lm1),
+  broom::glance(lm2),
+  broom::glance(lm3),
+  broom::glance(lm4),
+  broom::glance(lm5),
+  broom::glance(lm6),
+  broom::glance(lm7),
+  broom::glance(lm8),
+  broom::glance(lm9),
+  broom::glance(lm10)
+  ) %>% 
+  cbind(model_name) %>% 
+  select(model_name, everything())
+  knitr::kable()
 ```
 
 ## Cross Validation
 
 ```{r}
 cv_df = df %>% 
-  select(life_ladder, gdp, generosity)
-
-
-cv_df =
-  crossv_mc(cv_df, 100) %>% 
+  crossv_mc(100) %>% 
   mutate(
     train = map(train, as_tibble),
     test = map(test, as_tibble))
 
 cv_df = 
   cv_df %>% 
-  mutate(lm1 = map(train, ~lm(life_ladder ~ gdp, data = .x)),
-         lm2 = map(train, ~lm(life_ladder ~ generosity, data = .x)),
-         lm3 = map(train, ~lm(life_ladder ~ gdp + generosity, data = .x)),
-         lm4 = map(train, ~lm(life_ladder ~ gdp * generosity, data = .x)),
-         sm1 = map(train, ~mgcv::gam(life_ladder ~ s(gdp), data = .x)),
-         sm2 = map(train, ~mgcv::gam(life_ladder ~ s(generosity), data = .x)),
-         sm3 = map(train, ~mgcv::gam(life_ladder ~ s(gdp) + s(generosity), data = .x))
+  mutate(lm1 = map(train, ~lm(ladder ~ gdp, data = .x)),
+         lm2 = map(train, ~lm(ladder ~ generosity, data = .x)),
+         lm3 = map(train, ~lm(ladder ~ age, data = .x)),
+         lm4 = map(train, ~lm(ladder ~ gdp + generosity, data = .x)),
+         lm5 = map(train, ~lm(ladder ~ gdp + age, data = .x)),
+         lm6 = map(train, ~lm(ladder ~ age + generosity, data = .x)),
+         lm7 = map(train, ~lm(ladder ~ gdp + generosity + age, data = .x)),
+         lm8 = map(train, ~lm(ladder ~ gdp * generosity, data = .x)),
+         lm9 = map(train, ~lm(ladder ~ gdp * age, data = .x)),
+         lm10 = map(train, ~lm(ladder ~ age * generosity, data = .x))
          ) %>% 
-  mutate(rmse_l1 = map2_dbl(lm1, test, ~rmse(model = .x, data = .y)),
-         rmse_l2 = map2_dbl(lm2, test, ~rmse(model = .x, data = .y)),
-         rmse_l3 = map2_dbl(lm3, test, ~rmse(model = .x, data = .y)),
-         rmse_l4 = map2_dbl(lm4, test, ~rmse(model = .x, data = .y)),
-         rmse_s1 = map2_dbl(sm1, test, ~rmse(model = .x, data = .y)),
-         rmse_s2 = map2_dbl(sm2, test, ~rmse(model = .x, data = .y)),
-         rmse_s3 = map2_dbl(sm3, test, ~rmse(model = .x, data = .y))
+  mutate(rmse_1 = map2_dbl(lm1, test, ~rmse(model = .x, data = .y)),
+         rmse_2 = map2_dbl(lm2, test, ~rmse(model = .x, data = .y)),
+         rmse_3 = map2_dbl(lm3, test, ~rmse(model = .x, data = .y)),
+         rmse_4 = map2_dbl(lm4, test, ~rmse(model = .x, data = .y)),
+         rmse_5 = map2_dbl(lm5, test, ~rmse(model = .x, data = .y)),
+         rmse_6 = map2_dbl(lm6, test, ~rmse(model = .x, data = .y)),
+         rmse_7 = map2_dbl(lm7, test, ~rmse(model = .x, data = .y)),
+         rmse_8 = map2_dbl(lm8, test, ~rmse(model = .x, data = .y)),
+         rmse_9 = map2_dbl(lm9, test, ~rmse(model = .x, data = .y)),
+         rmse_10 = map2_dbl(lm9, test, ~rmse(model = .x, data = .y))
          )    
-         
+
 cv_df %>% 
   select(starts_with("rmse")) %>% 
   pivot_longer(
@@ -128,36 +151,18 @@ cv_df %>%
   ggplot(aes(x = model, y = rmse)) + geom_violin()
 ```
 
-
-## table with adjusted R^2, RMSE, AIC
+## Diagnostic
 ```{r}
-rbind(
-  broom::glance(lm1),
-  broom::glance(lm2),
-  broom::glance(lm3),
-  broom::glance(lm4)
-  ) %>% 
-  knitr::kable()
-  
-
-rbind(
-  broom::glance(sm1),
-  broom::glance(sm2),
-  broom::glance(sm3)
-  ) %>% 
-  knitr::kable()
-
-# 
-# criterion = 
-#   tibble(
-#     result_lm1 = map(lm1, ~ broom::glance),
-#     result_lm2 = map(lm1, ~ broom::glance),
-#     result_lm3 = map(lm1, ~ broom::glance),
-#     result_lm4 = map(lm1, ~ broom::glance)
-#   ) 
+# check residual assupmtion
+par(mfrow = c(2,2))
+plot(lm7)
 
 ```
 
+## summary
+```{r}
+summary(lm7)
+```
 
 
 ## How we choose our interested models
@@ -188,7 +193,7 @@ Corss validations for those models indicate that model1 and 3 work much better t
 --------------------------------------------------------------------------------------
 
 
-### Background (why we choose these variables)
+## Background (why we choose these variables)
 
 Most of us hold the traditional view that the more money you have, the happier you will be. (嘛玩意儿啊）
 
@@ -196,7 +201,7 @@ Also, humans are an extremely prosocial species. Compared to most primates, huma
 
 Both related to money, what's the association between these two variable and happiness?
 
-### Introduction about variables
+## Introduction about variables
 
 `happiness` represent the happiness score or subjective well-being which was measured by the Gallup World Poll(GWP) covering years from 2005 to 2018,
 
@@ -204,7 +209,7 @@ Both related to money, what's the association between these two variable and hap
 
 `generosity` is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.
 
-### Regression
+## Regression
 
 In the process of regression, we choose 4 linear regression model and 3 smooth model to study the association between happiness, gdp and generosity. Their regression equation are shown below.
 
@@ -216,30 +221,23 @@ lm3:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity}$$
 
 lm4:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity} + \beta_3X_{gdp} * X_{generosity}$$
 
-sm1:$$Y_{happiness} = \beta_0 + \beta_1s(X_{gdp})$$
-
-sm2:$$Y_{happiness} = \beta_0 + \beta_1s(X_{generosity})$$
-
-sm3:$$Y_{happiness} = \beta_0 + \beta_1s(X_{gdp}) + \beta_2s(X_{generosity})$$
 
 
-### Results (plot of RMSE, table of adjusted R^2, AIC, BIC)
+## Results
+Therefore, I would like to choose the lm7, i.e.
+$$Y_{happiness} = -1.39 + 0.77X_{gdp} + 1.36 X_{generosity} + (-0.36)I(age=30-49) + (-0.57)I(age = 50 +)$$
 
+### How we choose that(table with criterion)
 
-### Analysis(why choose this model) 
-According to the table:
-lm4 have the lowest adjusted r-square, AIC, BIC among all linear regression;
-sm3 have the lowest adjusted r-square, AIC, BIC among all smooth regression;
-Only sm3 perform better than lm4 among smooth regression.
+### Does it work well?
 
-Accoring to the plot, lm3, lm4, sm1, sm3 have smaller RMSE and sm3 hold the smallest one. 
+According to the plot above, RMSE of lm7 is the lowest, which show that lm7 work best among all our linear model to fit test data!
 
-However, sm3 have the danger of overfitting.
+### Does it fulfill our assuamption?
 
-Therefore, I would like to choose the lm4, i.e.
-$$Y_{happiness} = -1.09 + 0.71X_{gdp} + (-5.33) X_{generosity} + 0.70X_{gdp} * X_{generosity}$$
+We made some assumptions regarding residuals like normality distribution and constant variance of residuals. According to the diagnostic above, residuals vs fitted and scale-location indicate the constant variance of residuals is satisfied. QQ plot demonstrate residuals follow normal distribution. And the residuals vs leveragge prove there are no obvious influencial observation in out dataset. 
 
-### Further(meaning)  
+## Further(meaning)  
 
 The procedure of our regression indicate that both gdp and generosity are associated with happiness. Generosity perform as gdp's confounder and effect modifier in the same time.
 

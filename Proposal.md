@@ -73,6 +73,8 @@ analysis:
     predict people’s voting behavior based on our study of relationship
     between happiness and voting behavior.
 
+# \<\<\<\<\<\<\< HEAD
+
 # 
 
 1.  geohgraphic/time vs happiness
@@ -80,7 +82,8 @@ analysis:
 3.  Happiness distribution within different age groups
 4.  Implication of happiness(GDP and generosity)), (regression)
 
-## Planned timeline
+> > > > > > > 0ecdca748f761e9e6a00a42fd82d0b01b4845926 \#\# Planned
+> > > > > > > timeline
 
 | Deadline  | Description            | Date         | Assignment                  |
 | --------- | ---------------------- | ------------ | --------------------------- |
