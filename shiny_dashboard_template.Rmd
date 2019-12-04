@@ -1,0 +1,151 @@
+---
+title: "Shiny Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(readxl)
+library(ggplot2)
+library(plotly)
+library(flexdashboard)
+```
+
+```{r global}
+## Import Data
+age_data <- read_excel("./data/GallupAnalytics_Export_20191203_075046.xlsx",
+                       range = "B8:G5209") %>%
+  janitor::clean_names() %>%
+  mutate(geography = as.character(geography),
+         time = as.numeric(time),
+         age = as.character(demographic_value),
+         ladder = as.numeric(value)) %>%
+  rename(country_name = geography, year = time)
+
+happy_data <- read_excel("./data/Chapter2OnlineData.xls") %>%
+  janitor::clean_names()
+
+```
+
+Sidebar {.sidebar}
+-----------------------------------------------------------------------
+
+```{r}
+## Select country
+country_unique <- age_data %>% distinct(country_name) %>% pull()
+
+#### selectInput: A box with choices
+selectInput(
+  inputId = "country",
+  label = h4("Select country:"),
+  choices = country_unique,
+  selected = "United States"
+)
+
+
+```
+
+Row {data-height = 650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+
+renderPlotly({
+
+data_sample <- age_data %>%
+  select(country_name, year, age, ladder) %>%
+  filter(country_name == input[["country"]],
+         age != "DK/Refused") %>%
+  pivot_wider(names_from = age,
+              values_from = ladder)
+  
+
+p <- data_sample %>% 
+  drop_na() %>%
+  pivot_longer(cols = "15-29":"50+", names_to = "age", values_to = "ladder") %>%
+  mutate(year = as.character(year)) %>%
+  ggplot(aes(x = year, y = ladder, group = age, color = age)) +
+  geom_point(alpha = 0.5) +
+  geom_line(alpha = 0.5) 
+
+ggplotly(p)
+    
+})
+
+```
+
+
+
+Row{data-height = 350}
+-----------------------------------------------------------------------
+
+### People Refused to Tell Their Ages
+
+```{r}
+renderValueBox({
+
+ppl_dk <- age_data %>%
+  select(country_name, year, age, n_size) %>%
+  filter(country_name == input[["country"]],
+         age == "DK/Refused") %>%
+  group_by(year) %>%
+  summarise(total = sum(n_size)) %>%
+  pull(total) %>%
+  sum()
+  
+
+valueBox(ppl_dk, icon = "fa-times")
+    
+})
+
+```
+
+### Overall Happiest Year
+
+```{r}
+renderValueBox({
+
+happy_year <- age_data %>%
+  select(country_name, year, age, ladder) %>%
+  filter(country_name == input[["country"]],
+         age != "DK/Refused") %>%
+  group_by(year) %>%
+  summarise(total = sum(ladder)) %>%
+  filter(total == max(total)) %>% 
+  pull(year)
+  
+
+valueBox(happy_year, icon = "fa-smile", color = "success")
+    
+})
+
+```
+
+
+### Overall Unhappiest Year
+
+```{r}
+renderValueBox({
+
+unhappy_year <- age_data %>%
+  select(country_name, year, age, ladder) %>%
+  filter(country_name == input[["country"]],
+         age != "DK/Refused") %>%
+  group_by(year) %>%
+  summarise(total = sum(ladder)) %>%
+  filter(total == min(total)) %>% 
+  pull(year)
+  
+
+valueBox(unhappy_year, icon = "fa-frown", color = "warning")
+    
+})
+
+```
+
