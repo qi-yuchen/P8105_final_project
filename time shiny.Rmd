@@ -51,7 +51,26 @@ selectInput(
 
 Row {data-height = 650}
 -----------------------------------------------------------------------
+### interested country happiness, gdp and generosity change
 
+```{r}
+renderPlotly({
+interest_data=
+  df %>%
+  filter(
+    country_name==input[["country"]]) %>%
+  dplyr::select(year,life_ladder,gdp,generosity)%>%
+  plot_ly(x=~year)%>%
+  add_trace(y=~life_ladder,name="life ladder",type="scatter", mode="line")%>%
+  add_trace(y=~gdp,name="gdp",type="scatter", mode="line")%>%
+  add_trace(y=~generosity,name="generosity",type="scatter", mode="line")
+})
+
+```
+
+
+Row{data-height = 350}
+-----------------------------------------------------------------------
 ### average happiness from 2008 to 2010 in each continent
 
 ```{r}
@@ -83,10 +102,6 @@ df %>%
 
 ```
 
-
-
-Row{data-height = 350}
------------------------------------------------------------------------
 
 ### average gdp from 2008 to 2010 in each continent
 
@@ -148,20 +163,5 @@ df %>%
 ```
 
 
-### interested country happiness, gdp and generosity change
 
-```{r}
-renderPlotly({
-interest_data=
-  df %>%
-  filter(
-    country_name==input[["country"]]) %>%
-  dplyr::select(year,life_ladder,gdp,generosity)%>%
-  plot_ly(x=~year)%>%
-  add_trace(y=~life_ladder,name="life ladder",type="scatter", mode="line")%>%
-  add_trace(y=~gdp,name="gdp",type="scatter", mode="line")%>%
-  add_trace(y=~generosity,name="generosity",type="scatter", mode="line")
-})
-
-```
 

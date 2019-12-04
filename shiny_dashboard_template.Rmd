@@ -1,9 +1,10 @@
 ---
-title: "Shiny Dashboard"
+title: "Age Group vs. Happiness"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
     vertical_layout: fill
+    source_code: embed
 runtime: shiny
 ---
 
@@ -14,6 +15,7 @@ library(readxl)
 library(ggplot2)
 library(plotly)
 library(flexdashboard)
+library("RColorBrewer")
 ```
 
 ```{r global}
@@ -23,17 +25,20 @@ age_data <- read_excel("./data/GallupAnalytics_Export_20191203_075046.xlsx",
   janitor::clean_names() %>%
   mutate(geography = as.character(geography),
          time = as.numeric(time),
-         age = as.character(demographic_value),
+         age = as.factor(demographic_value),
          ladder = as.numeric(value)) %>%
   rename(country_name = geography, year = time)
 
 happy_data <- read_excel("./data/Chapter2OnlineData.xls") %>%
   janitor::clean_names()
 
+
 ```
 
 Sidebar {.sidebar}
 -----------------------------------------------------------------------
+This `flexdashboard` with Shiny was made for [The report of the Secret of Happiness]() of the Data Science course in Columbia University. The data come from [World Poll](https://analyticscampus.gallup.com/?ref=Auth), which provides data of different subjects, and this dashboard focuses on the association between age groups and happiness across years. 
+
 
 ```{r}
 ## Select country
@@ -48,34 +53,71 @@ selectInput(
 )
 
 
+## Select age groups
+age_choice <- age_data %>% distinct(age) %>% filter(age != "DK/Refused") %>% pull()
+
+#### checkboxInput:A single check box
+checkboxGroupInput(
+  inputId = "age_group",
+  label = h4("Select age group:"),
+  choices = age_choice,
+  selected = c("15-29", "30-49", "50+")
+)
+
+
 ```
+
+
+Happiness score (variable name `ladder` ): 2019 release of the Gallup World Poll (GWP) covering years from 2005 to 2018. Unless stated otherwise, it is the national average response to the question of life evaluations. The English wording of the question is "Please imagine a ladder with steps numbered from 0 at the bottom to 10 at the top. Suppose we say that the top of the ladder represents the best possible life for you, and the bottom of the ladder represents the worst possible life for you. On which step of the ladder would you say you personally feel you stand at this time, assuming that the higher the step the better you feel about your life, and the lower the step the worse you feel about it? Which step comes closest to the way you feel?" This measure is also referred to as life ladder in our analysis.
+
+
 
 Row {data-height = 650}
 -----------------------------------------------------------------------
 
-### Chart A
+### 
 
 ```{r}
 
 renderPlotly({
 
+## clean data
 data_sample <- age_data %>%
   select(country_name, year, age, ladder) %>%
   filter(country_name == input[["country"]],
-         age != "DK/Refused") %>%
-  pivot_wider(names_from = age,
-              values_from = ladder)
-  
+         age %in% input[["age_group"]]) %>%
+  mutate(year = as.character(year))
 
+
+## assign color to age group
+color_table <- tibble(age = c("15-29", "30-49", "50+"),
+                      color = c("#B3E2CD", "#FDCDAC", "#F4CAE4"))
+
+
+select_color <- color_table %>% 
+  filter(age %in% input[["age_group"]]) %>%
+  pull(color)
+
+
+## ggplot:scatter
 p <- data_sample %>% 
-  drop_na() %>%
-  pivot_longer(cols = "15-29":"50+", names_to = "age", values_to = "ladder") %>%
-  mutate(year = as.character(year)) %>%
   ggplot(aes(x = year, y = ladder, group = age, color = age)) +
-  geom_point(alpha = 0.5) +
-  geom_line(alpha = 0.5) 
+  geom_point(alpha = 1,
+             aes(text = sprintf(str_c("Happiness: ", ladder, "\nAge Group: ", age)))) +
+  geom_line(alpha = 1) + 
+  scale_color_manual(name = "Age Group",
+                     breaks = input[["age_group"]],
+                     values = select_color) +
+  theme(legend.position = "right") +
+  labs(
+    title = "The Association between Age Groups and Happiness",
+    x = "Year",
+    y = "Happiness Score"
+  ) 
 
-ggplotly(p)
+
+
+ggplotly(p, tooltip = "text")
     
 })
 
