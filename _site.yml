@@ -10,7 +10,7 @@ navbar:
     - text: "Age Group"
       href: https://lsyjessica.shinyapps.io/dashboard/
     - text: "Time Analysis"
-      href:
+      href: https://lsyjessica.shinyapps.io/time_shiny/
     - text: "Regression"
       href: regression.html
     - icon: fa-github fa-lg
