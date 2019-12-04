@@ -1,5 +1,5 @@
 ---
-title: "Shiny Dashboard"
+title: "Time analysis"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
