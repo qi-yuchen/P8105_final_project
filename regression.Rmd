@@ -165,6 +165,31 @@ summary(lm7)
 ```
 
 
+
+
+
+
+
+## Finding the passcode of Happliness(note: motivation)
+
+
+
+## How we locate the potential numbers that construct the passcode? (note: introduction of variabes)
+
+
+
+## Which model is closest to the 'true passcode'? (note:how to choose the model)
+
+
+
+## Hooray! Now we obtained the passcode of Happiness! (note:summary of final model)
+
+
+
+## Wait! There's more we can expect with this passcode... (note:further)
+
+
+---------------------------------------------------------------------------------
 ## How we choose our interested models
 
 To explore what are the key variables that influence life ladder, we built four different linear regression models. Model 1 describes assocaition between gdp and life ladder. Model 2 describes association between generosity and life ladder. Model 3 describes an association in which both gdp and generosity together contribute to life ladder. Model 4 indifactes that the interaction of gdp and generosity contributes to life ladder. 
@@ -192,7 +217,7 @@ Corss validations for those models indicate that model1 and 3 work much better t
 
 --------------------------------------------------------------------------------------
 
-
+-------------------------------------------------------------------------------------
 ## Background (why we choose these variables)
 
 Most of us hold the traditional view that the more money you have, the happier you will be. (嘛玩意儿啊）
