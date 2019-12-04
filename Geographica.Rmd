@@ -4,6 +4,7 @@ output:
   html_document:
     toc: true
     toc_float: true
+  vertical_layout: fill
 ---
 
 
@@ -11,7 +12,65 @@ output:
 
 Mean life ladder over years in Europe and Americas is significantly higher than that in Asia and Africa.
 
-Here is the distribution [map](Geo_world.html).
+Here is the distribution [map](Geo_world.html). The preview is as follows.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+library(tidyverse)
+library(viridis)
+library(plotly)
+library(readxl)
+library(countrycode)
+
+## add continents
+df = read_xls("data/Chapter2OnlineData.xls") %>% 
+  janitor::clean_names()
+df = df %>% 
+  mutate(continent = countrycode(sourcevar = country_name,
+                                 origin = "country.name",
+                                 destination = "continent")) %>% 
+  select(continent, country_name, everything())
+# Some values were not matched unambiguously: Kosovo
+
+df_geo = df %>% 
+  select(continent, country = country_name, year, life_ladder) %>% 
+  group_by(continent, country) %>% 
+  summarise(mean_life_ladder = mean(life_ladder)) %>% 
+  ungroup()
+df_geo$continent[165] = "Europe"
+
+df_geo = df_geo %>% 
+  mutate(code = countrycode(sourcevar = country,
+                                 origin = "country.name",
+                                 destination = "genc3c")) 
+# light grey boundaries
+l <- list(color = toRGB("grey"), width = 0.5)
+
+# specify map projection/options
+g <- list(
+  showframe = FALSE,
+  showcoastlines = FALSE,
+  projection = list(type = 'Mercator')
+)
+
+m <- list(
+  l = 50,
+  r = 50,
+  b = 100,
+  t = 100,
+  pad = 4
+)
+
+plot_geo(df_geo) %>%
+  add_trace(
+    z = ~mean_life_ladder, color = ~mean_life_ladder, colors = 'Blues',
+    text = ~country, locations = ~code, marker = list(line = l)
+  ) %>%
+  colorbar(title = 'Expectation of life ladder') %>%
+  layout(
+    geo = g
+  )
+```
 
 ### Continent view
 
