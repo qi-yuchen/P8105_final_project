@@ -336,7 +336,6 @@ The procedure of our regression indicate that age, gdp and generosity are associ
 # check residual assupmtion
 par(mfrow = c(2,2))
 plot(lm7)
-
 ```
 
 ### What's the meaning of our regression model 
