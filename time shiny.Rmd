@@ -1,0 +1,167 @@
+---
+title: "Shiny Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(readxl)
+library(ggplot2)
+library(plotly)
+library(flexdashboard)
+library(countrycode)
+```
+
+```{r global}
+## Import Data
+df = readxl::read_xls("./data/Chapter2OnlineData.xls") %>% 
+  janitor::clean_names()%>%
+  mutate(continent = countrycode(sourcevar = country_name,
+                                 origin = "country.name",
+                                 destination = "continent")) %>% 
+  dplyr::select(continent, country_name, everything()) %>% 
+  drop_na(continent) %>% 
+  rename(gdp = log_gdp_per_capita)
+
+```
+
+Sidebar {.sidebar}
+-----------------------------------------------------------------------
+
+```{r}
+country=
+  df %>% distinct(country_name) %>%
+  pull()
+
+
+
+selectInput(
+  inputId = "country",
+  label = h4("Select country:"),
+  choices = country,
+  selected = "United States"
+)
+
+
+```
+
+Row {data-height = 650}
+-----------------------------------------------------------------------
+
+### average happiness from 2008 to 2010 in each continent
+
+```{r}
+
+renderPlotly({
+
+df %>%
+  filter(year %in% c(2010:2018)) %>%
+  dplyr::select(continent,country_name,year,life_ladder) %>%
+  pivot_wider(
+    names_from = year,
+    values_from = life_ladder
+  )%>% 
+  janitor::clean_names()%>%
+  drop_na()%>%
+  pivot_longer(
+    cols = starts_with("X"),
+    names_to = "year",
+    names_prefix = "x",
+    values_to = "life_ladder"
+  )%>%
+  group_by(continent,year)%>%
+  summarize(life_ladder=mean(life_ladder))%>%
+  plot_ly(
+    x= ~year,y=~life_ladder, type="scatter", mode="line",color=~continent
+  )
+    
+})
+
+```
+
+
+
+Row{data-height = 350}
+-----------------------------------------------------------------------
+
+### average gdp from 2008 to 2010 in each continent
+
+```{r}
+renderPlotly({
+
+df %>%
+  filter(year %in% c(2010:2018)) %>%
+  dplyr::select(continent,country_name,year,gdp) %>%
+  pivot_wider(
+    names_from = year,
+    values_from = gdp
+  )%>% 
+  janitor::clean_names()%>%
+  drop_na()%>%
+  pivot_longer(
+    cols = starts_with("X"),
+    names_to = "year",
+    names_prefix = "x",
+    values_to = "gdp"
+  )%>%
+  group_by(continent,year)%>%
+  summarize(gdp=mean(gdp))%>%
+  plot_ly(
+    x= ~year,y=~gdp, type="scatter", mode="line",color=~continent
+  )
+    
+})
+```
+
+### average generosity from 2008 to 2010 in each continent
+
+```{r}
+renderPlotly({
+
+df %>%
+  filter(year %in% c(2010:2018)) %>%
+  dplyr::select(continent,country_name,year,generosity) %>%
+  pivot_wider(
+    names_from = year,
+    values_from = generosity
+  )%>% 
+  janitor::clean_names()%>%
+  drop_na()%>%
+  pivot_longer(
+    cols = starts_with("X"),
+    names_to = "year",
+    names_prefix = "x",
+    values_to = "generosity"
+  )%>%
+  group_by(continent,year)%>%
+  summarize(generosity=mean(generosity))%>%
+  plot_ly(
+    x= ~year,y=~generosity, type="scatter", mode="line",color=~continent
+  )
+    
+})
+
+```
+
+
+### interested country happiness, gdp and generosity change
+
+```{r}
+renderPlotly({
+interest_data=
+  df %>%
+  filter(
+    country_name==input[["country"]]) %>%
+  dplyr::select(year,life_ladder,gdp,generosity)%>%
+  plot_ly(x=~year)%>%
+  add_trace(y=~life_ladder,name="life ladder",type="scatter", mode="line")%>%
+  add_trace(y=~gdp,name="gdp",type="scatter", mode="line")%>%
+  add_trace(y=~generosity,name="generosity",type="scatter", mode="line")
+})
+
+```
+

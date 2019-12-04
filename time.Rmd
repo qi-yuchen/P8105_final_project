@@ -2,7 +2,7 @@
 title: "Time"
 author: "Di Wu dw2903"
 date: "2019/11/30"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -113,8 +113,8 @@ It is obvious that the in the 9-year period of intersted study, the Oceania has 
 
 A further analze in in the 9-year period was applied to Americas, Europe, Asia and Africa except for Oceania which only contained two countries and the average level of continent was nicely representive of the countries, we select several countries in the continents that were relelativly stable in happiness levels, where for America, Europe and Asia use 0.03 as boundary while 0.1 for Afria due to its high variance of happiness level from 2010 to 2018. 
 
-```{r, include=FALSE}
-plot_Am=
+```{r,include=FALSE}
+Am_cont=
   df %>%
   filter(
     continent == "Americas",
@@ -136,12 +136,42 @@ plot_Am=
   mutate(
     sd=var(life_ladder)
   ) %>%
-  filter(sd <0.03) %>%
+  filter(sd <0.03)%>%
+  dplyr::select(country_name)%>%
+  distinct()
+
+Am_happy=
+  df %>%
+  filter(
+    country_name %in% Am_cont$country_name,
+    year %in% c(2010:2018)) %>%
+  dplyr::select(country_name,year,life_ladder) %>%
   ggplot(aes(x=year, y=life_ladder,color=country_name))+
+  geom_point()+
+  geom_line(aes(group=country_name))+labs(y="life ladder")
+Am_gdp = 
+  df %>%
+  filter(
+    country_name %in% Am_cont$country_name,
+    year %in% c(2010:2018)) %>%
+  dplyr::select(country_name,year,gdp) %>%
+  ggplot(aes(x=year, y=gdp,color=country_name))+
+  geom_point()+
+  geom_line(aes(group=country_name))
+Am_geo = 
+  df %>%
+  filter(
+    country_name %in% Am_cont$country_name,
+    year %in% c(2010:2018)) %>%
+  dplyr::select(country_name,year,generosity) %>%
+  ggplot(aes(x=year, y=generosity,color=country_name))+
   geom_point()+
   geom_line(aes(group=country_name))
 
-plot_Eu=
+```
+
+```{r,include=FALSE}
+Eu_cont=
   df %>%
   filter(
     continent == "Europe",
@@ -163,12 +193,43 @@ plot_Eu=
   mutate(
     sd=var(life_ladder)
   ) %>%
-  filter(sd <0.03) %>%
+  filter(sd <0.03)%>%
+  dplyr::select(country_name)%>%
+  distinct()
+
+Eu_happy=
+  df %>%
+  filter(
+    country_name %in% Eu_cont$country_name,
+    year %in% c(2010:2018)) %>%
+  dplyr::select(country_name,year,life_ladder) %>%
   ggplot(aes(x=year, y=life_ladder,color=country_name))+
+  geom_point()+
+  geom_line(aes(group=country_name))+labs(y="life ladder")
+Eu_gdp = 
+  df %>%
+  filter(
+    country_name %in% Eu_cont$country_name,
+    year %in% c(2010:2018)) %>%
+  dplyr::select(country_name,year,gdp) %>%
+  ggplot(aes(x=year, y=gdp,color=country_name))+
+  geom_point()+
+  geom_line(aes(group=country_name))
+Eu_geo = 
+  df %>%
+  filter(
+    country_name %in% Eu_cont$country_name,
+    year %in% c(2010:2018)) %>%
+  dplyr::select(country_name,year,generosity) %>%
+  ggplot(aes(x=year, y=generosity,color=country_name))+
   geom_point()+
   geom_line(aes(group=country_name))
 
-plot_As=
+
+```
+
+```{r,include=FALSE}
+As_cont=
   df %>%
   filter(
     continent == "Asia",
@@ -190,14 +251,43 @@ plot_As=
   mutate(
     sd=var(life_ladder)
   ) %>%
-  filter(sd <0.03) %>%
+  filter(sd <0.03)%>%
+  dplyr::select(country_name)%>%
+  distinct()
+
+As_happy=
+  df %>%
+  filter(
+    country_name %in% As_cont$country_name,
+    year %in% c(2010:2018)) %>%
+  dplyr::select(country_name,year,life_ladder) %>%
   ggplot(aes(x=year, y=life_ladder,color=country_name))+
   geom_point()+
+  geom_line(aes(group=country_name))+labs(y="life ladder")
+As_gdp = 
+  df %>%
+  filter(
+    country_name %in% As_cont$country_name,
+    year %in% c(2010:2018)) %>%
+  dplyr::select(country_name,year,gdp) %>%
+  ggplot(aes(x=year, y=gdp,color=country_name))+
+  geom_point()+
   geom_line(aes(group=country_name))
+As_geo = 
+  df %>%
+  filter(
+    country_name %in% As_cont$country_name,
+    year %in% c(2010:2018)) %>%
+  dplyr::select(country_name,year,generosity) %>%
+  ggplot(aes(x=year, y=generosity,color=country_name))+
+  geom_point()+
+  geom_line(aes(group=country_name))
+
     
+```
 
-
-plot_Af=
+```{r,include=FALSE}
+Af_cont=
   df %>%
   filter(
     continent == "Africa",
@@ -219,16 +309,48 @@ plot_Af=
   mutate(
     sd=var(life_ladder)
   ) %>%
-  filter(sd <0.1) %>%
+  filter(sd <0.13)%>%
+  dplyr::select(country_name)%>%
+  distinct()
+
+Af_happy=
+  df %>%
+  filter(
+    country_name %in% Af_cont$country_name,
+    year %in% c(2010:2018)) %>%
+  dplyr::select(country_name,year,life_ladder) %>%
   ggplot(aes(x=year, y=life_ladder,color=country_name))+
   geom_point()+
+  geom_line(aes(group=country_name))+labs(y="life ladder")
+Af_gdp = 
+  df %>%
+  filter(
+    country_name %in% Af_cont$country_name,
+    year %in% c(2010:2018)) %>%
+  dplyr::select(country_name,year,gdp) %>%
+  ggplot(aes(x=year, y=gdp,color=country_name))+
+  geom_point()+
   geom_line(aes(group=country_name))
-  
+Af_geo = 
+  df %>%
+  filter(
+    country_name %in% Af_cont$country_name,
+    year %in% c(2010:2018)) %>%
+  dplyr::select(country_name,year,generosity) %>%
+  ggplot(aes(x=year, y=generosity,color=country_name))+
+  geom_point()+
+  geom_line(aes(group=country_name))
+
 ```
 
 ```{r}
-plot_Af+(plot_Am/plot_Eu/plot_As)
+Am_happy +Am_gdp/Am_geo
+Eu_happy +Eu_gdp/Eu_geo
+As_happy +As_gdp/As_geo
+Af_happy +Af_gdp/Af_geo
+  
 ```
+
 
 
 

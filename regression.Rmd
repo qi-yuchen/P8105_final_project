@@ -1,8 +1,10 @@
 ---
-title: "regression"
+title: "Regression"
 author: "Xiaoyang Li & Jingyu Fu"
-date: "2019/12/1"
-output: github_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
 ---
 
 ```{r setup, include=FALSE}
@@ -17,6 +19,7 @@ library(tidyverse)
 knitr::opts_chunk$set(
 	echo = FALSE,
 	warning = FALSE,
+	message = FALSE,
 	fig.width = 12, 
   fig.asp = .618,
   out.width = "90%"
@@ -30,9 +33,12 @@ scale_fill_discrete = scale_fill_viridis_d
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
-## Data cleaning 
-Add countrycode
-```{r}
+
+## Finding the passcode of Happiness
+
+One of the key motivation of finding the secrets of Happiness is to find its passcode to it. With this passcode, we can unlock a lot of door in the world of hapiness. We can see what are the factors that constructed our satisfaction about life; how can we boost our hapiness; we can even predict our future hapiness with this passcode. 
+
+```{r data cleaning}
 happy_data = read_excel("./data/Chapter2OnlineData.xls") %>%
   janitor::clean_names()
 
@@ -68,9 +74,59 @@ df = happy_data %>%
 
 ```
 
+## How we locate the potential numbers that construct the passcode? 
 
-## Building model
-```{r}
+The debate of whether higher gdp can increase hapiness is never endless. Some say it does, thus we should work hardly on raising gdp. Some say it actually has a quite opposite influence on our hapiness. Which opinion is true according to our data? We choose gdp as one of the potential key variables to find the association. 
+
+Also, humans are an extremely prosocial species. Compared to most primates, humans provide more assistance to family, friends, and strangers, even when costly. Some evidence indicate that there is well-being benefits from donating money.
+
+Moreover, according to our previous exploration, we can tell that there is an obvious association between age and happiness. 
+
+Both related to money, what's the association between these two variable and happiness? To answer this question, we use the following three variables to find the best linear model that describes the association. 
+
+`happiness` represent the happiness score or subjective well-being which was measured by the Gallup World Poll(GWP) covering years from 2005 to 2018,
+
+`gdp` represent the log transformation of statistics of GDP per capita in purchasing power parity(PPP) at constant 2011 international dollar prices are from the November 14,2018 update of the World Development Indicators (WDI).
+
+`generosity` is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.
+
+
+
+## Which model is the closest to the 'true passcode'? 
+
+### We built 10 potentilas models
+
+Model 1 to 3 use each of the three variables as the only variable. 
+
+lm1:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp}$$
+
+lm2:$$Y_{happiness} = \beta_0 + \beta_1X_{generosity}$$
+
+lm3:$$Y_{happiness} = \beta_0 + \beta_1X_{age}$$
+
+
+Model 4 to 7 use two or three of the three variables as combination(confounder). 
+
+lm4:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity}$$
+
+lm5:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp}  + \beta_3X_{age} $$
+
+lm6:$$Y_{happiness} = \beta_0 + \beta_1X_{age} + \beta_2X_{generosity} $$
+
+lm7:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity} + \beta_3X_{age} $$
+
+
+Model 8 to 10 use interaction of those variables. 
+
+lm8:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} * \beta_2X_{generosity}$$
+
+lm9:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} * \beta_3X_{age} $$
+
+lm10:$$Y_{happiness} = \beta_0 + \beta_1X_{age} * \beta_2X_{generosity} $$
+
+
+
+```{r Building model}
 lm1 = lm(ladder ~ gdp, data = df)
 lm2 = lm(ladder ~ generosity, data = df)
 lm3 = lm(ladder ~ age, data = df)
@@ -86,6 +142,15 @@ lm9 = lm(ladder ~ gdp * age, data = df)
 lm10 = lm(ladder ~ age * generosity, data = df)
 
 ```
+
+
+### Now let's find out the best model!
+
+We will use several criterias to find our best model.
+
+The first criteria we use is adjusted r square, which tells us the goodness of fit of a model. Higher the value, better the goodness of fit. Model 7 has the highest value, following are model 8 and 5. 
+
+The second set of criterias we use are AIC and BIC, which tell us the quality of our model. Lower the value, higher the quality. Model 7 has the lowest AIC and BIC value, following are Model 8 and Model 4. 
 
 ```{r}
 model_name = c("lm1", "lm2","lm3","lm4", "lm5","lm6","lm7", "lm8","lm9","lm10")
@@ -141,7 +206,27 @@ aicplot
 bicplot
 ```
 
-## Cross Validation
+
+### Obtaining our best model.
+
+Obviously, Model 7 wins in all the criterias.
+
+Therefore, I would like to choose the lm7, i.e.
+$$Y_{happiness} = -1.39 + 0.77X_{gdp} + 1.36 X_{generosity} + (-0.36)I(age=30-49) + (-0.57)I(age = 50 +)$$
+
+Summary results of lm7 are shown below:
+
+```{r}
+summary(lm7)
+```
+
+## Hooray! Now we have obtained the passcode of Happiness! 
+
+Before we continue, there's couple of more things we want to check with our passcode. 
+
+### Does it work well?
+
+According to the plot above, RMSE of lm7 is the lowest, which show that lm7 work best among all our linear model to fit test data!
 
 ```{r}
 cv_df = df %>% 
@@ -186,108 +271,6 @@ cv_df %>%
   ggplot(aes(x = model, y = rmse)) + geom_violin()
 ```
 
-## Diagnostic
-```{r}
-# check residual assupmtion
-par(mfrow = c(2,2))
-plot(lm7)
-
-```
-
-## summary
-```{r}
-summary(lm7)
-```
-
-
-
-
-
-
-
-## Finding the passcode of Happiness(note: motivation)
-
-One of the key motivation of finding the secrets of Happiness is to find its passcode to it. With this passcode, we can unlock a lot of door in the world of hapiness. We can see what are the factors that constructed our satisfaction about life; how can we boost our hapiness; we can even predict our future hapiness with this passcode. 
-
-
-## How we locate the potential numbers that construct the passcode? (note: introduction of variabes)
-
-The debate of whether higher gdp can increase hapiness is never endless. Some say it does, thus we should work hardly on raising gdp. Some say it actually has a quite opposite influence on our hapiness. Which opinion is true according to our data? We choose gdp as one of the potential key variables to find the association. 
-
-Also, humans are an extremely prosocial species. Compared to most primates, humans provide more assistance to family, friends, and strangers, even when costly. Some evidence indicate that there is well-being benefits from donating money.
-
-Moreover, according to our previous exploration, we can tell that there is an obvious association between age and happiness. 
-
-Both related to money, what's the association between these two variable and happiness? To answer this question, we use the following three variables to find the best linear model that describes the association. 
-
-`happiness` represent the happiness score or subjective well-being which was measured by the Gallup World Poll(GWP) covering years from 2005 to 2018,
-
-`gdp` represent the log transformation of statistics of GDP per capita in purchasing power parity(PPP) at constant 2011 international dollar prices are from the November 14,2018 update of the World Development Indicators (WDI).
-
-`generosity` is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.
-
-
-
-## Which model is the closest to the 'true passcode'? (note:how to choose the model)
-
-### We built 10 potentilas models
-
-Model 1 to 3 use each of the three variables as the only variable. 
-
-lm1:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp}$$
-
-lm2:$$Y_{happiness} = \beta_0 + \beta_1X_{generosity}$$
-
-lm3:$$Y_{happiness} = \beta_0 + \beta_1X_{age}$$
-
-
-Model 4 to 7 use two or three of the three variables as combination(confounder). 
-
-lm4:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity}$$
-
-lm5:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp}  + \beta_3X_{age} $$
-
-lm6:$$Y_{happiness} = \beta_0 + \beta_1X_{age} + \beta_2X_{generosity} $$
-
-lm7:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity} + \beta_3X_{age} $$
-
-
-Model 8 to 10 use interaction of those variables. 
-
-lm8:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} * \beta_2X_{generosity}$$
-
-lm9:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} * \beta_3X_{age} $$
-
-lm10:$$Y_{happiness} = \beta_0 + \beta_1X_{age} * \beta_2X_{generosity} $$
-
-
-
-### Now let's find out the best model!
-
-We will use several criterias to find our best model.
-
-The first criteria we use is adjusted r square, which tells us the goodness of fit of a model. Higher the value, better the goodness of fit. Model 7 has the highest value, following are model 8 and 5. 
-
-The second set of criterias we use are AIC and BIC, which tell us the quality of our model. Lower the value, higher the quality. Model 7 has the lowest AIC and BIC value, following are Model 8 and Model 4. 
-
-### Obtaining ou rbest model.
-
-Obviously, Model 7 wins in all the criterias.
-
-Therefore, I would like to choose the lm7, i.e.
-$$Y_{happiness} = -1.39 + 0.77X_{gdp} + 1.36 X_{generosity} + (-0.36)I(age=30-49) + (-0.57)I(age = 50 +)$$
-
-
-
-
-
-## Hooray! Now we have obtained the passcode of Happiness! (note:summary of final model)
-
-Before we continue, there's couple of more things we want to check with our passcode. 
-
-### Does it work well?
-
-According to the plot above, RMSE of lm7 is the lowest, which show that lm7 work best among all our linear model to fit test data!
 
 ### Does it fulfill our assuamption?
 
@@ -295,6 +278,7 @@ We made some assumptions regarding residuals like normality distribution and con
 
 So glad to see that our model got such a high score in those questions, now let'd officially meet our best model!
 
+<<<<<<< HEAD
 
 ## Officail introduction of our passcode to hapiness
 
@@ -379,8 +363,17 @@ We made some assumptions regarding residuals like normality distribution and con
 
 The procedure of our regression indicate that age, gdp and generosity are associated with happiness. All of them can be treated as reasonable predictor. Both `gdp` and `generosity` is positive associated with happiness. Higher GDP do mean more likely to be happy as our intuitive feeling. But we also realize that people could benefit more by donating or other prosocial behavior, which might be helpful to encourage people to do more charity. In addition, when you grow up, it is harder and harder to live with happiness. Growth seems to be a procedure we lose happiness gradually. It gradually draws our attention to keep well-being during such inevitable process. 
 
+=======
+```{r}
+# check residual assupmtion
+par(mfrow = c(2,2))
+plot(lm7)
+>>>>>>> e57341d669d2530c99bae5ca4dd84217c208ea46
 
+```
 
+### What's the meaning of our regression model 
 
+The procedure of our regression indicate that age, gdp and generosity are associated with happiness. All of them can be treated as reasonable predictor. Both `gdp` and `generosity` is positive associated with happiness. Higher GDP do mean more likely to be happy as our intuitive feeling. But we also realize that people could benefit more by donating or other prosocial behavior, which might be helpful to encourage people to do more charity. In addition, when you grow up, it is harder and harder to live with happiness. Growth seems to be a procedure we lose happiness gradually. It gradually draws our attention to keep well-being during such inevitable process.
 
 
