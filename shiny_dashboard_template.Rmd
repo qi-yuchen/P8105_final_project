@@ -2,6 +2,7 @@
 title: "Age Group vs. Happiness"
 output: 
   flexdashboard::flex_dashboard:
+    theme: default
     orientation: rows
     vertical_layout: fill
     source_code: embed
