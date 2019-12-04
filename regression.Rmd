@@ -331,12 +331,11 @@ We made some assumptions regarding residuals like normality distribution and con
 
 The procedure of our regression indicate that age, gdp and generosity are associated with happiness. All of them can be treated as reasonable predictor. Both `gdp` and `generosity` is positive associated with happiness. Higher GDP do mean more likely to be happy as our intuitive feeling. But we also realize that people could benefit more by donating or other prosocial behavior, which might be helpful to encourage people to do more charity. In addition, when you grow up, it is harder and harder to live with happiness. Growth seems to be a procedure we lose happiness gradually. It gradually draws our attention to keep well-being during such inevitable process. 
 
-=======
+
 ```{r}
 # check residual assupmtion
 par(mfrow = c(2,2))
 plot(lm7)
->>>>>>> e57341d669d2530c99bae5ca4dd84217c208ea46
 
 ```
 
