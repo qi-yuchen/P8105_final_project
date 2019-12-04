@@ -179,11 +179,64 @@ summary(lm7)
 
 
 
+`happiness` represent the happiness score or subjective well-being which was measured by the Gallup World Poll(GWP) covering years from 2005 to 2018,
+
+`gdp` represent the log transformation of statistics of GDP per capita in purchasing power parity(PPP) at constant 2011 international dollar prices are from the November 14,2018 update of the World Development Indicators (WDI).
+
+`generosity` is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.
+
+
 ## Which model is closest to the 'true passcode'? (note:how to choose the model)
 
+We built 10 potentilas models. 
 
 
-## Hooray! Now we obtained the passcode of Happiness! (note:summary of final model)
+Model 1 to 3 use each of the three variables as the only variable. 
+
+lm1:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp}$$
+
+lm2:$$Y_{happiness} = \beta_0 + \beta_1X_{generosity}$$
+
+lm3:$$Y_{happiness} = \beta_0 + \beta_1X_{age}$$
+
+
+Model 4 to 7 use two or three of the three variables as combination(confounder). 
+
+lm4:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity}$$
+
+lm5:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp}  + \beta_3X_{age} $$
+
+lm6:$$Y_{happiness} = \beta_0 + \beta_1X_{age} + \beta_2X_{generosity} $$
+
+lm7:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity} + \beta_3X_{age} $$
+
+
+Model 8 to 10 use interaction of those variables. 
+
+lm8:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} * \beta_2X_{generosity}$$
+
+lm9:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} * \beta_3X_{age} $$
+
+lm10:$$Y_{happiness} = \beta_0 + \beta_1X_{age} * \beta_2X_{generosity} $$
+
+
+
+Now let's find out the best model!
+
+We will use several criterias to find our best model.
+
+The first criteria we use is adjusted r square, which tells us the goodness of fit of a model. Higher the value, better the goodness of fit. Model 7 has the highest value, following are model 8 and 5. 
+
+The second set of criterias we use are AIC and BIC, which tell us the quality of our model. Lower the value, higher the quality. Model 7 has the lowest AIC and BIC value, following are Model 8 and Model 4. 
+
+Obviously, Model 7 wins in all the criterias
+
+Therefore, I would like to choose the lm7, i.e.
+$$Y_{happiness} = -1.39 + 0.77X_{gdp} + 1.36 X_{generosity} + (-0.36)I(age=30-49) + (-0.57)I(age = 50 +)$$
+
+
+
+## Hooray! Now we have obtained the passcode of Happiness! (note:summary of final model)
 
 
 
