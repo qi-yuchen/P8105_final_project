@@ -171,39 +171,6 @@ model_name = c("lm1", "lm2","lm3","lm4", "lm5","lm6","lm7", "lm8","lm9","lm10")
   select(model_name, everything()) %>% 
   knitr::kable()
 
-model_choose = rbind(
-  broom::glance(lm1),
-  broom::glance(lm2),
-  broom::glance(lm3),
-  broom::glance(lm4),
-  broom::glance(lm5),
-  broom::glance(lm6),
-  broom::glance(lm7),
-  broom::glance(lm8),
-  broom::glance(lm9),
-  broom::glance(lm10)
-  ) %>% 
-  cbind(model_name) %>% 
-  select(model_name, everything()) 
-
- model_choose %>% 
-  select(model_name, adj.r.squared) %>% 
-  mutate(model_name = forcats::fct_relevel(model_name, c("lm1", "lm2","lm3","lm4","lm5","lm6","lm7","lm8","lm9","lm10"))) %>% 
-  ggplot(aes(x = model_name, y = adj.r.squared)) + 
-  geom_point()
-
-rplot
-
-aicplot = ggplot(model_choose, aes(x = model_name, y = AIC)) + 
-  geom_point()
-
-bicplot = ggplot(model_choose, aes(x = model_name, y = BIC)) + 
-  geom_point()
-
-
-rplot  
-aicplot  
-bicplot
 ```
 
 
