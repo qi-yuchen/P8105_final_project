@@ -354,18 +354,21 @@ div.tocify {
 <li>
   <a href="https://lsyjessica.shinyapps.io/shiny_dashboard_template/">Age Group</a>
 </li>
-<li>
-  <a href="https://lsyjessica.shinyapps.io/time_shiny/">Time Analysis</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Time Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="https://lsyjessica.shinyapps.io/time_shiny/">Country vs Time</a>
+    </li>
+    <li>
+      <a href="time.html">Comparison</a>
+    </li>
+  </ul>
 </li>
-<li>
-  <a href="time.html">Comparison</a>
-</li>
-<<<<<<< HEAD
-<li>
-  <a href="https://lsyjessica.shinyapps.io/time_shiny/">Time Analysis</a>
-</li>
-=======
->>>>>>> bf9684430c35385f0ed79c9861ca9af9b748e37a
 <li>
   <a href="regression.html">Regression</a>
 </li>
@@ -629,109 +632,9 @@ div.tocify {
 <div id="does-it-fulfill-our-assuamption" class="section level3">
 <h3>Does it fulfill our assuamption?</h3>
 <p>We made some assumptions regarding residuals like normality distribution and constant variance of residuals. According to the diagnostic above, residuals vs fitted and scale-location indicate the constant variance of residuals is satisfied. QQ plot demonstrate residuals follow normal distribution. And the residuals vs leveragge prove there are no obvious influencial observation in out dataset.</p>
-<<<<<<< HEAD
-<p>So glad to see that our model got such a high score in those questions, now let’d officially meet our best model!</p>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-</div>
-</div>
-<div id="officail-introduction-of-our-passcode-to-hapiness" class="section level2">
-<h2>Officail introduction of our passcode to hapiness</h2>
-<p>The procedure of our regression indicate that age, gdp and generosity are associated with happiness. All of them can be treated as reasonable predictor. Both <code>gdp</code> and <code>generosity</code> is positive associated with happiness. Higher GDP do mean more likely to be happy as our intuitive feeling. But we also realize that people could benefit more by donating or other prosocial behavior, which might be helpful to encourage people to do more charity. In addition, when you grow up, it is harder and harder to live with happiness. Growth seems to be a procedure we lose happiness gradually. It gradually draws our attention to keep well-being during such inevitable process.</p>
-</div>
-<div id="section" class="section level2">
-<h2>———————————————————————————–</h2>
-</div>
-<div id="how-we-choose-our-interested-models" class="section level2">
-<h2>How we choose our interested models</h2>
-<p>To explore what are the key variables that influence life ladder, we built four different linear regression models. Model 1 describes assocaition between gdp and life ladder. Model 2 describes association between generosity and life ladder. Model 3 describes an association in which both gdp and generosity together contribute to life ladder. Model 4 indifactes that the interaction of gdp and generosity contributes to life ladder.</p>
-</div>
-<div id="how-we-chose-model-4-as-the-best-model" class="section level2">
-<h2>How we chose model 4 as the best model</h2>
-<p>First let’s take a look at the significance of slope coeficcients. In all the models,gdp, generosity and their interaction term are highly significant. Thus we conclude that they are all importang potential variables for outcome life ladder.</p>
-<p>The goodness of fit for those models is also an essential criteria when choosing the best model. In linear regression model, model 3 and 4 have the highest goodness of fit. In smooth model, model 3 has the highest goodness of fit.</p>
-<p>From above we decided to choose from model 3 and 4. Therefore we used ANOVA to compare those two models. The ANOVA result has a p value lower than 0.05, and according to hypothesis, we decided model 4 is the better model.</p>
-</div>
-<div id="a-closer-look-at-the-residuals-of-our-models" class="section level2">
-<h2>A closer look at the residuals of our models</h2>
-<p>(put plots here)</p>
-<p>Diagnostic for those models indicate that fro all the models, their residuls are approximately normally distributed and have constance variance.</p>
-</div>
-<div id="can-we-predict-the-life-ladder-from-those-variables" class="section level2">
-<h2>Can we predict the life ladder from those variables?</h2>
-<p>One the the main purpose of this study is to d=find a model that fan help us predict life ladder from key variables. Since we built four models, we shoudl also find out which model is best in predicting the outcome.</p>
-<p>Corss validations for those models indicate that model1 and 3 work much better than model 2. Therefore there might be a stronger linear association between gdp and life ladder, and linear assocaition for life ladder versus gdp and generosity.</p>
-</div>
-<div id="head" class="section level1">
-<h1>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</h1>
-<hr />
-<hr />
-<div id="background-why-we-choose-these-variables" class="section level2">
-<h2>Background (why we choose these variables)</h2>
-<p>Most of us hold the traditional view that the more money you have, the happier you will be.</p>
-<p>Also, humans are an extremely prosocial species. Compared to most primates, humans provide more assistance to family, friends, and strangers, even when costly. Some evidence indicate that there is well-being benefits from donating money.</p>
-<p>Both related to money, what’s the association between these two variable and happiness?</p>
-</div>
-<div id="introduction-about-variables" class="section level2">
-<h2>Introduction about variables</h2>
-<p><code>happiness</code> represent the happiness score or subjective well-being which was measured by the Gallup World Poll(GWP) covering years from 2005 to 2018,</p>
-<p><code>gdp</code> represent the log transformation of statistics of GDP per capita in purchasing power parity(PPP) at constant 2011 international dollar prices are from the November 14,2018 update of the World Development Indicators (WDI).</p>
-<p><code>generosity</code> is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.</p>
-</div>
-<div id="regression" class="section level2">
-<h2>Regression</h2>
-<p>In the process of regression, we choose 4 linear regression model and 3 smooth model to study the association between happiness, gdp and generosity. Their regression equation are shown below.</p>
-<p>lm1:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{gdp}\]</span></p>
-<p>lm2:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{generosity}\]</span></p>
-<p>lm3:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity}\]</span></p>
-<p>lm4:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity} + \beta_3X_{gdp} * X_{generosity}\]</span></p>
-</div>
-<div id="results" class="section level2">
-<h2>Results</h2>
-<p>Therefore, I would like to choose the lm7, i.e. <span class="math display">\[Y_{happiness} = -1.39 + 0.77X_{gdp} + 1.36 X_{generosity} + (-0.36)I(age=30-49) + (-0.57)I(age = 50 +)\]</span></p>
-<div id="how-we-choose-thattable-with-criterion" class="section level3">
-<h3>How we choose that(table with criterion)</h3>
-</div>
-<div id="does-it-work-well-1" class="section level3">
-<h3>Does it work well?</h3>
-<p>According to the plot above, RMSE of lm7 is the lowest, which show that lm7 work best among all our linear model to fit test data!</p>
-</div>
-<div id="does-it-fulfill-our-assuamption-1" class="section level3">
-<h3>Does it fulfill our assuamption?</h3>
-<p>We made some assumptions regarding residuals like normality distribution and constant variance of residuals. According to the diagnostic above, residuals vs fitted and scale-location indicate the constant variance of residuals is satisfied. QQ plot demonstrate residuals follow normal distribution. And the residuals vs leveragge prove there are no obvious influencial observation in out dataset.</p>
-</div>
-</div>
-<div id="whats-the-meaning-of-our-regression-model" class="section level2">
-<h2>What’s the meaning of our regression model</h2>
-<p>The procedure of our regression indicate that age, gdp and generosity are associated with happiness. All of them can be treated as reasonable predictor. Both <code>gdp</code> and <code>generosity</code> is positive associated with happiness. Higher GDP do mean more likely to be happy as our intuitive feeling. But we also realize that people could benefit more by donating or other prosocial behavior, which might be helpful to encourage people to do more charity. In addition, when you grow up, it is harder and harder to live with happiness. Growth seems to be a procedure we lose happiness gradually. It gradually draws our attention to keep well-being during such inevitable process.</p>
-<p><img src="regression_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
-<div id="whats-the-meaning-of-our-regression-model-1" class="section level3">
-<h3>What’s the meaning of our regression model</h3>
-<p>The procedure of our regression indicate that age, gdp and generosity are associated with happiness. All of them can be treated as reasonable predictor. Both <code>gdp</code> and <code>generosity</code> is positive associated with happiness. Higher GDP do mean more likely to be happy as our intuitive feeling. But we also realize that people could benefit more by donating or other prosocial behavior, which might be helpful to encourage people to do more charity. In addition, when you grow up, it is harder and harder to live with happiness. Growth seems to be a procedure we lose happiness gradually. It gradually draws our attention to keep well-being during such inevitable process.</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>c00f0c43470aed5b4dfb7177d95f017236efbdfb</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</div>
-=======
 <p><img src="regression_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
 <p>So glad to see that our model got such a high score in those questions, now let’d officially meet our best model!</p>
 </div>
->>>>>>> bf9684430c35385f0ed79c9861ca9af9b748e37a
-</div>
-<div id="officail-introduction-of-our-passcode-to-hapiness" class="section level2">
-<h2>Officail introduction of our passcode to hapiness</h2>
-<p>The procedure of our regression indicate that age, gdp and generosity are associated with happiness. All of them can be treated as reasonable predictor. Both <code>gdp</code> and <code>generosity</code> is positive associated with happiness. Higher GDP do mean more likely to be happy as our intuitive feeling. But we also realize that people could benefit more by donating or other prosocial behavior, which might be helpful to encourage people to do more charity. In addition, when you grow up, it is harder and harder to live with happiness. Growth seems to be a procedure we lose happiness gradually. It gradually draws our attention to keep well-being during such inevitable process.</p>
 </div>
 
 
