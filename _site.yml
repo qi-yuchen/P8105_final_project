@@ -8,9 +8,11 @@ navbar:
     - text: "Geographica"
       href: Geographica.html
     - text: "Age Group"
-      href: https://lsyjessica.shinyapps.io/dashboard/
+      href: https://lsyjessica.shinyapps.io/shiny_dashboard_template/
     - text: "Time Analysis"
       href: https://lsyjessica.shinyapps.io/time_shiny/
+    - text: "Comparison"
+      href: time.html
     - text: "Regression"
       href: regression.html
     - icon: fa-github fa-lg
