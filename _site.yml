@@ -8,7 +8,7 @@ navbar:
     - text: "Geographica"
       href: Geographica.html
     - text: "Age Group"
-      href: https://lsyjessica.shinyapps.io/shiny_dashboard_template/
+      href: 
     - text: "Time Analysis"
       menu: 
       -text: "Country vs Time"
