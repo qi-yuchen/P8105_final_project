@@ -17,13 +17,15 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/journal.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -104,33 +106,33 @@ summary {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 51px;
+  padding-top: 61px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 66px;
+  margin-top: -66px;
 }
 .dropdown-submenu {
   position: relative;
@@ -279,9 +281,19 @@ $(document).ready(function () {
 <li>
   <a href="Geographica.html">Geographica</a>
 </li>
-<li class="dropdown-header">Age Group</li>
+<li>
+  <a href="https://lsyjessica.shinyapps.io/dashboard/">Age Group</a>
+</li>
 <li class="dropdown-header">Time Analysis</li>
-<li class="dropdown-header">Regression</li>
+<li>
+  <a href="regression.html">Regression</a>
+</li>
+<li>
+  <a href="https://github.com/qi-yuchen/P8105_final_project">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -298,11 +310,6 @@ $(document).ready(function () {
 </div>
 
 
-<div id="data-cleaning" class="section level2">
-<h2>Data cleaning</h2>
-<p>Add countrycode</p>
-<pre><code>## Joining, by = c(&quot;country_name&quot;, &quot;year&quot;, &quot;life_ladder&quot;)</code></pre>
-</div>
 <div id="building-model" class="section level2">
 <h2>Building model</h2>
 <table>
@@ -325,154 +332,154 @@ $(document).ready(function () {
 <tbody>
 <tr class="odd">
 <td align="left">lm1</td>
-<td align="right">0.5739112</td>
-<td align="right">0.5738191</td>
-<td align="right">0.7695231</td>
-<td align="right">6230.89229</td>
+<td align="right">0.5797524</td>
+<td align="right">0.5796624</td>
+<td align="right">0.7678225</td>
+<td align="right">6435.59979</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">-5353.384</td>
-<td align="right">10712.768</td>
-<td align="right">10732.088</td>
-<td align="right">2739.359</td>
-<td align="right">4626</td>
+<td align="right">-5388.180</td>
+<td align="right">10782.360</td>
+<td align="right">10801.70</td>
+<td align="right">2750.257</td>
+<td align="right">4665</td>
 </tr>
 <tr class="even">
 <td align="left">lm2</td>
-<td align="right">0.0264928</td>
-<td align="right">0.0262788</td>
-<td align="right">1.1655225</td>
-<td align="right">123.76836</td>
+<td align="right">0.0304221</td>
+<td align="right">0.0302106</td>
+<td align="right">1.1682986</td>
+<td align="right">143.83058</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">-7152.091</td>
-<td align="right">14310.182</td>
-<td align="right">14329.451</td>
-<td align="right">6178.197</td>
-<td align="right">4548</td>
+<td align="right">-7219.597</td>
+<td align="right">14445.195</td>
+<td align="right">14464.49</td>
+<td align="right">6256.801</td>
+<td align="right">4584</td>
 </tr>
 <tr class="odd">
 <td align="left">lm3</td>
-<td align="right">0.0311031</td>
-<td align="right">0.0306890</td>
-<td align="right">1.1624320</td>
-<td align="right">75.10165</td>
+<td align="right">0.0303123</td>
+<td align="right">0.0299012</td>
+<td align="right">1.1683498</td>
+<td align="right">73.74202</td>
 <td align="right">0</td>
 <td align="right">3</td>
-<td align="right">-7346.678</td>
-<td align="right">14701.356</td>
-<td align="right">14727.162</td>
-<td align="right">6322.490</td>
-<td align="right">4679</td>
+<td align="right">-7431.860</td>
+<td align="right">14871.720</td>
+<td align="right">14897.56</td>
+<td align="right">6440.265</td>
+<td align="right">4718</td>
 </tr>
 <tr class="even">
 <td align="left">lm4</td>
-<td align="right">0.6078094</td>
-<td align="right">0.6076369</td>
-<td align="right">0.7398564</td>
-<td align="right">3523.42638</td>
+<td align="right">0.6137137</td>
+<td align="right">0.6135452</td>
+<td align="right">0.7375042</td>
+<td align="right">3640.62922</td>
 <td align="right">0</td>
 <td align="right">3</td>
-<td align="right">-5083.758</td>
-<td align="right">10175.517</td>
-<td align="right">10201.208</td>
-<td align="right">2488.971</td>
-<td align="right">4547</td>
+<td align="right">-5109.391</td>
+<td align="right">10226.781</td>
+<td align="right">10252.50</td>
+<td align="right">2492.751</td>
+<td align="right">4583</td>
 </tr>
 <tr class="odd">
 <td align="left">lm5</td>
-<td align="right">0.6123450</td>
-<td align="right">0.6120935</td>
-<td align="right">0.7341558</td>
-<td align="right">2434.71098</td>
+<td align="right">0.6172381</td>
+<td align="right">0.6169919</td>
+<td align="right">0.7329354</td>
+<td align="right">2506.50308</td>
 <td align="right">0</td>
 <td align="right">4</td>
-<td align="right">-5134.637</td>
-<td align="right">10279.274</td>
-<td align="right">10311.473</td>
-<td align="right">2492.265</td>
-<td align="right">4624</td>
+<td align="right">-5170.159</td>
+<td align="right">10350.317</td>
+<td align="right">10382.56</td>
+<td align="right">2504.937</td>
+<td align="right">4663</td>
 </tr>
 <tr class="even">
 <td align="left">lm6</td>
-<td align="right">0.0583404</td>
-<td align="right">0.0577190</td>
-<td align="right">1.1465514</td>
-<td align="right">93.88232</td>
+<td align="right">0.0615510</td>
+<td align="right">0.0609365</td>
+<td align="right">1.1496420</td>
+<td align="right">100.17470</td>
 <td align="right">0</td>
 <td align="right">4</td>
-<td align="right">-7076.422</td>
-<td align="right">14162.843</td>
-<td align="right">14194.957</td>
-<td align="right">5976.082</td>
-<td align="right">4546</td>
+<td align="right">-7144.772</td>
+<td align="right">14299.543</td>
+<td align="right">14331.70</td>
+<td align="right">6055.923</td>
+<td align="right">4582</td>
 </tr>
 <tr class="odd">
 <td align="left">lm7</td>
-<td align="right">0.6471711</td>
-<td align="right">0.6468606</td>
-<td align="right">0.7019019</td>
-<td align="right">2084.14954</td>
+<td align="right">0.6521689</td>
+<td align="right">0.6518652</td>
+<td align="right">0.6999853</td>
+<td align="right">2147.29618</td>
 <td align="right">0</td>
 <td align="right">5</td>
-<td align="right">-4843.144</td>
-<td align="right">9698.287</td>
-<td align="right">9736.825</td>
-<td align="right">2239.168</td>
-<td align="right">4545</td>
+<td align="right">-4868.943</td>
+<td align="right">9749.886</td>
+<td align="right">9788.47</td>
+<td align="right">2244.595</td>
+<td align="right">4581</td>
 </tr>
 <tr class="even">
 <td align="left">lm8</td>
-<td align="right">0.6171771</td>
-<td align="right">0.6169245</td>
-<td align="right">0.7310474</td>
-<td align="right">2442.98100</td>
+<td align="right">0.6230552</td>
+<td align="right">0.6228084</td>
+<td align="right">0.7286117</td>
+<td align="right">2524.54204</td>
 <td align="right">0</td>
 <td align="right">4</td>
-<td align="right">-5028.759</td>
-<td align="right">10067.518</td>
-<td align="right">10099.633</td>
-<td align="right">2429.520</td>
-<td align="right">4546</td>
+<td align="right">-5053.258</td>
+<td align="right">10116.516</td>
+<td align="right">10148.67</td>
+<td align="right">2432.469</td>
+<td align="right">4582</td>
 </tr>
 <tr class="odd">
 <td align="left">lm9</td>
-<td align="right">0.6124203</td>
-<td align="right">0.6120010</td>
-<td align="right">0.7342433</td>
-<td align="right">1460.65764</td>
+<td align="right">0.6172756</td>
+<td align="right">0.6168650</td>
+<td align="right">0.7330567</td>
+<td align="right">1503.49499</td>
 <td align="right">0</td>
 <td align="right">6</td>
-<td align="right">-5134.188</td>
-<td align="right">10282.376</td>
-<td align="right">10327.455</td>
-<td align="right">2491.781</td>
-<td align="right">4622</td>
+<td align="right">-5169.931</td>
+<td align="right">10353.861</td>
+<td align="right">10399.00</td>
+<td align="right">2504.692</td>
+<td align="right">4661</td>
 </tr>
 <tr class="even">
 <td align="left">lm10</td>
-<td align="right">0.0655240</td>
-<td align="right">0.0644957</td>
-<td align="right">1.1424211</td>
-<td align="right">63.72363</td>
+<td align="right">0.0687907</td>
+<td align="right">0.0677741</td>
+<td align="right">1.1454489</td>
+<td align="right">67.66717</td>
 <td align="right">0</td>
 <td align="right">6</td>
-<td align="right">-7059.000</td>
-<td align="right">14132.000</td>
-<td align="right">14176.960</td>
-<td align="right">5930.492</td>
-<td align="right">4544</td>
+<td align="right">-7127.014</td>
+<td align="right">14268.027</td>
+<td align="right">14313.04</td>
+<td align="right">6009.204</td>
+<td align="right">4580</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div id="cross-validation" class="section level2">
 <h2>Cross Validation</h2>
-<p><img src="regression_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
+<p><img src="regression_files/figure-html/unnamed-chunk-3-1.png" width="90%" /></p>
 </div>
 <div id="diagnostic" class="section level2">
 <h2>Diagnostic</h2>
-<p><img src="regression_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
+<p><img src="regression_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
 </div>
 <div id="summary" class="section level2">
 <h2>summary</h2>
@@ -482,70 +489,70 @@ $(document).ready(function () {
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -2.58626 -0.46309  0.01696  0.49522  2.13073 
+## -2.58854 -0.46163  0.01775  0.49240  2.12936 
 ## 
 ## Coefficients:
 ##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -1.395320   0.083238  -16.76   &lt;2e-16 ***
-## gdp          0.775024   0.008899   87.09   &lt;2e-16 ***
-## generosity   1.349385   0.064549   20.91   &lt;2e-16 ***
-## age30-49    -0.357701   0.025406  -14.08   &lt;2e-16 ***
-## age50+      -0.571217   0.025647  -22.27   &lt;2e-16 ***
+## (Intercept) -1.406986   0.082464  -17.06   &lt;2e-16 ***
+## gdp          0.776230   0.008801   88.20   &lt;2e-16 ***
+## generosity   1.358307   0.063953   21.24   &lt;2e-16 ***
+## age30-49    -0.357256   0.025237  -14.16   &lt;2e-16 ***
+## age50+      -0.566644   0.025475  -22.24   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.7019 on 4545 degrees of freedom
-##   (132 observations deleted due to missingness)
-## Multiple R-squared:  0.6472, Adjusted R-squared:  0.6469 
-## F-statistic:  2084 on 4 and 4545 DF,  p-value: &lt; 2.2e-16</code></pre>
+## Residual standard error: 0.7 on 4581 degrees of freedom
+##   (135 observations deleted due to missingness)
+## Multiple R-squared:  0.6522, Adjusted R-squared:  0.6519 
+## F-statistic:  2147 on 4 and 4581 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div id="how-we-choose-our-interested-models" class="section level2">
-<h2>How we choose our interested models</h2>
-<p>To explore what are the key variables that influence life ladder, we built four different linear regression models. Model 1 describes assocaition between gdp and life ladder. Model 2 describes association between generosity and life ladder. Model 3 describes an association in which both gdp and generosity together contribute to life ladder. Model 4 indifactes that the interaction of gdp and generosity contributes to life ladder.</p>
+<div id="finding-the-passcode-of-happinessnote-motivation" class="section level2">
+<h2>Finding the passcode of Happiness(note: motivation)</h2>
+<p>One of the key motivation of finding the secrets of Happiness is to find its passcode to it. With this passcode, we can unlock a lot of door in the world of hapiness. We can see what are the factors that constructed our satisfaction about life; how can we boost our hapiness; we can even predict our future hapiness with this passcode.</p>
 </div>
-<div id="how-we-chose-model-4-as-the-best-model" class="section level2">
-<h2>How we chose model 4 as the best model</h2>
-<p>First let’s take a look at the significance of slope coeficcients. In all the models,gdp, generosity and their interaction term are highly significant. Thus we conclude that they are all importang potential variables for outcome life ladder.</p>
-<p>The goodness of fit for those models is also an essential criteria when choosing the best model. In linear regression model, model 3 and 4 have the highest goodness of fit. In smooth model, model 3 has the highest goodness of fit.</p>
-<p>From above we decided to choose from model 3 and 4. Therefore we used ANOVA to compare those two models. The ANOVA result has a p value lower than 0.05, and according to hypothesis, we decided model 4 is the better model.</p>
-</div>
-<div id="a-closer-look-at-the-residuals-of-our-models" class="section level2">
-<h2>A closer look at the residuals of our models</h2>
-<p>(put plots here)</p>
-<p>Diagnostic for those models indicate that fro all the models, their residuls are approximately normally distributed and have constance variance.</p>
-</div>
-<div id="can-we-predict-the-life-ladder-from-those-variables" class="section level2">
-<h2>Can we predict the life ladder from those variables?</h2>
-<p>One the the main purpose of this study is to d=find a model that fan help us predict life ladder from key variables. Since we built four models, we shoudl also find out which model is best in predicting the outcome.</p>
-<p>Corss validations for those models indicate that model1 and 3 work much better than model 2. Therefore there might be a stronger linear association between gdp and life ladder, and linear assocaition for life ladder versus gdp and generosity.</p>
-<hr />
-</div>
-<div id="background-why-we-choose-these-variables" class="section level2">
-<h2>Background (why we choose these variables)</h2>
-<p>Most of us hold the traditional view that the more money you have, the happier you will be.</p>
+<div id="how-we-locate-the-potential-numbers-that-construct-the-passcode-note-introduction-of-variabes" class="section level2">
+<h2>How we locate the potential numbers that construct the passcode? (note: introduction of variabes)</h2>
+<p>The debate of whether higher gdp can increase hapiness is never endless. Some say it does, thus we should work hardly on raising gdp. Some say it actually has a quite opposite influence on our hapiness. Which opinion is true according to our data? We choose gdp as one of the potential key variables to find the association.</p>
 <p>Also, humans are an extremely prosocial species. Compared to most primates, humans provide more assistance to family, friends, and strangers, even when costly. Some evidence indicate that there is well-being benefits from donating money.</p>
-<p>Both related to money, what’s the association between these two variable and happiness?</p>
-</div>
-<div id="introduction-about-variables" class="section level2">
-<h2>Introduction about variables</h2>
+<p>Moreover, according to our previous exploration, we can tell that there is an obvious association between age and happiness.</p>
+<p>Both related to money, what’s the association between these two variable and happiness? To answer this question, we use the following three variables to find the best linear model that describes the association.</p>
 <p><code>happiness</code> represent the happiness score or subjective well-being which was measured by the Gallup World Poll(GWP) covering years from 2005 to 2018,</p>
 <p><code>gdp</code> represent the log transformation of statistics of GDP per capita in purchasing power parity(PPP) at constant 2011 international dollar prices are from the November 14,2018 update of the World Development Indicators (WDI).</p>
 <p><code>generosity</code> is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.</p>
 </div>
-<div id="regression" class="section level2">
-<h2>Regression</h2>
-<p>In the process of regression, we choose 4 linear regression model and 3 smooth model to study the association between happiness, gdp and generosity. Their regression equation are shown below.</p>
+<div id="which-model-is-the-closest-to-the-true-passcode-notehow-to-choose-the-model" class="section level2">
+<h2>Which model is the closest to the ‘true passcode’? (note:how to choose the model)</h2>
+<div id="we-built-10-potentilas-models" class="section level3">
+<h3>We built 10 potentilas models</h3>
+<p>Model 1 to 3 use each of the three variables as the only variable.</p>
 <p>lm1:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{gdp}\]</span></p>
 <p>lm2:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{generosity}\]</span></p>
-<p>lm3:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity}\]</span></p>
-<p>lm4:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity} + \beta_3X_{gdp} * X_{generosity}\]</span></p>
+<p>lm3:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{age}\]</span></p>
+<p>Model 4 to 7 use two or three of the three variables as combination(confounder).</p>
+<p>lm4:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity}\]</span></p>
+<p>lm5:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{gdp}  + \beta_3X_{age} \]</span></p>
+<p>lm6:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{age} + \beta_2X_{generosity} \]</span></p>
+<p>lm7:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity} + \beta_3X_{age} \]</span></p>
+<p>Model 8 to 10 use interaction of those variables.</p>
+<p>lm8:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{gdp} * \beta_2X_{generosity}\]</span></p>
+<p>lm9:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{gdp} * \beta_3X_{age} \]</span></p>
+<p>lm10:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{age} * \beta_2X_{generosity} \]</span></p>
 </div>
-<div id="results" class="section level2">
-<h2>Results</h2>
+<div id="now-lets-find-out-the-best-model" class="section level3">
+<h3>Now let’s find out the best model!</h3>
+<p>We will use several criterias to find our best model.</p>
+<p>The first criteria we use is adjusted r square, which tells us the goodness of fit of a model. Higher the value, better the goodness of fit. Model 7 has the highest value, following are model 8 and 5.</p>
+<p>The second set of criterias we use are AIC and BIC, which tell us the quality of our model. Lower the value, higher the quality. Model 7 has the lowest AIC and BIC value, following are Model 8 and Model 4.</p>
+</div>
+<div id="obtaining-our-best-model." class="section level3">
+<h3>Obtaining our best model.</h3>
+<p>Obviously, Model 7 wins in all the criterias.</p>
 <p>Therefore, I would like to choose the lm7, i.e. <span class="math display">\[Y_{happiness} = -1.39 + 0.77X_{gdp} + 1.36 X_{generosity} + (-0.36)I(age=30-49) + (-0.57)I(age = 50 +)\]</span></p>
-<div id="how-we-choose-thattable-with-criterion" class="section level3">
-<h3>How we choose that(table with criterion)</h3>
 </div>
+</div>
+<div id="hooray-now-we-have-obtained-the-passcode-of-happiness-notesummary-of-final-model" class="section level2">
+<h2>Hooray! Now we have obtained the passcode of Happiness! (note:summary of final model)</h2>
+<p>Before we continue, there’s couple of more things we want to check with our passcode.</p>
 <div id="does-it-work-well" class="section level3">
 <h3>Does it work well?</h3>
 <p>According to the plot above, RMSE of lm7 is the lowest, which show that lm7 work best among all our linear model to fit test data!</p>
@@ -553,11 +560,16 @@ $(document).ready(function () {
 <div id="does-it-fulfill-our-assuamption" class="section level3">
 <h3>Does it fulfill our assuamption?</h3>
 <p>We made some assumptions regarding residuals like normality distribution and constant variance of residuals. According to the diagnostic above, residuals vs fitted and scale-location indicate the constant variance of residuals is satisfied. QQ plot demonstrate residuals follow normal distribution. And the residuals vs leveragge prove there are no obvious influencial observation in out dataset.</p>
+<p>So glad to see that our model got such a high score in those questions, now let’d officially meet our best model!</p>
+</div>
+<div id="whats-the-meaning-of-our-regression-model" class="section level3">
+<h3>What’s the meaning of our regression model</h3>
+<p>The procedure of our regression indicate that age, gdp and generosity are associated with happiness. All of them can be treated as reasonable predictor. Both <code>gdp</code> and <code>generosity</code> is positive associated with happiness. Higher GDP do mean more likely to be happy as our intuitive feeling. But we also realize that people could benefit more by donating or other prosocial behavior, which might be helpful to encourage people to do more charity. In addition, when you grow up, it is harder and harder to live with happiness. Growth seems to be a procedure we lose happiness gradually. It gradually draws our attention to keep well-being during such inevitable process.</p>
 </div>
 </div>
-<div id="furthermeaning" class="section level2">
-<h2>Further(meaning)</h2>
-<p>The procedure of our regression indicate that age, gdp and generosity are associated with happiness. All of them can be treated as reasonable predictor.</p>
+<div id="wait-theres-more-we-can-expect-with-this-passcode-notefurther" class="section level2">
+<h2>Wait! There’s more we can expect with this passcode… (note:further)</h2>
+<p>to be continued…</p>
 </div>
 
 

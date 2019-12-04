@@ -17,6 +17,7 @@ library(tidyverse)
 knitr::opts_chunk$set(
 	echo = FALSE,
 	warning = FALSE,
+	message = FALSE,
 	fig.width = 12, 
   fig.asp = .618,
   out.width = "90%"
@@ -30,9 +31,13 @@ scale_fill_discrete = scale_fill_viridis_d
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
-## Data cleaning 
-Add countrycode
-```{r}
+
+
+## Finding the passcode of Happiness
+
+One of the key motivation of finding the secrets of Happiness is to find its passcode to it. With this passcode, we can unlock a lot of door in the world of hapiness. We can see what are the factors that constructed our satisfaction about life; how can we boost our hapiness; we can even predict our future hapiness with this passcode. 
+
+```{r data cleaning}
 happy_data = read_excel("./data/Chapter2OnlineData.xls") %>%
   janitor::clean_names()
 
@@ -68,115 +73,7 @@ df = happy_data %>%
 
 ```
 
-
-## Building model
-```{r}
-lm1 = lm(ladder ~ gdp, data = df)
-lm2 = lm(ladder ~ generosity, data = df)
-lm3 = lm(ladder ~ age, data = df)
-
-lm4 = lm(ladder ~ gdp + generosity, data = df)
-lm5 = lm(ladder ~ gdp + age, data = df)
-lm6 = lm(ladder ~ age + generosity, data = df)
-
-lm7 = lm(ladder ~ gdp + generosity + age, data = df)
-
-lm8 = lm(ladder ~ gdp * generosity, data = df)
-lm9 = lm(ladder ~ gdp * age, data = df)
-lm10 = lm(ladder ~ age * generosity, data = df)
-
-```
-
-```{r}
-model_name = c("lm1", "lm2","lm3","lm4", "lm5","lm6","lm7", "lm8","lm9","lm10")
-
-rbind(
-  broom::glance(lm1),
-  broom::glance(lm2),
-  broom::glance(lm3),
-  broom::glance(lm4),
-  broom::glance(lm5),
-  broom::glance(lm6),
-  broom::glance(lm7),
-  broom::glance(lm8),
-  broom::glance(lm9),
-  broom::glance(lm10)
-  ) %>% 
-  cbind(model_name) %>% 
-  select(model_name, everything()) %>% 
-  knitr::kable()
-```
-
-## Cross Validation
-
-```{r}
-cv_df = df %>% 
-  crossv_mc(100) %>% 
-  mutate(
-    train = map(train, as_tibble),
-    test = map(test, as_tibble))
-
-cv_df = 
-  cv_df %>% 
-  mutate(lm1 = map(train, ~lm(ladder ~ gdp, data = .x)),
-         lm2 = map(train, ~lm(ladder ~ generosity, data = .x)),
-         lm3 = map(train, ~lm(ladder ~ age, data = .x)),
-         lm4 = map(train, ~lm(ladder ~ gdp + generosity, data = .x)),
-         lm5 = map(train, ~lm(ladder ~ gdp + age, data = .x)),
-         lm6 = map(train, ~lm(ladder ~ age + generosity, data = .x)),
-         lm7 = map(train, ~lm(ladder ~ gdp + generosity + age, data = .x)),
-         lm8 = map(train, ~lm(ladder ~ gdp * generosity, data = .x)),
-         lm9 = map(train, ~lm(ladder ~ gdp * age, data = .x)),
-         lm10 = map(train, ~lm(ladder ~ age * generosity, data = .x))
-         ) %>% 
-  mutate(rmse_1 = map2_dbl(lm1, test, ~rmse(model = .x, data = .y)),
-         rmse_2 = map2_dbl(lm2, test, ~rmse(model = .x, data = .y)),
-         rmse_3 = map2_dbl(lm3, test, ~rmse(model = .x, data = .y)),
-         rmse_4 = map2_dbl(lm4, test, ~rmse(model = .x, data = .y)),
-         rmse_5 = map2_dbl(lm5, test, ~rmse(model = .x, data = .y)),
-         rmse_6 = map2_dbl(lm6, test, ~rmse(model = .x, data = .y)),
-         rmse_7 = map2_dbl(lm7, test, ~rmse(model = .x, data = .y)),
-         rmse_8 = map2_dbl(lm8, test, ~rmse(model = .x, data = .y)),
-         rmse_9 = map2_dbl(lm9, test, ~rmse(model = .x, data = .y)),
-         rmse_10 = map2_dbl(lm9, test, ~rmse(model = .x, data = .y))
-         )    
-
-cv_df %>% 
-  select(starts_with("rmse")) %>% 
-  pivot_longer(
-    everything(),
-    names_to = "model", 
-    values_to = "rmse",
-    names_prefix = "rmse_") %>% 
-  mutate(model = fct_inorder(model)) %>% 
-  ggplot(aes(x = model, y = rmse)) + geom_violin()
-```
-
-## Diagnostic
-```{r}
-# check residual assupmtion
-par(mfrow = c(2,2))
-plot(lm7)
-
-```
-
-## summary
-```{r}
-summary(lm7)
-```
-
-
-
-
-
-
-
-## Finding the passcode of Happiness(note: motivation)
-
-One of the key motivation of finding the secrets of Happiness is to find its passcode to it. With this passcode, we can unlock a lot of door in the world of hapiness. We can see what are the factors that constructed our satisfaction about life; how can we boost our hapiness; we can even predict our future hapiness with this passcode. 
-
-
-## How we locate the potential numbers that construct the passcode? (note: introduction of variabes)
+## How we locate the potential numbers that construct the passcode? 
 
 The debate of whether higher gdp can increase hapiness is never endless. Some say it does, thus we should work hardly on raising gdp. Some say it actually has a quite opposite influence on our hapiness. Which opinion is true according to our data? We choose gdp as one of the potential key variables to find the association. 
 
@@ -228,6 +125,24 @@ lm10:$$Y_{happiness} = \beta_0 + \beta_1X_{age} * \beta_2X_{generosity} $$
 
 
 
+```{r Building model}
+lm1 = lm(ladder ~ gdp, data = df)
+lm2 = lm(ladder ~ generosity, data = df)
+lm3 = lm(ladder ~ age, data = df)
+
+lm4 = lm(ladder ~ gdp + generosity, data = df)
+lm5 = lm(ladder ~ gdp + age, data = df)
+lm6 = lm(ladder ~ age + generosity, data = df)
+
+lm7 = lm(ladder ~ gdp + generosity + age, data = df)
+
+lm8 = lm(ladder ~ gdp * generosity, data = df)
+lm9 = lm(ladder ~ gdp * age, data = df)
+lm10 = lm(ladder ~ age * generosity, data = df)
+
+```
+
+
 ### Now let's find out the best model!
 
 We will use several criterias to find our best model.
@@ -236,16 +151,39 @@ The first criteria we use is adjusted r square, which tells us the goodness of f
 
 The second set of criterias we use are AIC and BIC, which tell us the quality of our model. Lower the value, higher the quality. Model 7 has the lowest AIC and BIC value, following are Model 8 and Model 4. 
 
-### Obtaining ou rbest model.
+```{r}
+model_name = c("lm1", "lm2","lm3","lm4", "lm5","lm6","lm7", "lm8","lm9","lm10")
+
+rbind(
+  broom::glance(lm1),
+  broom::glance(lm2),
+  broom::glance(lm3),
+  broom::glance(lm4),
+  broom::glance(lm5),
+  broom::glance(lm6),
+  broom::glance(lm7),
+  broom::glance(lm8),
+  broom::glance(lm9),
+  broom::glance(lm10)
+  ) %>% 
+  cbind(model_name) %>% 
+  select(model_name, everything()) %>% 
+  knitr::kable()
+```
+
+
+### Obtaining our best model.
 
 Obviously, Model 7 wins in all the criterias.
 
 Therefore, I would like to choose the lm7, i.e.
 $$Y_{happiness} = -1.39 + 0.77X_{gdp} + 1.36 X_{generosity} + (-0.36)I(age=30-49) + (-0.57)I(age = 50 +)$$
 
+Summary results of lm7 are shown below:
 
-
-
+```{r}
+summary(lm7)
+```
 
 ## Hooray! Now we have obtained the passcode of Happiness! (note:summary of final model)
 
@@ -255,11 +193,62 @@ Before we continue, there's couple of more things we want to check with our pass
 
 According to the plot above, RMSE of lm7 is the lowest, which show that lm7 work best among all our linear model to fit test data!
 
+```{r}
+cv_df = df %>% 
+  crossv_mc(100) %>% 
+  mutate(
+    train = map(train, as_tibble),
+    test = map(test, as_tibble))
+
+cv_df = 
+  cv_df %>% 
+  mutate(lm1 = map(train, ~lm(ladder ~ gdp, data = .x)),
+         lm2 = map(train, ~lm(ladder ~ generosity, data = .x)),
+         lm3 = map(train, ~lm(ladder ~ age, data = .x)),
+         lm4 = map(train, ~lm(ladder ~ gdp + generosity, data = .x)),
+         lm5 = map(train, ~lm(ladder ~ gdp + age, data = .x)),
+         lm6 = map(train, ~lm(ladder ~ age + generosity, data = .x)),
+         lm7 = map(train, ~lm(ladder ~ gdp + generosity + age, data = .x)),
+         lm8 = map(train, ~lm(ladder ~ gdp * generosity, data = .x)),
+         lm9 = map(train, ~lm(ladder ~ gdp * age, data = .x)),
+         lm10 = map(train, ~lm(ladder ~ age * generosity, data = .x))
+         ) %>% 
+  mutate(rmse_1 = map2_dbl(lm1, test, ~rmse(model = .x, data = .y)),
+         rmse_2 = map2_dbl(lm2, test, ~rmse(model = .x, data = .y)),
+         rmse_3 = map2_dbl(lm3, test, ~rmse(model = .x, data = .y)),
+         rmse_4 = map2_dbl(lm4, test, ~rmse(model = .x, data = .y)),
+         rmse_5 = map2_dbl(lm5, test, ~rmse(model = .x, data = .y)),
+         rmse_6 = map2_dbl(lm6, test, ~rmse(model = .x, data = .y)),
+         rmse_7 = map2_dbl(lm7, test, ~rmse(model = .x, data = .y)),
+         rmse_8 = map2_dbl(lm8, test, ~rmse(model = .x, data = .y)),
+         rmse_9 = map2_dbl(lm9, test, ~rmse(model = .x, data = .y)),
+         rmse_10 = map2_dbl(lm9, test, ~rmse(model = .x, data = .y))
+         )    
+
+cv_df %>% 
+  select(starts_with("rmse")) %>% 
+  pivot_longer(
+    everything(),
+    names_to = "model", 
+    values_to = "rmse",
+    names_prefix = "rmse_") %>% 
+  mutate(model = fct_inorder(model)) %>% 
+  ggplot(aes(x = model, y = rmse)) + geom_violin()
+```
+
+
 ### Does it fulfill our assuamption?
 
 We made some assumptions regarding residuals like normality distribution and constant variance of residuals. According to the diagnostic above, residuals vs fitted and scale-location indicate the constant variance of residuals is satisfied. QQ plot demonstrate residuals follow normal distribution. And the residuals vs leveragge prove there are no obvious influencial observation in out dataset. 
 
 So glad to see that our model got such a high score in those questions, now let'd officially meet our best model!
+
+```{r}
+# check residual assupmtion
+par(mfrow = c(2,2))
+plot(lm7)
+
+```
 
 ### What's the meaning of our regression model 
 
@@ -270,87 +259,5 @@ The procedure of our regression indicate that age, gdp and generosity are associ
 ## Wait! There's more we can expect with this passcode... (note:further)
 
 to be continued...
-
------------------------------------------------------------------------------------
----------------------------------------------------------------------------------
-## How we choose our interested models
-
-To explore what are the key variables that influence life ladder, we built four different linear regression models. Model 1 describes assocaition between gdp and life ladder. Model 2 describes association between generosity and life ladder. Model 3 describes an association in which both gdp and generosity together contribute to life ladder. Model 4 indifactes that the interaction of gdp and generosity contributes to life ladder. 
-
-## How we chose model 4 as the best model
-
-First let's take a look at the significance of slope coeficcients. In all the models,gdp, generosity and their interaction term are highly significant. Thus we conclude that they are all importang potential variables for outcome life ladder. 
-
-The goodness of fit for those models is also an essential criteria when choosing the best model.  In linear regression model, model 3 and 4 have the highest goodness of fit. In smooth model, model 3 has the highest goodness of fit. 
-
-From above we decided to choose from model 3 and 4. Therefore we used ANOVA to compare those two models. The ANOVA result has a p value lower than 0.05, and according to hypothesis, we decided model 4 is the better model.
-
-## A closer look at the residuals of our models
-
-(put plots here)
-
-Diagnostic for those models indicate that fro all the models, their residuls are approximately normally distributed and have constance variance. 
-
-
-## Can we predict the life ladder from those variables?
-
-One the the main purpose of this study is to d=find a model that fan help us predict life ladder from key variables. Since we built four models, we shoudl also find out which model is best in predicting the outcome. 
-
-Corss validations for those models indicate that model1 and 3 work much better than model 2. Therefore there might be a stronger linear association between gdp and life ladder, and linear assocaition for life ladder versus gdp and generosity. 
-
---------------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------------
-## Background (why we choose these variables)
-
-Most of us hold the traditional view that the more money you have, the happier you will be.
-
-Also, humans are an extremely prosocial species. Compared to most primates, humans provide more assistance to family, friends, and strangers, even when costly. Some evidence indicate that there is well-being benefits from donating money.
-
-Both related to money, what's the association between these two variable and happiness?
-
-## Introduction about variables
-
-`happiness` represent the happiness score or subjective well-being which was measured by the Gallup World Poll(GWP) covering years from 2005 to 2018,
-
-`gdp` represent the log transformation of statistics of GDP per capita in purchasing power parity(PPP) at constant 2011 international dollar prices are from the November 14,2018 update of the World Development Indicators (WDI).
-
-`generosity` is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.
-
-## Regression
-
-In the process of regression, we choose 4 linear regression model and 3 smooth model to study the association between happiness, gdp and generosity. Their regression equation are shown below.
-
-lm1:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp}$$
-
-lm2:$$Y_{happiness} = \beta_0 + \beta_1X_{generosity}$$
-
-lm3:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity}$$
-
-lm4:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity} + \beta_3X_{gdp} * X_{generosity}$$
-
-
-
-## Results
-Therefore, I would like to choose the lm7, i.e.
-$$Y_{happiness} = -1.39 + 0.77X_{gdp} + 1.36 X_{generosity} + (-0.36)I(age=30-49) + (-0.57)I(age = 50 +)$$
-
-### How we choose that(table with criterion)
-
-### Does it work well?
-
-According to the plot above, RMSE of lm7 is the lowest, which show that lm7 work best among all our linear model to fit test data!
-
-### Does it fulfill our assuamption?
-
-We made some assumptions regarding residuals like normality distribution and constant variance of residuals. According to the diagnostic above, residuals vs fitted and scale-location indicate the constant variance of residuals is satisfied. QQ plot demonstrate residuals follow normal distribution. And the residuals vs leveragge prove there are no obvious influencial observation in out dataset. 
-
-## What's the meaning of our regression model 
-
-The procedure of our regression indicate that age, gdp and generosity are associated with happiness. All of them can be treated as reasonable predictor. Both `gdp` and `generosity` is positive associated with happiness. Higher GDP do mean more likely to be happy as our intuitive feeling. But we also realize that people could benefit more by donating or other prosocial behavior, which might be helpful to encourage people to do more charity. In addition, when you grow up, it is harder and harder to live with happiness. Growth seems to be a procedure we lose happiness gradually. It gradually draws our attention to keep well-being during such inevitable process. 
-
-
-
-
 
 
