@@ -37,6 +37,8 @@ theme_set(theme_minimal() + theme(legend.position = "bottom"))
 
 ## Finding the passcode of Happiness
 
+<img src="image/regression3.jpg" style="width:75%">
+
 One of the key motivation of finding the secrets of Happiness is to find its passcode to it. With this passcode, we can unlock a lot of door in the world of hapiness. We can see what are the factors that constructed our satisfaction about life; how can we boost our hapiness; we can even predict our future hapiness with this passcode. 
 
 ```{r data cleaning}
@@ -280,6 +282,8 @@ One the the main purpose of this study is to d=find a model that fan help us pre
 
 Corss validations for those models indicate that model1 and 3 work much better than model 2. Therefore there might be a stronger linear association between gdp and life ladder, and linear assocaition for life ladder versus gdp and generosity. 
 
+<<<<<<< HEAD
+=======
 --------------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------------
@@ -344,3 +348,4 @@ plot(lm7)
 The procedure of our regression indicate that age, gdp and generosity are associated with happiness. All of them can be treated as reasonable predictor. Both `gdp` and `generosity` is positive associated with happiness. Higher GDP do mean more likely to be happy as our intuitive feeling. But we also realize that people could benefit more by donating or other prosocial behavior, which might be helpful to encourage people to do more charity. In addition, when you grow up, it is harder and harder to live with happiness. Growth seems to be a procedure we lose happiness gradually. It gradually draws our attention to keep well-being during such inevitable process.
 
 
+>>>>>>> c00f0c43470aed5b4dfb7177d95f017236efbdfb
