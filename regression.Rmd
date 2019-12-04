@@ -90,7 +90,7 @@ lm10 = lm(ladder ~ age * generosity, data = df)
 ```{r}
 model_name = c("lm1", "lm2","lm3","lm4", "lm5","lm6","lm7", "lm8","lm9","lm10")
 
-rbind(
+model_choose = rbind(
   broom::glance(lm1),
   broom::glance(lm2),
   broom::glance(lm3),
@@ -105,6 +105,10 @@ rbind(
   cbind(model_name) %>% 
   select(model_name, everything()) %>% 
   knitr::kable()
+
+model_choose
+
+
 ```
 
 ## Cross Validation
@@ -261,15 +265,11 @@ We made some assumptions regarding residuals like normality distribution and con
 
 So glad to see that our model got such a high score in those questions, now let'd officially meet our best model!
 
-### What's the meaning of our regression model 
+
+## Officail introduction of our passcode to hapiness
 
 The procedure of our regression indicate that age, gdp and generosity are associated with happiness. All of them can be treated as reasonable predictor. Both `gdp` and `generosity` is positive associated with happiness. Higher GDP do mean more likely to be happy as our intuitive feeling. But we also realize that people could benefit more by donating or other prosocial behavior, which might be helpful to encourage people to do more charity. In addition, when you grow up, it is harder and harder to live with happiness. Growth seems to be a procedure we lose happiness gradually. It gradually draws our attention to keep well-being during such inevitable process.
 
-
-
-## Wait! There's more we can expect with this passcode... (note:further)
-
-to be continued...
 
 -----------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
