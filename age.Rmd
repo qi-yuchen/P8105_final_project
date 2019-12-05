@@ -42,6 +42,9 @@ age_df <- age_data %>%
 
 ```
 
+
+Example Plot
+---
 ```{r example_plot}
 age_df %>%
   mutate(year = as.character(year)) %>%

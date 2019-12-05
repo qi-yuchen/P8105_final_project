@@ -1,0 +1,71 @@
+---
+title: "age_group"
+author: "Shuya Liu"
+date: "December 5, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readxl)
+```
+
+Data Import
+---
+
+```{r data}
+## read datasets
+happy_data <- read_excel("./data/Chapter2OnlineData.xls") %>%
+  janitor::clean_names()
+age_data <- read_excel("./data/GallupAnalytics_Export_20191203_075046.xlsx",
+                       range = "B8:G5209") %>%
+  janitor::clean_names() %>%
+  rename(country_name = geography,
+         year = time,
+         age = demographic_value,
+         n = n_size,
+         ladder = value) %>%
+  mutate(year = as.numeric(year))
+
+## join datasets
+age_df <- age_data %>%
+  pivot_wider(names_from = age,
+              values_from = c(ladder, n)) %>%
+  left_join(happy_data, ., by = c("country_name", "year")) %>%
+  select(country_name:life_ladder, "ladder_15-29":"n_DK/Refused") %>%
+  pivot_longer("ladder_15-29":"n_DK/Refused", 
+               names_to = c("variable", "age"),
+               names_pattern = "(.*)_(.*)") %>%
+  pivot_wider(names_from = variable,
+              values_from = value)
+
+```
+
+
+Boxplot of Age Groups
+---
+```{r boxplot}
+age_df %>%
+  filter(age != "DK/Refused") %>%
+  drop_na %>%
+  mutate(age = as.factor(age)) %>%
+  ggplot(aes(x = age, y = ladder, color = age)) +
+  geom_boxplot() +
+  labs(
+    title = "The Boxplot of Happiness Score",
+    x = "Year",
+    y = "Happiness Score"
+  ) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.95, vjust = 0.2)) +
+  facet_grid(~year)
+```
+
+Analysis
+---
+By plotting the boxplots throughout the years, we can see that overall there are distinct differences among these age groups. It is relatively obvious that the age group of `15-29` have rank their happiness in higher scores than the other two groups, and the age group of `50+` tend to have the lowest happiness score . It appears that younger people tend to have higher happiness score, ie. the `life_ladder` variable. Therefore, we are going to include `age_group` as one of the factor in our final regression model since the strong association we see in this graph.
+
+Additional Link
+---
+The happiness score for each age groups of different countries throughout the years can be found on [this](https://lsyjessica.shinyapps.io/shiny_dashboard_template/) shiny dashboard.
+
