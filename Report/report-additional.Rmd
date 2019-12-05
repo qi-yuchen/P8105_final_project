@@ -6,20 +6,27 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE}
+library(viridis)
+library(patchwork)
+library(readxl)
+library(countrycode)
+library(modelr)
+library(mgcv)
+library(tidyverse)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Additional Analysis
 
-One of the key motivation of finding the secrets of Happiness is to find its passcode to it. With this passcode, we can unlock a lot of door in the world of hapiness. We can see what are the factors that constructed our satisfaction about life; how can we boost our hapiness; we can even predict our future hapiness with this passcode.
+Based on before analisis, we found that there might be association between age, GDP, generosity and happiness. Therefore, we try to make linear regression model of these factors.
 
 ### Data cleaning
 
 ```{r data cleaning}
-happy_data = read_excel("./data/Chapter2OnlineData.xls") %>%
+happy_data = read_excel("../data/Chapter2OnlineData.xls") %>%
   janitor::clean_names()
 
-age_data = read_excel("./data/GallupAnalytics_Export_20191203_075046.xlsx",
+age_data = read_excel("../data/GallupAnalytics_Export_20191203_075046.xlsx",
                        range = "B8:G5209") %>%
   janitor::clean_names() %>%
   rename(country_name = geography,
@@ -84,8 +91,6 @@ lm9:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} * \beta_3X_{age} $$
 
 lm10:$$Y_{happiness} = \beta_0 + \beta_1X_{age} * \beta_2X_{generosity} $$
 
-
-
 ```{r Building model}
 lm1 = lm(ladder ~ gdp, data = df)
 lm2 = lm(ladder ~ generosity, data = df)
@@ -134,8 +139,6 @@ model_name = c("lm1", "lm2","lm3","lm4", "lm5","lm6","lm7", "lm8","lm9","lm10")
 ```
 
 
-### Obtaining our best model.
-
 Obviously, Model 7 wins in all the criterion.
 
 Therefore, we would like to choose the lm7, i.e.
@@ -147,12 +150,8 @@ Summary results of lm7 are shown below:
 summary(lm7)
 ```
 
-## Checking the function of our model.
-Before we continue, there's couple of more things we want to check with our passcode. 
+### Checking predictive ability
 
-Does it work well?
-
-According to the plot above, RMSE of lm7 is the lowest, which shows that lm7 works best among all our linear model to fit test data!
 
 ```{r}
 cv_df = df %>% 
@@ -198,9 +197,10 @@ cv_df %>%
 ```
 
 
-Does it fulfill our assuamption?
+According to the plot above, RMSE of lm7 is the lowest, which shows that lm7 works best among all our linear model to fit test data!
 
-We made some assumptions regarding residuals like normality distribution and constant variance of residuals. According to the diagnostic above, residuals vs fitted and scale-location indicate the constant variance of residuals is satisfied. QQ plot demonstrates that residuals follow normal distribution. And the residuals vs leverage proves there are no obvious influencial observation in out dataset. 
+### Checking assuamption
+
 
 ```{r}
 # check residual assupmtion
@@ -208,9 +208,10 @@ par(mfrow = c(2,2))
 plot(lm7)
 ```
 
-### Meaning and conclusion of our model.
+We made some assumptions regarding residuals like normality distribution and constant variance of residuals. According to the diagnostic above, residuals vs fitted and scale-location indicate the constant variance of residuals is satisfied. QQ plot demonstrates that residuals follow normal distribution. And the residuals vs leverage proves there are no obvious influencial observation in out dataset. 
 
-So glad to see that our model got such a high score in those questions, now let's officially meet our best model!
+### Conclusion and Discussion
+
 $$Y_{happiness} = -1.39 + 0.77X_{gdp} + 1.36 X_{generosity} + (-0.36)I(age=30-49) + (-0.57)I(age = 50 +)$$
 
 As we discussed at the beginning, our passcode can help us reveal a lot of information about the association between the variables and Happiness. In our passcode, we can tell that when we increase our gdp and generosity, we can increase our level of Happiness. Therefore, developing economics and helping others financially is an efficient way of boosting happiness. On the contrary, as our age increases, our satisfaction about life will decrease. Maybe this is a reason why we are more likely to see happy smile on a child's face rather than on a adult's. In this case, if you wanna be more happy, it would be helpful to look at life and the world through a kid's eye. 
