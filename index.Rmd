@@ -32,15 +32,15 @@ Both related to money, what's the association between these two variable and hap
 
 ## Data description
 
->>>>>>> bfcc8e0f0fe8733bfc7b043bd37ce6b7cd4d81df
-`happiness` represent the happiness score or subjective well-being which was measured by the Gallup World Poll(GWP) covering years from 2005 to 2018,
+
+`life_ladder` represent the happiness score or subjective well-being which was measured by the Gallup World Poll(GWP) covering years from 2005 to 2018,
 
 `gdp` represent the log transformation of statistics of GDP per capita in purchasing power parity(PPP) at constant 2011 international dollar prices are from the November 14,2018 update of the World Development Indicators (WDI).
 
 `generosity` is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.
-<<<<<<< HEAD
-=======
 
 `age` We divide 3 age groups: 15-30, 30-49, 50+.
 
->>>>>>> bfcc8e0f0fe8733bfc7b043bd37ce6b7cd4d81df
+`country_name` contains all the countries we analyze, alongwith `code` which uses GENC 3-letter codes for countries, applying the countrycode function.
+
+
