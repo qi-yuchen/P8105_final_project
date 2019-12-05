@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
-library(tidyverse)
+
 library(viridis)
 library(plotly)
 library(readxl)
@@ -14,6 +14,9 @@ library(countrycode)
 library(flexdashboard)
 library(ggmap)
 library(patchwork)
+library(modelr)
+library(mgcv)
+library(tidyverse)
 
 knitr::opts_chunk$set(
   fig.width = 6,
@@ -55,7 +58,7 @@ This main question diverges into four minor and more detailed questions. Those q
 
 ### Data sources
 
-Our data was downloaded as a .csv file from [World Poll](https://analyticscampus.gallup.com/?ref=Auth).  
+Our data was downloaded as a .xls file from [World Poll](https://analyticscampus.gallup.com/?ref=Auth).  
 
 ### Data cleaning
 
@@ -192,69 +195,69 @@ As showing in the geographical distribution of happiness, in addition to the age
 In this analysis, we firstly study the hapiness scale with full data from 2010 to 2018 in the whole world
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 #average happiness from 2008 to 2010 in each continent
-plot_cont_happiness=
+plot_cont_happiness =
   df %>%
   filter(year %in% c(2010:2018)) %>%
   dplyr::select(continent,country_name,year,life_ladder) %>%
   pivot_wider(
     names_from = year,
     values_from = life_ladder
-  )%>% 
-  janitor::clean_names()%>%
-  drop_na()%>%
+  ) %>% 
+  janitor::clean_names() %>%
+  drop_na() %>%
   pivot_longer(
     cols = starts_with("X"),
     names_to = "year",
     names_prefix = "x",
     values_to = "life_ladder"
-  )%>%
-  group_by(continent,year)%>%
-  summarize(life_ladder=mean(life_ladder))%>%
-  ggplot(aes(x=year,y=life_ladder,color=continent))+geom_point()+geom_line(aes(group=continent))+labs(y="life ladder")
+  ) %>%
+  group_by(continent,year) %>%
+  summarize(life_ladder = mean(life_ladder)) %>%
+  ggplot(aes(x = year,y = life_ladder,color = continent)) + geom_point() + geom_line(aes(group = continent)) + labs(y = "life ladder")
 
 # average gdp from 2008 to 2010 in each continent
-plot_cont_gdp=
+plot_cont_gdp =
   df %>%
   filter(year %in% c(2010:2018)) %>%
   dplyr::select(continent,country_name,year,gdp) %>%
   pivot_wider(
     names_from = year,
     values_from = gdp
-  )%>% 
-  janitor::clean_names()%>%
-  drop_na()%>%
+  ) %>% 
+  janitor::clean_names() %>%
+  drop_na() %>%
   pivot_longer(
     cols = starts_with("X"),
     names_to = "year",
     names_prefix = "x",
     values_to = "gdp"
-  )%>%
-  group_by(continent,year)%>%
-  summarize(gdp=mean(gdp))%>%
-  ggplot(aes(x=year,y=gdp,color=continent))+geom_point()+geom_line(aes(group=continent))  
+  ) %>%
+  group_by(continent,year) %>%
+  summarize(gdp=mean(gdp)) %>%
+  ggplot(aes(x = year,y = gdp,color = continent)) + geom_point() + geom_line(aes(group = continent))  
 
 # average generosity from 2008 to 2010 in each continent
-plot_cont_gen=
+plot_cont_gen =
   df %>%
   filter(year %in% c(2010:2018)) %>%
   dplyr::select(continent,country_name,year,generosity) %>%
   pivot_wider(
     names_from = year,
     values_from = generosity
-  )%>% 
-  janitor::clean_names()%>%
-  drop_na()%>%
+  ) %>% 
+  janitor::clean_names() %>%
+  drop_na() %>%
   pivot_longer(
     cols = starts_with("X"),
     names_to = "year",
     names_prefix = "x",
     values_to = "generosity"
-  )%>%
-  group_by(continent,year)%>%
-  summarize(generosity=mean(generosity))%>%
-  ggplot(aes(x=year,y=generosity,color=continent))+geom_point()+geom_line(aes(group=continent))  
+  ) %>%
+  group_by(continent,year) %>%
+  summarize(generosity = mean(generosity)) %>%
+  ggplot(aes(x = year,y = generosity,color = continent)) + geom_point() + geom_line(aes(group = continent))  
 
-plot_cont_happiness+(plot_cont_gdp/plot_cont_gen )
+plot_cont_happiness + (plot_cont_gdp/plot_cont_gen )
   
 ```
 It is obvious that the in the 9-year period of intersted study, the Oceania has the highest level of happiness that above 7 during the study period, while Africa has the lowest level of happiness ranged from 4 to 4.5 in the study period.Europe and America have similar life ladder within 6 and 6.5, where America was slightly higher in 2010 than Europe while Europe exceeded since 2015. Asia had life ladder slightly less than 5.5 and generally kept in a stable level in the study period. Compared with the gdp scale and the generosity in each continent, we can easily noticed that a similar pattern exist that Oceania tended to have the highest average gdp and generosity while Africa tended to have lowest level.
@@ -266,6 +269,8 @@ https://lsyjessica.shinyapps.io/time_shiny/
 
 
 ## Discussion
+
+
 
 
 Our best linear regression model is a multiple linear regression model with GDP, negerosity and age as variables and happiness level as the outcome. This model indicates that our happiness level will increase as we increase our gdp and generosity. This is our expected result because it gives us motivation to develop economics and be more generosity, both of the which can contribute more positive energy to our society. People could use this result as a guidance and build a more wealthy, economic-friendly and warm society.   
