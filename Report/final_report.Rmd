@@ -311,7 +311,7 @@ plot_cont_gen =
   summarize(generosity = mean(generosity)) %>%
   ggplot(aes(x = year,y = generosity,color = continent)) + geom_point() + geom_line(aes(group = continent))  
 
-plot_cont_happiness + (plot_cont_gdp/plot_cont_gen )
+plot_cont_happiness / plot_cont_gdp / plot_cont_gen 
   
 ```
 
