@@ -34,7 +34,7 @@ Also, humans are an extremely prosocial species. Compared to most primates, huma
 
 Moreover, according to our previous exploration, we can tell that there is an obvious association between age and happiness. 
 
-Both related to money, what's the association between these two variable and happiness? To answer this question, we use the following three variables to find the best linear model that describes the association. 
+Both related to money, what's the association between these two variable and happiness? To answer this question, we use the following three variables to find the best linear model that describes the association: life_ladder, gdp and generosity. Detailed data description is in the data part below.
 
 
 ## Research questions
