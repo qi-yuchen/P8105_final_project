@@ -93,7 +93,7 @@ knitr::include_graphics("./image/map.png")
 knitr::include_graphics("./image/bar.png")
 ```
 
-The code for rending these plots are the following:
+The code for rendering these plots are the following:
 
 ```{r, eval=FALSE}
 ## For this part, the mean life ladder and the country code for each country are needed to produce the global map.
