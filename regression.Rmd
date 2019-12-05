@@ -1,6 +1,5 @@
 ---
 title: "Regression"
-author: "Xiaoyang Li & Jingyu Fu"
 output: 
   html_document:
     toc: true

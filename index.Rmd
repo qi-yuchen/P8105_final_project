@@ -8,8 +8,6 @@ output:
 
 ![](image/pikachu.png)
 
-## How we locate the potential numbers that construct the passcode? 
-
 ## Indroduction
 In living memory, people paid a lot of attention to their health, especially their physical health. Yet with the development of modern technology in medicine and a more comprehensive medical care system, the general physical health of the majority seems to be in good care. With the guarantee of their basic physical health, people tend to pay more attention to their mental health. This tendency drives the more frequent appearance of depressing topics such as “Depression” and “Suicide”. Yet, in order to make progress and actually change the depressing situation, people should not only focus on these issues, but also concentrate on happier thoughts. Hence, in this research, we focus on happiness, how people feel about their well-being and happiness across countries, and focus on how the feeling of happy changes over years and the association or even casual effects between several variables.  
 
