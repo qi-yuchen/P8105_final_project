@@ -104,7 +104,7 @@ plot_cont_gen=
   ggplot(aes(x=year,y=generosity,color=continent))+geom_point()+geom_line(aes(group=continent))  
 ```
 
-```{r}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 plot_cont_happiness+(plot_cont_gdp/plot_cont_gen )
   
 ```
