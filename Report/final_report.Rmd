@@ -69,7 +69,7 @@ df = df %>%
   mutate(continent = countrycode(sourcevar = country_name,
                                  origin = "country.name",
                                  destination = "continent")) %>% 
-  select(continent, country_name, everything())%>%
+  dplyr::select(continent, country_name, everything())%>%
   drop_na(continent) %>% 
   rename(gdp = log_gdp_per_capita)
 ```
