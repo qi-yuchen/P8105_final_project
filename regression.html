@@ -397,8 +397,8 @@ div.tocify {
 </div>
 <div id="which-model-is-the-closest-to-the-true-passcode" class="section level2">
 <h2>Which model is the closest to the ‘true passcode’?</h2>
-<div id="we-built-10-potentilas-models" class="section level3">
-<h3>We built 10 potentilas models</h3>
+<div id="we-built-10-potentials-models" class="section level3">
+<h3>We built 10 potentials models</h3>
 <p>Model 1 to 3 use each of the three variables as the only variable.</p>
 <p>lm1:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{gdp}\]</span></p>
 <p>lm2:<span class="math display">\[Y_{happiness} = \beta_0 + \beta_1X_{generosity}\]</span></p>
@@ -415,9 +415,9 @@ div.tocify {
 </div>
 <div id="now-lets-find-out-the-best-model" class="section level3">
 <h3>Now let’s find out the best model!</h3>
-<p>We will use several criterias to find our best model.</p>
-<p>The first criteria we use is adjusted r square, which tells us the goodness of fit of a model. Higher the value, better the goodness of fit. Model 7 has the highest value, following are model 8 and 5.</p>
-<p>The second set of criterias we use are AIC and BIC, which tell us the quality of our model. Lower the value, higher the quality. Model 7 has the lowest AIC and BIC value, following are Model 8 and Model 4.</p>
+<p>We will use several criterion to find our best model.</p>
+<p>The first criterion we use is adjusted-r-square, which tells us the goodness of fit of a model. Higher the value, better the goodness of fit. Model 7 has the highest value, following are model 8 and 5.</p>
+<p>The second set of criteria we use are AIC and BIC, which tell us the quality of our model. Lower the values, higher the quality. Model 7 has the lowest AIC and BIC value, following are Model 8 and Model 4.</p>
 <table>
 <thead>
 <tr class="header">
@@ -581,8 +581,8 @@ div.tocify {
 </div>
 <div id="obtaining-our-best-model." class="section level3">
 <h3>Obtaining our best model.</h3>
-<p>Obviously, Model 7 wins in all the criterias.</p>
-<p>Therefore, I would like to choose the lm7, i.e. <span class="math display">\[Y_{happiness} = -1.39 + 0.77X_{gdp} + 1.36 X_{generosity} + (-0.36)I(age=30-49) + (-0.57)I(age = 50 +)\]</span></p>
+<p>Obviously, Model 7 wins in all the criterion.</p>
+<p>Therefore, we would like to choose the lm7, i.e. <span class="math display">\[Y_{happiness} = -1.39 + 0.77X_{gdp} + 1.36 X_{generosity} + (-0.36)I(age=30-49) + (-0.57)I(age = 50 +)\]</span></p>
 <p>Summary results of lm7 are shown below:</p>
 <pre><code>## 
 ## Call:
@@ -613,18 +613,18 @@ div.tocify {
 <p>Before we continue, there’s couple of more things we want to check with our passcode.</p>
 <div id="does-it-work-well" class="section level3">
 <h3>Does it work well?</h3>
-<p>According to the plot above, RMSE of lm7 is the lowest, which show that lm7 work best among all our linear model to fit test data!</p>
+<p>According to the plot above, RMSE of lm7 is the lowest, which shows that lm7 works best among all our linear model to fit test data!</p>
 <p><img src="regression_files/figure-html/unnamed-chunk-3-1.png" width="90%" /></p>
 </div>
 <div id="does-it-fulfill-our-assuamption" class="section level3">
 <h3>Does it fulfill our assuamption?</h3>
-<p>We made some assumptions regarding residuals like normality distribution and constant variance of residuals. According to the diagnostic above, residuals vs fitted and scale-location indicate the constant variance of residuals is satisfied. QQ plot demonstrate residuals follow normal distribution. And the residuals vs leveragge prove there are no obvious influencial observation in out dataset.</p>
+<p>We made some assumptions regarding residuals like normality distribution and constant variance of residuals. According to the diagnostic above, residuals vs fitted and scale-location indicate the constant variance of residuals is satisfied. QQ plot demonstrates that residuals follow normal distribution. And the residuals vs leverage proves there are no obvious influencial observation in out dataset.</p>
 <p><img src="regression_files/figure-html/unnamed-chunk-4-1.png" width="90%" /></p>
 </div>
 <div id="officially-meeting-our-passcode" class="section level3">
 <h3>Officially meeting our passcode!</h3>
 <p>So glad to see that our model got such a high score in those questions, now let’s officially meet our best model! <span class="math display">\[Y_{happiness} = -1.39 + 0.77X_{gdp} + 1.36 X_{generosity} + (-0.36)I(age=30-49) + (-0.57)I(age = 50 +)\]</span></p>
-<p>As we discussed at the beginning, our passcode can help us unlock a lot of information about the association between the variables and Happiness. In our passcode, we can tell that when we increase our gdp and generosity, we can increase our level of happiness. Therefore, developing economics and helping others financially is an efficient way of boosting happiness. On the contrary, as our age increases, our satisfaction about life will decrease. Maybe this is a reason why we are more likely to see happy smile on a child’s face rather than on a adult’s. In this case, if you wanna be more happy, it would be helpful to look at life and the world through a kid’s eye.</p>
+<p>As we discussed at the beginning, our passcode can help us reveal a lot of information about the association between the variables and Happiness. In our passcode, we can tell that when we increase our gdp and generosity, we can increase our level of Happiness. Therefore, developing economics and helping others financially is an efficient way of boosting happiness. On the contrary, as our age increases, our satisfaction about life will decrease. Maybe this is a reason why we are more likely to see happy smile on a child’s face rather than on a adult’s. In this case, if you wanna be more happy, it would be helpful to look at life and the world through a kid’s eye.</p>
 </div>
 </div>
 
