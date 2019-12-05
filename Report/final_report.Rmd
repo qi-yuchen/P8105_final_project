@@ -41,7 +41,7 @@ Both related to money, what's the association between these two variable and hap
 
 Our research focues on a main question:
 
-- How does people's happiness level change in different criterion.
+- How does people's happiness level change in different criterion?
 
 This main question diverges into four minor and more detailed questions. Those questions are consistent through the course of our project.Following are our detailed questions:
 
@@ -257,8 +257,14 @@ plot_cont_happiness+(plot_cont_gdp/plot_cont_gen )
 It is obvious that the in the 9-year period of intersted study, the Oceania has the highest level of happiness that above 7 during the study period, while Africa has the lowest level of happiness ranged from 4 to 4.5 in the study period.Europe and America have similar life ladder within 6 and 6.5, where America was slightly higher in 2010 than Europe while Europe exceeded since 2015. Asia had life ladder slightly less than 5.5 and generally kept in a stable level in the study period. Compared with the gdp scale and the generosity in each continent, we can easily noticed that a similar pattern exist that Oceania tended to have the highest average gdp and generosity while Africa tended to have lowest level.
 As for the change of life ladder, gdp and generosity changed through years for any specific country reader might interested in, the link below provided a visulization plot of the time trend for all countries we studied.
 https://lsyjessica.shinyapps.io/time_shiny/ 
+
+
 ## Additional analysis
 
 
 ## Discussion
 
+
+Our best linear regression model is a multiple linear regresison model with GDP, negerosity and age as variables and happiness level as the outcome. This model indicates that our happiness will increase as we increase our gdp and generosity. This is our expected result because it gives us motivation to develop economics and be more generosity, both of the which can contribute more positive energy to our society. People could use this result as a guidance and build a more wealthy, economic-friendly and warm society.   
+
+Meanwhile, we can also tell form the model that younger the age, higher the happiness. This is also our expected result because, in real life, it is more likely to see a happy smile on a kid's face compared to an adult's. This indicates that society could pay more attention to mental health of adults and develop more adults' mental health care service. On the other hand, it is also a good way to boost adults' happiness level through education about happiness. If people are losing their sensibility of happiness as they grow up, it means that their ability in sensing happiness is not developed through their educatoin. Therefore, schools and colleges could develop their education about happiness. By doing this, poeple will build a mind set that does well in sensing happiness and hence the situation of decreasing happiness level as age increases will be changed in the good way. 
