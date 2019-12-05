@@ -45,7 +45,22 @@ below.
 
 Our project is inspired by [Woeld Happiness
 Report](https://worldhappiness.report/ed/2019/). This report raises our
-interest to study happiness and find its influential factors.
+interest to study happiness and find its influential factors, and as
+mentioned in chapter 2, changing world happiness. In this chapter, the
+researchers generally analyzed the rank of happiness scale of 156
+countries in 2016-2018 as well as how they were varied compared with the
+similar results of happiness report between 2005-2008. The dynamics of
+happiness was also generally showed from 2006 to 2018 as well as their
+positive and negative effect. However, even though the article mentioned
+the potential factors that might contributed to these changes, very few
+further analyses were applied to these factors explaining in what degree
+these factors influence the happiness of different countries and the
+world and no clearly visualized analysis results were obtained.
+Therefore, we group chose some of the factors that are highly convincing
+to be influential in some degree, to visualization their correlations
+with happiness and provided a clearer view about how these factors
+contribute to the happiness, trying to explain the results of the 2018
+World Happiness Report.
 
 ## Research questions
 
@@ -70,7 +85,10 @@ project.Following are our detailed questions:
 ### Data sources
 
 Our data was downloaded as a .xls file from [World
-Poll](https://analyticscampus.gallup.com/?ref=Auth).
+Poll](https://analyticscampus.gallup.com/?ref=Auth), which was also used
+in
+[chapter 2](https://worldhappiness.report/ed/2019/changing-world-happiness/)
+of World Happiness Report.
 
 ### Data cleaning
 
@@ -557,3 +575,7 @@ schools and colleges could develop their education about happiness. By
 doing this, poeple will build a mind set that does well in sensing
 happiness and hence the situation of decreasing happiness level as age
 increases will be changed in the good way.
+
+## Citation
+
+    Helliwell, John. .., et al. “The World Happiness： ReportChanging World Happiness.” United Nations Sustainable Development Solutions Network, 2019, https://worldhappiness.report/ed/2019/changing-world-happiness/.
