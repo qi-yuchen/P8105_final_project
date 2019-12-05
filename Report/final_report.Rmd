@@ -58,7 +58,7 @@ Our data was downloaded as a .csv file from [World Poll](https://analyticscampus
 
 To analyze our data by continent, we need to add the continent variable.
 
-```{r}
+```{r, eval=FALSE}
 ## add continents
 df = read_xls("data/Chapter2OnlineData.xls") %>% 
   janitor::clean_names()
@@ -84,14 +84,18 @@ df = df %>%
 
 ### Geographica
 
-The geographical distribution of happiness across 165 countries were visualized. We get the GENC 3-letter codes for countries applying the countrycode function, and produced interactive plots. Screenshots of these maps are shown below. To see the fully rendered versions, visit our [website](https://qi-yuchen.github.io/P8105_final_project/Geographica.html). This exploration did not intend to find any associations, at least not in  a rigorous way, but to provide us and our readers a tool to interact with our data and get an direct understanding of the current situation of people's feeling of happiness worldwide. From the distribution [map](https://qi-yuchen.github.io/P8105_final_project/Geo_world.html), we can see mean life ladder over years in Europe and Americas is significantly higher than that in Asia and Africa. 
+The geographical distribution of happiness across 165 countries were visualized. We get the GENC 3-letter codes for countries applying the countrycode function, and produced interactive plots. Screenshots of these maps are shown below. To see the fully rendered versions, visit our [website](https://qi-yuchen.github.io/P8105_final_project/Geographica.html). This exploration did not intend to find any associations, at least not in  a rigorous way, but to provide us and our readers a tool to interact with our data and get an direct understanding of the current situation of people's feeling of happiness worldwide. From the distribution [map](https://qi-yuchen.github.io/P8105_final_project/Geo_world.html), we can see mean life ladder over years in Europe and Americas is significantly higher than that in Asia and Africa. Four distribution [bar graphs](https://qi-yuchen.github.io/P8105_final_project/Geo_continent.html) were produced. In each continent, there is obvious diversity with regard to happiness.
+
+```{r echo=FALSE, out.width = '80%'}
+knitr::include_graphics("./image/map.png")
+knitr::include_graphics("./image/bar.png")
+```
 
 The code for rending these plots are the following:
 
-For this part, the mean life ladder and the country code for each country are needed to produce the global map. 
-
 ```{r, eval=FALSE}
-## add the mean happiness
+## For this part, the mean life ladder and the country code for each country are needed to produce the global map.
+# add the mean happiness
 df_geo = df %>% 
   select(continent, country = country_name, year, life_ladder) %>% 
   group_by(continent, country) %>% 
@@ -99,16 +103,15 @@ df_geo = df %>%
   ungroup()
 df_geo$continent[165] = "Europe"
 
-## add the country code
+# add the country code
 df_geo = df_geo %>% 
   mutate(code = countrycode(sourcevar = country,
                                  origin = "country.name",
                                  destination = "genc3c"))
 ```
 
-Global view
-
 ```{r, eval=FALSE}
+## Global view
 # light grey boundaries
 l <- list(color = toRGB("grey"), width = 0.5)
 
@@ -132,9 +135,8 @@ plot_geo(df_geo) %>%
   )
 ```
 
-Continent view
-
 ```{r, eval=FALSE}
+## Continent view
 # Africa
 df_geo %>% 
   filter(continent == "Africa") %>% 
