@@ -8,7 +8,7 @@ output:
 
 ![](image/pikachu.png)
 
-## Indroduction
+## Introduction
 In living memory, people paid a lot of attention to their health, especially their physical health. Yet with the development of modern technology in medicine and a more comprehensive medical care system, the general physical health of the majority seems to be in good care. With the guarantee of their basic physical health, people tend to pay more attention to their mental health. This tendency drives the more frequent appearance of depressing topics such as “Depression” and “Suicide”. Yet, in order to make progress and actually change the depressing situation, people should not only focus on these issues, but also concentrate on happier thoughts. Hence, in this research, we focus on happiness, how people feel about their well-being and happiness across countries, and focus on how the feeling of happy changes over years and the association or even casual effects between several variables.  
 
 The debate of whether higher gdp can increase hapiness is never endless. Some say it does, thus we should work hardly on raising gdp. Some say it actually has a quite opposite influence on our hapiness. Which opinion is true according to our data? We choose gdp as one of the potential key variables to find the association. 
@@ -29,7 +29,7 @@ Both related to money, what's the association between these two variable and hap
 
 `generosity` is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.
 
- We divided `age` into 3 age groups: 15-30, 30-49, 50+.
+'age' is devided into 3 age groups: 15-30, 30-49, 50+.
 
 `country_name` contains all the countries we analyze, alongwith `code` which uses GENC 3-letter codes for countries, applying the countrycode function.
 
