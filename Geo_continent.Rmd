@@ -35,14 +35,6 @@ df_geo = df %>%
   summarise(mean_life_ladder = mean(life_ladder)) %>% 
   ungroup()
 df_geo$continent[165] = "Europe"
-
-latlon = read_csv("data/country_centroids_az8.csv") %>% 
-  select(name_long, Longitude, Latitude) %>% 
-  rename(country = name_long)
-
-df_geo_cor = left_join(df_geo, latlon) %>% 
-  janitor::clean_names() %>% 
-  na.omit()
   
 ```
 
@@ -52,25 +44,6 @@ Column {data-width=500}
 ### Africa
 
 ```{r}
-temp2 = df_geo %>% 
-  filter(continent == "Africa") %>% 
-  mutate(country = reorder(country, mean_life_ladder)) %>% 
-  plot_ly(x = ~country, y = ~mean_life_ladder, color = ~country, type = "bar") %>% 
-  layout(
-    title = "Distribution of happiness in Africa",
-    xaxis = list(title = "country name", tickangle = -45),
-    yaxis = list(title = "expectation of life ladder", range = c(0,8))
-    )
-
-temp1 = df_geo_cor %>%
-  mutate(text_label = str_c("country:", country, '\nladder: ', mean_life_ladder)) %>% 
-  plot_ly(
-    y = ~latitude, x = ~longitude, type = "scatter", mode = "markers",
-    color = ~mean_life_ladder, text = ~text_label, alpha = 0.5)
-
-
-
-
 df_geo %>% 
   filter(continent == "Africa") %>% 
   mutate(country = reorder(country, mean_life_ladder)) %>% 
