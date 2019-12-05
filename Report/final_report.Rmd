@@ -1,0 +1,59 @@
+---
+title: "The Secret of Happiness"
+author: "Qi Yuchen (yq2279)"
+date: "2019/12/4"
+output: html_document
+---
+
+```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(viridis)
+library(plotly)
+library(readxl)
+library(countrycode)
+library(flexdashboard)
+library(ggmap)
+
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  out.width = "90%",
+ fig.align = "center"
+)
+
+theme_set(theme_bw() + theme(plot.title = element_text(hjust = 0.5)))
+```
+
+## Introduction
+
+In living memory, people paid a lot of attention to their health, especially their physical health. Yet with the development of modern technology in medicine and a more comprehensive medical care system, the general physical health of the majority seems to be in good care. With the guarantee of their basic physical health, people tend to pay more attention to their mental health. This tendency drives the more frequent appearance of depressing topics such as “Depression” and “Suicide”. Yet, in order to make progress and actually change the depressing situation, people should not only focus on these issues, but also concentrate on happier thoughts. Hence, in this research, we focus on happiness, how people feel about their well-being and happiness across countries, and focus on how the feeling of happy changes over years and the association or even casual effects between several variables.  
+
+The debate of whether higher gdp can increase hapiness is never endless. Some say it does, thus we should work hardly on raising gdp. Some say it actually has a quite opposite influence on our hapiness. Which opinion is true according to our data? We choose gdp as one of the potential key variables to find the association. 
+
+Also, humans are an extremely prosocial species. Compared to most primates, humans provide more assistance to family, friends, and strangers, even when costly. Some evidence indicate that there is well-being benefits from donating money.
+
+Moreover, according to our previous exploration, we can tell that there is an obvious association between age and happiness. 
+
+Both related to money, what's the association between these two variable and happiness? To answer this question, we use the following three variables to find the best linear model that describes the association. 
+
+
+## Research questions
+
+Our research questions are the following:
+
+- How people's feeling of happiness differ by where they live?
+- 
+- 
+- 
+
+
+
+## Data
+
+### Data sources
+
+Our data was downloaded as a .csv file from [World Poll](https://analyticscampus.gallup.com/?ref=Auth).  
+
+### Data cleaning
+
+To analyze our data by continent, we need to add the continent variable
