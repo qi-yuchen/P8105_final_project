@@ -13,7 +13,7 @@ library(readxl)
 library(countrycode)
 library(flexdashboard)
 library(ggmap)
-
+library(patchwork)
 
 knitr::opts_chunk$set(
   fig.width = 6,
@@ -59,14 +59,129 @@ Our data was downloaded as a .csv file from [World Poll](https://analyticscampus
 
 ### Data cleaning
 
-To analyze our data by continent, we need to add the continent variable
+To analyze our data by continent, we need to add the continent variable and remove the data without continent variable. The log_gdp_per_capita was also renamed into gdp for short 
 
+```{r, eval=FALSE}
+## add continents
+df = read_xls("data/Chapter2OnlineData.xls") %>% 
+  janitor::clean_names()
+df = df %>% 
+  mutate(continent = countrycode(sourcevar = country_name,
+                                 origin = "country.name",
+                                 destination = "continent")) %>% 
+  select(continent, country_name, everything())%>%
+  drop_na(continent) %>% 
+  rename(gdp = log_gdp_per_capita)
+```
 
+### Data description
+
+`life_ladder` represent the happiness score or subjective well-being which was measured by the Gallup World Poll(GWP) covering years from 2005 to 2018,
+
+`gdp` represent the log transformation of statistics of GDP per capita in purchasing power parity(PPP) at constant 2011 international dollar prices are from the November 14,2018 update of the World Development Indicators (WDI).
+
+`generosity` is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.
+
+`age` is devided into 3 age groups: 15-30, 30-49, 50+.
 
 
 ## Exploratory analysis
 
 ### Geographica
+
+The geographical distribution of happiness across 165 countries were visualized. We get the GENC 3-letter codes for countries applying the countrycode function, and produced interactive plots. Screenshots of these maps are shown below. To see the fully rendered versions, visit our [website](https://qi-yuchen.github.io/P8105_final_project/Geographica.html). This exploration did not intend to find any associations, at least not in  a rigorous way, but to provide us and our readers a tool to interact with our data and get an direct understanding of the current situation of people's feeling of happiness worldwide. From the distribution [map](https://qi-yuchen.github.io/P8105_final_project/Geo_world.html), we can see mean life ladder over years in Europe and Americas is significantly higher than that in Asia and Africa. Four distribution [bar graphs](https://qi-yuchen.github.io/P8105_final_project/Geo_continent.html) were produced. In each continent, there is obvious diversity with regard to happiness.
+
+```{r echo=FALSE, out.width = '80%'}
+knitr::include_graphics("./image/map.png")
+knitr::include_graphics("./image/bar.png")
+```
+
+The code for rendering these plots are the following:
+
+```{r, eval=FALSE}
+## For this part, the mean life ladder and the country code for each country are needed to produce the global map.
+# add the mean happiness
+df_geo = df %>% 
+  select(continent, country = country_name, year, life_ladder) %>% 
+  group_by(continent, country) %>% 
+  summarise(mean_life_ladder = mean(life_ladder)) %>% 
+  ungroup()
+df_geo$continent[165] = "Europe"
+
+# add the country code
+df_geo = df_geo %>% 
+  mutate(code = countrycode(sourcevar = country,
+                                 origin = "country.name",
+                                 destination = "genc3c"))
+```
+
+```{r, eval=FALSE}
+## Global view
+# light grey boundaries
+l <- list(color = toRGB("grey"), width = 0.5)
+
+# specify map projection/options
+g <- list(
+  showframe = FALSE,
+  showcoastlines = FALSE,
+  projection = list(type = 'Mercator')
+)
+
+# here is the map
+plot_geo(df_geo) %>%
+  add_trace(
+    z = ~mean_life_ladder, color = ~mean_life_ladder, colors = 'Blues',
+    text = ~country, locations = ~code, marker = list(line = l)
+  ) %>%
+  colorbar(title = 'Expectation of life ladder') %>%
+  layout(
+    title = 'Global Distribution of Happiness',
+    geo = g
+  )
+```
+
+```{r, eval=FALSE}
+## Continent view
+# Africa
+df_geo %>% 
+  filter(continent == "Africa") %>% 
+  mutate(country = reorder(country, mean_life_ladder)) %>% 
+  plot_ly(x = ~country, y = ~mean_life_ladder, color = ~country, type = "bar") %>% 
+  layout(
+    xaxis = list(title = "country name", tickangle = -45),
+    yaxis = list(title = "expectation of life ladder", range = c(0,8))
+    )
+
+# Americas
+df_geo %>% 
+  filter(continent == "Americas") %>% 
+  mutate(country = reorder(country, mean_life_ladder)) %>% 
+  plot_ly(x = ~country, y = ~mean_life_ladder, color = ~country, type = "bar") %>% 
+  layout(
+    xaxis = list(title = "country name", tickangle = -45),
+    yaxis = list(title = "expectation of life ladder", range = c(0,8))
+    )
+
+# Asia and Oceania
+df_geo %>% 
+  filter(continent == "Asia" | continent == "Oceania") %>% 
+  mutate(country = reorder(country, mean_life_ladder)) %>% 
+  plot_ly(x = ~country, y = ~mean_life_ladder, color = ~country, type = "bar") %>% 
+  layout(
+    xaxis = list(title = "country name", tickangle = -45),
+    yaxis = list(title = "expectation of life ladder", range = c(0,8))
+    )
+
+# Europe
+df_geo %>% 
+  filter(continent == "Europe") %>% 
+  mutate(country = reorder(country, mean_life_ladder)) %>% 
+  plot_ly(x = ~country, y = ~mean_life_ladder, color = ~country, type = "bar") %>% 
+  layout(
+    xaxis = list(title = "country name", tickangle = -45),
+    yaxis = list(title = "expectation of life ladder", range = c(0,8))
+    )
+```
 
 
 ### Age
@@ -74,7 +189,74 @@ To analyze our data by continent, we need to add the continent variable
 
 ### Time
 
+In this analysis, we firstly study the hapiness scale with full data from 2010 to 2018 in the whole world
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+plot_cont_happiness=
+  df %>%
+  filter(year %in% c(2010:2018)) %>%
+  dplyr::select(continent,country_name,year,life_ladder) %>%
+  pivot_wider(
+    names_from = year,
+    values_from = life_ladder
+  )%>% 
+  janitor::clean_names()%>%
+  drop_na()%>%
+  pivot_longer(
+    cols = starts_with("X"),
+    names_to = "year",
+    names_prefix = "x",
+    values_to = "life_ladder"
+  )%>%
+  group_by(continent,year)%>%
+  summarize(life_ladder=mean(life_ladder))%>%
+  ggplot(aes(x=year,y=life_ladder,color=continent))+geom_point()+geom_line(aes(group=continent))+labs(y="life ladder")
 
+plot_cont_gdp=
+  df %>%
+  filter(year %in% c(2010:2018)) %>%
+  dplyr::select(continent,country_name,year,gdp) %>%
+  pivot_wider(
+    names_from = year,
+    values_from = gdp
+  )%>% 
+  janitor::clean_names()%>%
+  drop_na()%>%
+  pivot_longer(
+    cols = starts_with("X"),
+    names_to = "year",
+    names_prefix = "x",
+    values_to = "gdp"
+  )%>%
+  group_by(continent,year)%>%
+  summarize(gdp=mean(gdp))%>%
+  ggplot(aes(x=year,y=gdp,color=continent))+geom_point()+geom_line(aes(group=continent))  
+
+plot_cont_gen=
+  df %>%
+  filter(year %in% c(2010:2018)) %>%
+  dplyr::select(continent,country_name,year,generosity) %>%
+  pivot_wider(
+    names_from = year,
+    values_from = generosity
+  )%>% 
+  janitor::clean_names()%>%
+  drop_na()%>%
+  pivot_longer(
+    cols = starts_with("X"),
+    names_to = "year",
+    names_prefix = "x",
+    values_to = "generosity"
+  )%>%
+  group_by(continent,year)%>%
+  summarize(generosity=mean(generosity))%>%
+  ggplot(aes(x=year,y=generosity,color=continent))+geom_point()+geom_line(aes(group=continent))  
+
+plot_cont_happiness+(plot_cont_gdp/plot_cont_gen )
+  
+```
+It is obvious that the in the 9-year period of intersted study, the Oceania has the highest level of happiness that above 7 during the study period, while Africa has the lowest level of happiness ranged from 4 to 4.5 in the study period.Europe and America have similar life ladder within 6 and 6.5, where America was slightly higher in 2010 than Europe while Europe exceeded since 2015. Asia had life ladder slightly less than 5.5 and generally kept in a stable level in the study period. Compared with the gdp scale and the generosity in each continent, we can easily noticed that a similar pattern exist that Oceania tended to have the highest average gdp and generosity while Africa tended to have lowest level.
+As for the change of life ladder, gdp and generosity changed through years for any specific country reader might interested in, the link below provided a visulization plot of the time trend of each country.
+https://lsyjessica.shinyapps.io/time_shiny/ 
 ## Additional analysis
 
 
