@@ -2,7 +2,7 @@
 title: "The Secret of Happiness"
 author: "Jingyu Fu (jf3286)  Xiaoyang Li (xl2934)  Shuya Liu (sl4655)  Di Wu (dw2903)  Yuchen Qi (yq2279)"
 date: "2019/12/4"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
