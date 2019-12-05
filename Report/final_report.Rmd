@@ -73,3 +73,7 @@ To analyze our data by continent, we need to add the continent variable
 
 
 ## Additional analysis
+
+
+## Discussion
+
