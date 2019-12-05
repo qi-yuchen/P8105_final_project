@@ -236,5 +236,5 @@ par(mfrow = c(2,2))
 plot(lm7)
 ```
 
-So glad to see that our model got such a high score in those questions, now let'd officially meet our best model!
+So glad to see that our model got such a high score in those questions, now let's officially meet our best model!
 
