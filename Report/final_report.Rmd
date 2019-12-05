@@ -1,6 +1,6 @@
 ---
 title: "The Secret of Happiness"
-author: "Qi Yuchen (yq2279)"
+author: "Jingyu Fu (jf3286)  Xiaoyang Li (xl2934)  Shuya Liu (sl4655)  Di Wu (dw2903)  Yuchen Qi (yq2279)"
 date: "2019/12/4"
 output: html_document
 ---
@@ -34,7 +34,7 @@ Also, humans are an extremely prosocial species. Compared to most primates, huma
 
 Moreover, according to our previous exploration, we can tell that there is an obvious association between age and happiness. 
 
-Both related to money, what's the association between these two variable and happiness? To answer this question, we use the following three variables to find the best linear model that describes the association. 
+Both related to money, what's the association between these two variable and happiness? To answer this question, we use the following three variables to find the best linear model that describes the association: life_ladder, gdp and generosity. Detailed data description is in the data part below.
 
 
 ## Research questions
@@ -69,7 +69,7 @@ df = df %>%
   mutate(continent = countrycode(sourcevar = country_name,
                                  origin = "country.name",
                                  destination = "continent")) %>% 
-  select(continent, country_name, everything())%>%
+  dplyr::select(continent, country_name, everything())%>%
   drop_na(continent) %>% 
   rename(gdp = log_gdp_per_capita)
 ```
@@ -191,6 +191,7 @@ df_geo %>%
 As showing in the geographical distribution of happiness, in addition to the age we mentioned above, we also noticed a variety of happiness among countries and especially among continents which might be related to the gdp and generosity scale. 
 In this analysis, we firstly study the hapiness scale with full data from 2010 to 2018 in the whole world
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#average happiness from 2008 to 2010 in each continent
 plot_cont_happiness=
   df %>%
   filter(year %in% c(2010:2018)) %>%
@@ -211,6 +212,7 @@ plot_cont_happiness=
   summarize(life_ladder=mean(life_ladder))%>%
   ggplot(aes(x=year,y=life_ladder,color=continent))+geom_point()+geom_line(aes(group=continent))+labs(y="life ladder")
 
+# average gdp from 2008 to 2010 in each continent
 plot_cont_gdp=
   df %>%
   filter(year %in% c(2010:2018)) %>%
@@ -231,6 +233,7 @@ plot_cont_gdp=
   summarize(gdp=mean(gdp))%>%
   ggplot(aes(x=year,y=gdp,color=continent))+geom_point()+geom_line(aes(group=continent))  
 
+# average generosity from 2008 to 2010 in each continent
 plot_cont_gen=
   df %>%
   filter(year %in% c(2010:2018)) %>%
