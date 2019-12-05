@@ -43,7 +43,7 @@ below.
 
 ## Related work
 
-Our project is inspired by [Woeld Happiness
+Our project is inspired by [World Happiness
 Report](https://worldhappiness.report/ed/2019/). This report raises our
 interest to study happiness and find its influential factors, and as
 mentioned in chapter 2, changing world happiness. In this chapter, the
