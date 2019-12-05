@@ -39,13 +39,16 @@ Both related to money, what's the association between these two variable and hap
 
 ## Research questions
 
-Our research questions are the following:
+Our research focues on a main question:
+
+- How does people's happiness level change in different criterion.
+
+This main question diverges into four minor and more detailed questions. Those questions are consistent through the course of our project.Following are our detailed questions:
 
 - How people's feeling of happiness differ by where they live?
-- 
-- 
-- 
-
+- How does people's feeling of happiness change when people' grow older's age increase?
+- How does happiness levels of different areas change over the years?
+- Will people's happiness level change as the change of GDP, generosity and age? For those affect happiness level, what is the linear association between them and happiness level.  
 
 
 ## Data
