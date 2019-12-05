@@ -49,3 +49,7 @@ Yuchen Qi yq2279
 For a brief overview of our website, view the screencast [here](https://www.youtube.com/watch?v=6zcw9ABV_vk)
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6zcw9ABV_vk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## Report
+
+To see the full report, click [here](final_report.html)

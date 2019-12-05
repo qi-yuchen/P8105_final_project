@@ -352,6 +352,9 @@ age_df &lt;- age_data %&gt;%
                names_pattern = &quot;(.*)_(.*)&quot;) %&gt;%
   pivot_wider(names_from = variable,
               values_from = value)</code></pre>
+</div>
+<div id="example-plot" class="section level2">
+<h2>Example Plot</h2>
 <pre class="r"><code>age_df %&gt;%
   mutate(year = as.character(year)) %&gt;%
   filter(country_name == &quot;Afghanistan&quot;) %&gt;%
