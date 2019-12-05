@@ -29,7 +29,7 @@ Both related to money, what's the association between these two variable and hap
 
 `generosity` is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.
 
-'age' is devided into 3 age groups: 15-30, 30-49, 50+.
+`age` is devided into 3 age groups: 15-30, 30-49, 50+.
 
 `country_name` contains all the countries we analyze, alongwith `code` which uses GENC 3-letter codes for countries, applying the countrycode function.
 
@@ -39,3 +39,9 @@ Xiaoyang Li xl2934
 Shuya Liu sl4655  
 Di Wu dw2903  
 Yuchen Qi yq2279
+
+## Screencast
+
+For a brief overview of our website, view the screencast [here](https://www.youtube.com/watch?v=6zcw9ABV_vk)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6zcw9ABV_vk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
