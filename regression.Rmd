@@ -37,9 +37,10 @@ theme_set(theme_minimal() + theme(legend.position = "bottom"))
 
 ## Finding the passcode of Happiness
 
+
 <img src="image/regression3.jpg" style="width:75%">
 
-One of the key motivation of finding the secrets of Happiness is to find its passcode to it. With this passcode, we can unlock a lot of door in the world of hapiness. We can see what are the factors that constructed our satisfaction about life; how can we boost our hapiness; we can even predict our future hapiness with this passcode. 
+One of the key motivation of finding the secrets of Happiness is to find its passcode to it. With this passcode, we can unlock a lot of door in the world of hapiness. We can see what are the factors that constructed our satisfaction about life; how can we boost our hapiness; we can even predict our future hapiness with this passcode.
 
 ```{r data cleaning}
 happy_data = read_excel("./data/Chapter2OnlineData.xls") %>%
@@ -76,23 +77,6 @@ df = happy_data %>%
   filter(age != "DK/Refused")
 
 ```
-
-## How we locate the potential numbers that construct the passcode? 
-
-The debate of whether higher gdp can increase hapiness is never endless. Some say it does, thus we should work hardly on raising gdp. Some say it actually has a quite opposite influence on our hapiness. Which opinion is true according to our data? We choose gdp as one of the potential key variables to find the association. 
-
-Also, humans are an extremely prosocial species. Compared to most primates, humans provide more assistance to family, friends, and strangers, even when costly. Some evidence indicate that there is well-being benefits from donating money.
-
-Moreover, according to our previous exploration, we can tell that there is an obvious association between age and happiness. 
-
-Both related to money, what's the association between these two variable and happiness? To answer this question, we use the following three variables to find the best linear model that describes the association. 
-
-`happiness` represent the happiness score or subjective well-being which was measured by the Gallup World Poll(GWP) covering years from 2005 to 2018,
-
-`gdp` represent the log transformation of statistics of GDP per capita in purchasing power parity(PPP) at constant 2011 international dollar prices are from the November 14,2018 update of the World Development Indicators (WDI).
-
-`generosity` is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.
-
 
 
 ## Which model is the closest to the 'true passcode'? 
