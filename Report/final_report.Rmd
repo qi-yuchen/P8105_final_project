@@ -321,7 +321,7 @@ https://lsyjessica.shinyapps.io/time_shiny/
 
 ## Additional analysis
 
-Based on before analisis, we found that there might be association between age, GDP, generosity and happiness. Therefore, we try to make linear regression model of these factors.
+Based on before analysis, we found that there might be association between age, GDP, generosity and happiness. Therefore, we try to make linear regression model of these factors.
 
 ```{r select variable for regression}
 df_r = df %>% 
