@@ -1,14 +1,31 @@
 ---
 title: "The Secret of Happiness"
-output: 
-  html_document:
-    toc: true
-    toc_float: true
+author: "Qi Yuchen (yq2279)"
+date: "2019/12/4"
+output: html_document
 ---
 
-![](image/pikachu.png)
+```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(viridis)
+library(plotly)
+library(readxl)
+library(countrycode)
+library(flexdashboard)
+library(ggmap)
+
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  out.width = "90%",
+ fig.align = "center"
+)
+
+theme_set(theme_bw() + theme(plot.title = element_text(hjust = 0.5)))
+```
 
 ## Introduction
+
 In living memory, people paid a lot of attention to their health, especially their physical health. Yet with the development of modern technology in medicine and a more comprehensive medical care system, the general physical health of the majority seems to be in good care. With the guarantee of their basic physical health, people tend to pay more attention to their mental health. This tendency drives the more frequent appearance of depressing topics such as “Depression” and “Suicide”. Yet, in order to make progress and actually change the depressing situation, people should not only focus on these issues, but also concentrate on happier thoughts. Hence, in this research, we focus on happiness, how people feel about their well-being and happiness across countries, and focus on how the feeling of happy changes over years and the association or even casual effects between several variables.  
 
 The debate of whether higher gdp can increase hapiness is never endless. Some say it does, thus we should work hardly on raising gdp. Some say it actually has a quite opposite influence on our hapiness. Which opinion is true according to our data? We choose gdp as one of the potential key variables to find the association. 
@@ -18,30 +35,45 @@ Also, humans are an extremely prosocial species. Compared to most primates, huma
 Moreover, according to our previous exploration, we can tell that there is an obvious association between age and happiness. 
 
 Both related to money, what's the association between these two variable and happiness? To answer this question, we use the following three variables to find the best linear model that describes the association. 
- 
-
-## Data description
 
 
-`life_ladder` represent the happiness score or subjective well-being which was measured by the Gallup World Poll(GWP) covering years from 2005 to 2018,
+## Research questions
 
-`gdp` represent the log transformation of statistics of GDP per capita in purchasing power parity(PPP) at constant 2011 international dollar prices are from the November 14,2018 update of the World Development Indicators (WDI).
+Our research questions are the following:
 
-`generosity` is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.
+- How people's feeling of happiness differ by where they live?
+- 
+- 
+- 
 
-`age` is devided into 3 age groups: 15-30, 30-49, 50+.
 
-`country_name` contains all the countries we analyze, alongwith `code` which uses GENC 3-letter codes for countries, applying the countrycode function.
 
-## Team
-Jingyu Fu jf3286  
-Xiaoyang Li xl2934  
-Shuya Liu sl4655  
-Di Wu dw2903  
-Yuchen Qi yq2279
+## Data
 
-## Screencast
+### Data sources
 
-For a brief overview of our website, view the screencast [here](https://www.youtube.com/watch?v=6zcw9ABV_vk)
+Our data was downloaded as a .csv file from [World Poll](https://analyticscampus.gallup.com/?ref=Auth).  
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/6zcw9ABV_vk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+### Data cleaning
+
+To analyze our data by continent, we need to add the continent variable
+
+
+
+
+## Exploratory analysis
+
+### Geographica
+
+
+### Age
+
+
+### Time
+
+
+## Additional analysis
+
+
+## Discussion
+
