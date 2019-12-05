@@ -318,7 +318,7 @@ all countries we studied. <https://lsyjessica.shinyapps.io/time_shiny/>
 
 ## Additional analysis
 
-Based on before analisis, we found that there might be association
+Based on before analysis, we found that there might be association
 between age, GDP, generosity and happiness. Therefore, we try to make
 linear regression model of these factors.
 
@@ -350,19 +350,19 @@ combination(confounder).
 
 lm4:\[Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity}\]
 
-lm5:\[Y_{happiness} = \beta_0 + \beta_1X_{gdp}  + \beta_3X_{age} \]
+lm5:\[Y_{happiness} = \beta_0 + \beta_1X_{gdp}  + \beta_3X_{age}\]
 
-lm6:\[Y_{happiness} = \beta_0 + \beta_1X_{age} + \beta_2X_{generosity} \]
+lm6:\[Y_{happiness} = \beta_0 + \beta_1X_{age} + \beta_2X_{generosity}\]
 
-lm7:\[Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity} + \beta_3X_{age} \]
+lm7:\[Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity} + \beta_3X_{age}\]
 
 Model 8 to 10 use interaction of those variables.
 
 lm8:\[Y_{happiness} = \beta_0 + \beta_1X_{gdp} * \beta_2X_{generosity}\]
 
-lm9:\[Y_{happiness} = \beta_0 + \beta_1X_{gdp} * \beta_3X_{age} \]
+lm9:\[Y_{happiness} = \beta_0 + \beta_1X_{gdp} * \beta_3X_{age}\]
 
-lm10:\[Y_{happiness} = \beta_0 + \beta_1X_{age} * \beta_2X_{generosity} \]
+lm10:\[Y_{happiness} = \beta_0 + \beta_1X_{age} * \beta_2X_{generosity}\]
 
 ``` r
 lm1 = lm(ladder ~ gdp, data = df_r)
