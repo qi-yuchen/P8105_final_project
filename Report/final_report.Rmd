@@ -84,7 +84,9 @@ df = df %>%
 
 ### Geographica
 
-The geographical distribution of happiness across 165 countries were visualized. We get the GENC 3-letter codes for countries applying the countrycode function in r, and produced interactive plots. Screenshots of these maps are shown below. To see the fully rendered versions, visit our [website](). The purpose of this exploration was not to test any hypotheses, but to provide us and our readers with an interactive tool to explore our data. The trends we see in the geography match the exploratory analysis we conducted up to this point For example, as we saw in a previous section, there is a higher concentration of pit bull bites in the Bronx compared to other boroughs, in relation to the total number of dog bites. Interestingly, the places with more bites overall also had the most pit bull bites as well; the distribution of bites by breed is consistent across location.
+The geographical distribution of happiness across 165 countries were visualized. We get the GENC 3-letter codes for countries applying the countrycode function, and produced interactive plots. Screenshots of these maps are shown below. To see the fully rendered versions, visit our [website](https://qi-yuchen.github.io/P8105_final_project/Geographica.html). This exploration did not intend to find any associations, at least not in  a rigorous way, but to provide us and our readers a tool to interact with our data and get an direct understanding of the current situation of people's feeling of happiness worldwide. From the distribution [map](https://qi-yuchen.github.io/P8105_final_project/Geo_world.html), we can see mean life ladder over years in Europe and Americas is significantly higher than that in Asia and Africa. 
+
+The code for rending these plots are the following:
 
 For this part, the mean life ladder and the country code for each country are needed to produce the global map. 
 
@@ -104,7 +106,7 @@ df_geo = df_geo %>%
                                  destination = "genc3c"))
 ```
 
-* Global view
+Global view
 
 ```{r, eval=FALSE}
 # light grey boundaries
@@ -130,9 +132,7 @@ plot_geo(df_geo) %>%
   )
 ```
 
-From the distribution [map](https://qi-yuchen.github.io/P8105_final_project/Geo_world.html), we can see mean life ladder over years in Europe and Americas is significantly higher than that in Asia and Africa.
-
-* Continent view
+Continent view
 
 ```{r, eval=FALSE}
 # Africa
@@ -176,7 +176,6 @@ df_geo %>%
     )
 ```
 
-We get four distribution [bar graphs](https://qi-yuchen.github.io/P8105_final_project/Geo_continent.html). In each continent, there is obvious diversity with regard to happiness.
 
 ### Age
 
