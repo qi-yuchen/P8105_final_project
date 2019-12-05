@@ -3,8 +3,6 @@ output_dir: "."
 navbar:
   title: "Home"
   right:
-    - text: "Description of data"
-      href:
     - text: "Geographica"
       href: Geographica.html
     - text: "Age Group"

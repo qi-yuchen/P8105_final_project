@@ -7,11 +7,14 @@ output:
 ---
 
 
-# Pikachu
-
 ![](image/pikachu.png)
 
+<<<<<<< HEAD
 ## How we locate the potential numbers that construct the passcode? 
+=======
+## Indroduction
+In living memory, people paid a lot of attention to their health, especially their physical health. Yet with the development of modern technology in medicine and a more comprehensive medical care system, the general physical health of the majority seems to be in good care. With the guarantee of their basic physical health, people tend to pay more attention to their mental health. This tendency drives the more frequent appearance of depressing topics such as “Depression” and “Suicide”. Yet, in order to make progress and actually change the depressing situation, people should not only focus on these issues, but also concentrate on happier thoughts. Hence, in this research, we focus on happiness, how people feel about their well-being and happiness across countries, and focus on how the feeling of happy changes over years and the association or even casual effects between several variables.  
+>>>>>>> bfcc8e0f0fe8733bfc7b043bd37ce6b7cd4d81df
 
 The debate of whether higher gdp can increase hapiness is never endless. Some say it does, thus we should work hardly on raising gdp. Some say it actually has a quite opposite influence on our hapiness. Which opinion is true according to our data? We choose gdp as one of the potential key variables to find the association. 
 
@@ -19,12 +22,25 @@ Also, humans are an extremely prosocial species. Compared to most primates, huma
 
 Moreover, according to our previous exploration, we can tell that there is an obvious association between age and happiness. 
 
+<<<<<<< HEAD
 
 
 Both related to money, what's the association between these two variable and happiness? To answer this question, we use the following three variables to find the best linear model that describes the association. 
 
+=======
+Both related to money, what's the association between these two variable and happiness? To answer this question, we use the following three variables to find the best linear model that describes the association. 
+
+## Data description
+
+>>>>>>> bfcc8e0f0fe8733bfc7b043bd37ce6b7cd4d81df
 `happiness` represent the happiness score or subjective well-being which was measured by the Gallup World Poll(GWP) covering years from 2005 to 2018,
 
 `gdp` represent the log transformation of statistics of GDP per capita in purchasing power parity(PPP) at constant 2011 international dollar prices are from the November 14,2018 update of the World Development Indicators (WDI).
 
 `generosity` is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.
+<<<<<<< HEAD
+=======
+
+`age` We divide 3 age groups: 15-30, 30-49, 50+.
+
+>>>>>>> bfcc8e0f0fe8733bfc7b043bd37ce6b7cd4d81df
