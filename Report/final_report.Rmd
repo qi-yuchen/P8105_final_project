@@ -56,15 +56,127 @@ Our data was downloaded as a .csv file from [World Poll](https://analyticscampus
 
 ### Data cleaning
 
-To analyze our data by continent, we need to add the continent variable
+To analyze our data by continent, we need to add the continent variable.
 
+```{r}
+## add continents
+df = read_xls("data/Chapter2OnlineData.xls") %>% 
+  janitor::clean_names()
+df = df %>% 
+  mutate(continent = countrycode(sourcevar = country_name,
+                                 origin = "country.name",
+                                 destination = "continent")) %>% 
+  select(continent, country_name, everything())
+```
 
+### Data description
+
+`life_ladder` represent the happiness score or subjective well-being which was measured by the Gallup World Poll(GWP) covering years from 2005 to 2018,
+
+`gdp` represent the log transformation of statistics of GDP per capita in purchasing power parity(PPP) at constant 2011 international dollar prices are from the November 14,2018 update of the World Development Indicators (WDI).
+
+`generosity` is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.
+
+`age` is devided into 3 age groups: 15-30, 30-49, 50+.
 
 
 ## Exploratory analysis
 
 ### Geographica
 
+The geographical distribution of happiness across 165 countries were visualized. We get the GENC 3-letter codes for countries applying the countrycode function in r, and produced interactive plots. Screenshots of these maps are shown below. To see the fully rendered versions, visit our [website](). The purpose of this exploration was not to test any hypotheses, but to provide us and our readers with an interactive tool to explore our data. The trends we see in the geography match the exploratory analysis we conducted up to this point For example, as we saw in a previous section, there is a higher concentration of pit bull bites in the Bronx compared to other boroughs, in relation to the total number of dog bites. Interestingly, the places with more bites overall also had the most pit bull bites as well; the distribution of bites by breed is consistent across location.
+
+For this part, the mean life ladder and the country code for each country are needed to produce the global map. 
+
+```{r, eval=FALSE}
+## add the mean happiness
+df_geo = df %>% 
+  select(continent, country = country_name, year, life_ladder) %>% 
+  group_by(continent, country) %>% 
+  summarise(mean_life_ladder = mean(life_ladder)) %>% 
+  ungroup()
+df_geo$continent[165] = "Europe"
+
+## add the country code
+df_geo = df_geo %>% 
+  mutate(code = countrycode(sourcevar = country,
+                                 origin = "country.name",
+                                 destination = "genc3c"))
+```
+
+* Global view
+
+```{r, eval=FALSE}
+# light grey boundaries
+l <- list(color = toRGB("grey"), width = 0.5)
+
+# specify map projection/options
+g <- list(
+  showframe = FALSE,
+  showcoastlines = FALSE,
+  projection = list(type = 'Mercator')
+)
+
+# here is the map
+plot_geo(df_geo) %>%
+  add_trace(
+    z = ~mean_life_ladder, color = ~mean_life_ladder, colors = 'Blues',
+    text = ~country, locations = ~code, marker = list(line = l)
+  ) %>%
+  colorbar(title = 'Expectation of life ladder') %>%
+  layout(
+    title = 'Global Distribution of Happiness',
+    geo = g
+  )
+```
+
+From the distribution [map](https://qi-yuchen.github.io/P8105_final_project/Geo_world.html), we can see mean life ladder over years in Europe and Americas is significantly higher than that in Asia and Africa.
+
+* Continent view
+
+```{r, eval=FALSE}
+# Africa
+df_geo %>% 
+  filter(continent == "Africa") %>% 
+  mutate(country = reorder(country, mean_life_ladder)) %>% 
+  plot_ly(x = ~country, y = ~mean_life_ladder, color = ~country, type = "bar") %>% 
+  layout(
+    xaxis = list(title = "country name", tickangle = -45),
+    yaxis = list(title = "expectation of life ladder", range = c(0,8))
+    )
+
+# Americas
+df_geo %>% 
+  filter(continent == "Americas") %>% 
+  mutate(country = reorder(country, mean_life_ladder)) %>% 
+  plot_ly(x = ~country, y = ~mean_life_ladder, color = ~country, type = "bar") %>% 
+  layout(
+    xaxis = list(title = "country name", tickangle = -45),
+    yaxis = list(title = "expectation of life ladder", range = c(0,8))
+    )
+
+# Asia and Oceania
+df_geo %>% 
+  filter(continent == "Asia" | continent == "Oceania") %>% 
+  mutate(country = reorder(country, mean_life_ladder)) %>% 
+  plot_ly(x = ~country, y = ~mean_life_ladder, color = ~country, type = "bar") %>% 
+  layout(
+    xaxis = list(title = "country name", tickangle = -45),
+    yaxis = list(title = "expectation of life ladder", range = c(0,8))
+    )
+
+# Europe
+df_geo %>% 
+  filter(continent == "Europe") %>% 
+  mutate(country = reorder(country, mean_life_ladder)) %>% 
+  plot_ly(x = ~country, y = ~mean_life_ladder, color = ~country, type = "bar") %>% 
+  layout(
+    xaxis = list(title = "country name", tickangle = -45),
+    yaxis = list(title = "expectation of life ladder", range = c(0,8))
+    )
+```
+
+We get four distribution [bar graphs](https://qi-yuchen.github.io/P8105_final_project/Geo_continent.html). In each continent, there is obvious diversity with regard to happiness.
 
 ### Age
 
