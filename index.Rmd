@@ -17,11 +17,8 @@ Also, humans are an extremely prosocial species. Compared to most primates, huma
 
 Moreover, according to our previous exploration, we can tell that there is an obvious association between age and happiness. 
 
-
-
 Both related to money, what's the association between these two variable and happiness? To answer this question, we use the following three variables to find the best linear model that describes the association. 
-
-Both related to money, what's the association between these two variable and happiness? To answer this question, we use the following three variables to find the best linear model that describes the association. 
+ 
 
 ## Data description
 
@@ -32,13 +29,13 @@ Both related to money, what's the association between these two variable and hap
 
 `generosity` is the residual of regressing national average of response to the GWPquestion “Have you donated money to a charity in the past month?” on GDP per capita.
 
-`age` We divide 3 age groups: 15-30, 30-49, 50+.
+ We divided `age` into 3 age groups: 15-30, 30-49, 50+.
 
 `country_name` contains all the countries we analyze, alongwith `code` which uses GENC 3-letter codes for countries, applying the countrycode function.
 
 ## Team
-Jingyu Fu jf3286
-Xiaoyang Li xl2934
-Shuya Liu sl4655
-Di Wu dw2903
+Jingyu Fu jf3286  
+Xiaoyang Li xl2934  
+Shuya Liu sl4655  
+Di Wu dw2903  
 Yuchen Qi yq2279
