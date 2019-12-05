@@ -57,3 +57,19 @@ Our data was downloaded as a .csv file from [World Poll](https://analyticscampus
 ### Data cleaning
 
 To analyze our data by continent, we need to add the continent variable
+
+
+
+
+## Exploratory analysis
+
+### Geographica
+
+
+### Age
+
+
+### Time
+
+
+## Additional analysis
