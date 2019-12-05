@@ -1,0 +1,217 @@
+---
+title: "Report-additional"
+author: "Jingyu Fu"
+date: "2019/12/5"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Additional Analysis
+
+One of the key motivation of finding the secrets of Happiness is to find its passcode to it. With this passcode, we can unlock a lot of door in the world of hapiness. We can see what are the factors that constructed our satisfaction about life; how can we boost our hapiness; we can even predict our future hapiness with this passcode.
+
+### Data cleaning
+
+```{r data cleaning}
+happy_data = read_excel("./data/Chapter2OnlineData.xls") %>%
+  janitor::clean_names()
+
+age_data = read_excel("./data/GallupAnalytics_Export_20191203_075046.xlsx",
+                       range = "B8:G5209") %>%
+  janitor::clean_names() %>%
+  rename(country_name = geography,
+         year = time,
+         age = demographic_value,
+         n = n_size,
+         ladder = value) %>%
+  mutate(year = as.numeric(year))
+
+df_age = age_data %>%
+  pivot_wider(names_from = age,
+              values_from = c(ladder, n)) %>%
+  left_join(happy_data, ., by = c("country_name", "year")) %>%
+  select(country_name:life_ladder, "ladder_15-29":"n_DK/Refused") %>%
+  pivot_longer("ladder_15-29":"n_DK/Refused", 
+               names_to = c("variable", "age"),
+               names_pattern = "(.*)_(.*)") %>%
+  pivot_wider(names_from = variable,
+              values_from = value)
+
+
+df = happy_data %>% 
+  rename(gdp = log_gdp_per_capita) %>% 
+  select(country_name, year, life_ladder, gdp, generosity) %>% 
+  full_join(df_age) %>% 
+  select(ladder, gdp, age, generosity) %>% 
+  drop_na(ladder) %>% 
+  filter(age != "DK/Refused")
+
+```
+
+
+### Building potential models.
+
+We built 10 potentials models.
+
+Model 1 to 3 use each of the three variables as the only variable. 
+
+lm1:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp}$$
+
+lm2:$$Y_{happiness} = \beta_0 + \beta_1X_{generosity}$$
+
+lm3:$$Y_{happiness} = \beta_0 + \beta_1X_{age}$$
+
+
+Model 4 to 7 use two or three of the three variables as combination(confounder). 
+
+lm4:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity}$$
+
+lm5:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp}  + \beta_3X_{age} $$
+
+lm6:$$Y_{happiness} = \beta_0 + \beta_1X_{age} + \beta_2X_{generosity} $$
+
+lm7:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} + \beta_2X_{generosity} + \beta_3X_{age} $$
+
+
+Model 8 to 10 use interaction of those variables. 
+
+lm8:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} * \beta_2X_{generosity}$$
+
+lm9:$$Y_{happiness} = \beta_0 + \beta_1X_{gdp} * \beta_3X_{age} $$
+
+lm10:$$Y_{happiness} = \beta_0 + \beta_1X_{age} * \beta_2X_{generosity} $$
+
+
+
+```{r Building model}
+lm1 = lm(ladder ~ gdp, data = df)
+lm2 = lm(ladder ~ generosity, data = df)
+lm3 = lm(ladder ~ age, data = df)
+
+lm4 = lm(ladder ~ gdp + generosity, data = df)
+lm5 = lm(ladder ~ gdp + age, data = df)
+lm6 = lm(ladder ~ age + generosity, data = df)
+
+lm7 = lm(ladder ~ gdp + generosity + age, data = df)
+
+lm8 = lm(ladder ~ gdp * generosity, data = df)
+lm9 = lm(ladder ~ gdp * age, data = df)
+lm10 = lm(ladder ~ age * generosity, data = df)
+
+```
+
+
+### Using criterion to find the best model.
+
+We will use several criterion to find our best model.
+
+The first criterion we use is adjusted-r-square, which tells us the goodness of fit of a model. Higher the value, better the goodness of fit. Model 7 has the highest value, following are model 8 and 5. 
+
+The second set of criteria we use are AIC and BIC, which tell us the quality of our model. Lower the values, higher the quality. Model 7 has the lowest AIC and BIC value, following are Model 8 and Model 4. 
+
+```{r}
+model_name = c("lm1", "lm2","lm3","lm4", "lm5","lm6","lm7", "lm8","lm9","lm10")
+
+ rbind(
+  broom::glance(lm1),
+  broom::glance(lm2),
+  broom::glance(lm3),
+  broom::glance(lm4),
+  broom::glance(lm5),
+  broom::glance(lm6),
+  broom::glance(lm7),
+  broom::glance(lm8),
+  broom::glance(lm9),
+  broom::glance(lm10)
+  ) %>% 
+  cbind(model_name) %>% 
+  select(model_name, everything()) %>% 
+  knitr::kable()
+
+```
+
+
+### Obtaining our best model.
+
+Obviously, Model 7 wins in all the criterion.
+
+Therefore, we would like to choose the lm7, i.e.
+$$Y_{happiness} = -1.39 + 0.77X_{gdp} + 1.36 X_{generosity} + (-0.36)I(age=30-49) + (-0.57)I(age = 50 +)$$
+
+Summary results of lm7 are shown below:
+
+```{r}
+summary(lm7)
+```
+
+## Checking the function of our model.
+Before we continue, there's couple of more things we want to check with our passcode. 
+
+Does it work well?
+
+According to the plot above, RMSE of lm7 is the lowest, which shows that lm7 works best among all our linear model to fit test data!
+
+```{r}
+cv_df = df %>% 
+  crossv_mc(100) %>% 
+  mutate(
+    train = map(train, as_tibble),
+    test = map(test, as_tibble))
+
+cv_df = 
+  cv_df %>% 
+  mutate(lm1 = map(train, ~lm(ladder ~ gdp, data = .x)),
+         lm2 = map(train, ~lm(ladder ~ generosity, data = .x)),
+         lm3 = map(train, ~lm(ladder ~ age, data = .x)),
+         lm4 = map(train, ~lm(ladder ~ gdp + generosity, data = .x)),
+         lm5 = map(train, ~lm(ladder ~ gdp + age, data = .x)),
+         lm6 = map(train, ~lm(ladder ~ age + generosity, data = .x)),
+         lm7 = map(train, ~lm(ladder ~ gdp + generosity + age, data = .x)),
+         lm8 = map(train, ~lm(ladder ~ gdp * generosity, data = .x)),
+         lm9 = map(train, ~lm(ladder ~ gdp * age, data = .x)),
+         lm10 = map(train, ~lm(ladder ~ age * generosity, data = .x))
+         ) %>% 
+  mutate(rmse_1 = map2_dbl(lm1, test, ~rmse(model = .x, data = .y)),
+         rmse_2 = map2_dbl(lm2, test, ~rmse(model = .x, data = .y)),
+         rmse_3 = map2_dbl(lm3, test, ~rmse(model = .x, data = .y)),
+         rmse_4 = map2_dbl(lm4, test, ~rmse(model = .x, data = .y)),
+         rmse_5 = map2_dbl(lm5, test, ~rmse(model = .x, data = .y)),
+         rmse_6 = map2_dbl(lm6, test, ~rmse(model = .x, data = .y)),
+         rmse_7 = map2_dbl(lm7, test, ~rmse(model = .x, data = .y)),
+         rmse_8 = map2_dbl(lm8, test, ~rmse(model = .x, data = .y)),
+         rmse_9 = map2_dbl(lm9, test, ~rmse(model = .x, data = .y)),
+         rmse_10 = map2_dbl(lm9, test, ~rmse(model = .x, data = .y))
+         )    
+
+cv_df %>% 
+  select(starts_with("rmse")) %>% 
+  pivot_longer(
+    everything(),
+    names_to = "model", 
+    values_to = "rmse",
+    names_prefix = "rmse_") %>% 
+  mutate(model = fct_inorder(model)) %>% 
+  ggplot(aes(x = model, y = rmse)) + geom_violin()
+```
+
+
+Does it fulfill our assuamption?
+
+We made some assumptions regarding residuals like normality distribution and constant variance of residuals. According to the diagnostic above, residuals vs fitted and scale-location indicate the constant variance of residuals is satisfied. QQ plot demonstrates that residuals follow normal distribution. And the residuals vs leverage proves there are no obvious influencial observation in out dataset. 
+
+```{r}
+# check residual assupmtion
+par(mfrow = c(2,2))
+plot(lm7)
+```
+
+### Meaning and conclusion of our model.
+
+So glad to see that our model got such a high score in those questions, now let's officially meet our best model!
+$$Y_{happiness} = -1.39 + 0.77X_{gdp} + 1.36 X_{generosity} + (-0.36)I(age=30-49) + (-0.57)I(age = 50 +)$$
+
+As we discussed at the beginning, our passcode can help us reveal a lot of information about the association between the variables and Happiness. In our passcode, we can tell that when we increase our gdp and generosity, we can increase our level of Happiness. Therefore, developing economics and helping others financially is an efficient way of boosting happiness. On the contrary, as our age increases, our satisfaction about life will decrease. Maybe this is a reason why we are more likely to see happy smile on a child's face rather than on a adult's. In this case, if you wanna be more happy, it would be helpful to look at life and the world through a kid's eye. 
+
