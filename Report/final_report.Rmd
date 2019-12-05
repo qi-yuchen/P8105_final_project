@@ -188,7 +188,7 @@ df_geo %>%
 
 
 ### Time
-
+As showing in the geographical distribution of happiness, in addition to the age we mentioned above, we also noticed a variety of happiness among countries and especially among continents which might be related to the gdp and generosity scale. 
 In this analysis, we firstly study the hapiness scale with full data from 2010 to 2018 in the whole world
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 plot_cont_happiness=
